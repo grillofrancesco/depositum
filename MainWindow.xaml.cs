@@ -1,43 +1,58 @@
+using Microsoft.UI;
+using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Windows.Graphics;
+using Windows.UI;
 
 namespace codebase
 {
     public sealed partial class MainWindow : Window
     {
         /// <summary>
-        /// Possibile path del file futuro.
-        /// Può essere:
-        /// 1. Un nome di file relativo (es. "records_test.csv" o "records.csv"), cercato nella cartella dell'eseguibile o del progetto.
-        /// 2. Un path assoluto in una cartella utente (es. Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MoneyBank", "records.csv")).
-        /// 3. In AppData: Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MoneyBank", "records.csv").
+        /// Possibile path del file CSV futuro.
         /// </summary>
         private string _csvFilePath = "records_test.csv";
 
         /// <summary>
-        /// Lista che contiene gli oggetti Rilevazione estratti dal file CSV.
+        /// Lista in memoria di tutte le rilevazioni salvate.
         /// </summary>
         private readonly List<Rilevazione> _rilevazioni = new();
+
+        /// <summary>
+        /// Palette di 8 colori moderni, puliti e desaturati (non troppo accesi/saturi).
+        /// </summary>
+        private static readonly string[] PaletteColori = new[]
+        {
+            "#1A6B6B", // Teal desaturato (come nel mockup)
+            "#206535", // Forest Green desaturato (come nel mockup)
+            "#2B4A6F", // Slate Blue elegante
+            "#733F35", // Terracotta / Ruggine morbido
+            "#58395B", // Prugna / Melanzana profondo
+            "#1C4E5E", // Blu petrolio
+            "#644F2E", // Bronzo / Cuoio caldo
+            "#3A444C"  // Ardesia antracite
+        };
 
         public MainWindow()
         {
             InitializeComponent();
 
             // STEP 2: Imposta 500x800 come dimensione della finestra all'avvio
-            AppWindow.Resize(new SizeInt32(500, 800));
+            AppWindow.Resize(new SizeInt32(500, 600));
 
-            // STEP 4 & 5: Lettura, parsing e visualizzazione dei dati all'avvio
+            // Lettura e popolamento grafico all'avvio
             CaricaDatiAllAvvio();
         }
 
         /// <summary>
-        /// Esegue la lettura e il parsing del file CSV, aggiornando l'interfaccia.
+        /// Legge il file CSV, esegue il parsing dinamico e aggiorna l'interfaccia.
         /// </summary>
         private void CaricaDatiAllAvvio()
         {
@@ -47,9 +62,9 @@ namespace codebase
 
             if (!File.Exists(percorsoRisolto))
             {
-                StatusInfoBar.Severity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Warning;
-                StatusInfoBar.Title = "File non trovato";
-                StatusInfoBar.Message = $"Impossibile trovare il file CSV al percorso:\n{percorsoRisolto}";
+                StatusInfoBar.Severity = InfoBarSeverity.Warning;
+                StatusInfoBar.Title = "File CSV non trovato";
+                StatusInfoBar.Message = $"Percorso cercato: {percorsoRisolto}";
                 StatusInfoBar.IsOpen = true;
                 return;
             }
@@ -67,7 +82,7 @@ namespace codebase
                     // Rimuove eventuale ';' finale
                     riga = riga.TrimEnd(';');
 
-                    // Divide la riga tramite il separatore ','
+                    // Divide per virgola
                     var campi = riga.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                     var rilevazione = new Rilevazione();
@@ -101,7 +116,7 @@ namespace codebase
                         }
                         else
                         {
-                            // Ogni altro campo non "Data" o "Totale" viene salvato nella mappa dei depositi
+                            // Campo della mappa depositi (lunghezza e nomi dinamici)
                             if (int.TryParse(valore, NumberStyles.Integer, CultureInfo.InvariantCulture, out int importo))
                             {
                                 rilevazione.Depositi[chiave] = importo;
@@ -112,76 +127,131 @@ namespace codebase
                     _rilevazioni.Add(rilevazione);
                 }
 
-                // STEP 5: Visualizzazione a schermo
-                AggiornaInterfaccia();
+                AggiornaInterfacciaGrafica();
             }
             catch (Exception ex)
             {
-                StatusInfoBar.Severity = Microsoft.UI.Xaml.Controls.InfoBarSeverity.Error;
-                StatusInfoBar.Title = "Errore durante il parsing";
+                StatusInfoBar.Severity = InfoBarSeverity.Error;
+                StatusInfoBar.Title = "Errore durante il parsing del file";
                 StatusInfoBar.Message = ex.Message;
                 StatusInfoBar.IsOpen = true;
             }
         }
 
         /// <summary>
-        /// Mostra a schermo l'ultima rilevazione e il dump completo della struttura dati.
+        /// Popola l'interfaccia con i dati dell'ultima rilevazione secondo il mockup grafico.
         /// </summary>
-        private void AggiornaInterfaccia()
+        private void AggiornaInterfacciaGrafica()
         {
-            if (_rilevazioni.Count == 0)
+            DepositiGrid.Children.Clear();
+            DepositiGrid.RowDefinitions.Clear();
+
+            var ultima = _rilevazioni.LastOrDefault();
+            if (ultima == null)
             {
-                TxtUltimaData.Text = "Data: Nessun dato";
-                TxtUltimoTotale.Text = "Totale: --";
-                TxtUltimiDepositi.Text = "Nessuna voce presente nel file.";
-                TxtDumpCompleto.Text = "Nessun record caricato.";
+                TxtDataHeader.Text = "00/00/0000";
+                TxtTotaleValore.Text = "0€";
                 return;
             }
 
-            // 1. Dump dell'ultima rilevazione rilevata
-            var ultima = _rilevazioni.Last();
-            TxtUltimaData.Text = $"Data: {ultima.Data:dd/MM/yyyy}";
-            TxtUltimoTotale.Text = $"Totale: {ultima.Totale:N0}";
+            // 1. Data nell'header
+            TxtDataHeader.Text = ultima.Data.ToString("dd/MM/yyyy");
 
-            var sbUltimi = new StringBuilder();
-            foreach (var kvp in ultima.Depositi)
+            // 2. Griglia dei depositi a 2 colonne con palette rotativa
+            int index = 0;
+            foreach (var deposito in ultima.Depositi)
             {
-                sbUltimi.AppendLine($"• {kvp.Key}: {kvp.Value:N0}");
-            }
-            TxtUltimiDepositi.Text = sbUltimi.ToString().TrimEnd();
+                int riga = index / 2;
+                int colonna = index % 2;
 
-            // 2. Dump completo dell'intera struttura salvata
-            var sbDump = new StringBuilder();
-            for (int i = 0; i < _rilevazioni.Count; i++)
-            {
-                var r = _rilevazioni[i];
-                sbDump.AppendLine($"--- Rilevazione #{i + 1} ---");
-                sbDump.AppendLine($"Data: {r.Data:dd/MM/yyyy}");
-                sbDump.AppendLine("Depositi:");
-                foreach (var dep in r.Depositi)
+                // Aggiunge una riga alla griglia se non ancora presente
+                while (DepositiGrid.RowDefinitions.Count <= riga)
                 {
-                    sbDump.AppendLine($"  - {dep.Key}: {dep.Value:N0}");
+                    DepositiGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                 }
-                sbDump.AppendLine($"Totale: {r.Totale:N0}");
-                if (i < _rilevazioni.Count - 1)
-                {
-                    sbDump.AppendLine();
-                }
+
+                // Colore del box dalla palette a rotazione (massimo 8 colori desaturati)
+                string hexColore = PaletteColori[index % PaletteColori.Length];
+                Color colore = HexToColor(hexColore);
+
+                var box = CreaBoxDeposito(deposito.Key, deposito.Value, colore);
+
+                Grid.SetRow(box, riga);
+                Grid.SetColumn(box, colonna);
+                DepositiGrid.Children.Add(box);
+
+                index++;
             }
 
-            TxtDumpCompleto.Text = sbDump.ToString();
+            // 3. Valore del Totale
+            TxtTotaleValore.Text = $"{ultima.Totale:N0}€";
         }
 
         /// <summary>
-        /// Trova il file CSV gestendo sia percorsi assoluti che percorsi relativi
-        /// all'eseguibile (bin) o alla directory radice di sviluppo del progetto.
+        /// Crea un box visivo arrotondato per un deposito, conforme al mockup:
+        /// nome in alto a sinistra, valore grande in basso a destra.
+        /// </summary>
+        private static Border CreaBoxDeposito(string nome, int importo, Color coloreSfondo)
+        {
+            var border = new Border
+            {
+                Height = 88,
+                CornerRadius = new CornerRadius(12),
+                Background = new SolidColorBrush(coloreSfondo),
+                Padding = new Thickness(14, 10, 14, 10)
+            };
+
+            var gridInterno = new Grid();
+
+            // Nome del deposito (in alto a sinistra)
+            var txtNome = new TextBlock
+            {
+                Text = nome,
+                FontSize = 15,
+                FontWeight = FontWeights.SemiBold,
+                Foreground = new SolidColorBrush(Colors.White),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top
+            };
+
+            // Importo (in basso a destra)
+            var txtImporto = new TextBlock
+            {
+                Text = $"{importo:N0}€",
+                FontSize = 24,
+                FontWeight = FontWeights.Bold,
+                Foreground = new SolidColorBrush(Colors.White),
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Bottom
+            };
+
+            gridInterno.Children.Add(txtNome);
+            gridInterno.Children.Add(txtImporto);
+
+            border.Child = gridInterno;
+            return border;
+        }
+
+        /// <summary>
+        /// Converte una stringa esadecimale #RRGGBB in Color Windows.UI.
+        /// </summary>
+        private static Color HexToColor(string hex)
+        {
+            hex = hex.TrimStart('#');
+            byte r = byte.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
+            byte g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
+            byte b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
+            return Color.FromArgb(255, r, g, b);
+        }
+
+        /// <summary>
+        /// Risolve il percorso del file gestendo ambienti di sviluppo e di rilascio.
         /// </summary>
         private static string RisolviPercorsoFile(string path)
         {
             if (Path.IsPathRooted(path) && File.Exists(path))
                 return path;
 
-            // 1. Cerca nella directory corrente o BaseDirectory
             string inBase = Path.Combine(AppContext.BaseDirectory, path);
             if (File.Exists(inBase))
                 return inBase;
@@ -189,7 +259,6 @@ namespace codebase
             if (File.Exists(path))
                 return Path.GetFullPath(path);
 
-            // 2. Fallback per ambiente di sviluppo: cerca a ritroso risalendo da bin/Debug/...
             string current = AppContext.BaseDirectory;
             for (int i = 0; i < 5; i++)
             {

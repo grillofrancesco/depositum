@@ -7,61 +7,136 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="MoneyBank - Rilevazioni">
+    Title="Depositum">
 
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid Padding="24">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Spacing="8">
+    <Grid RequestedTheme="Dark" Background="#121212" Padding="0, 30, 0, 30">
+        <Grid.RowDefinitions>
+            <!-- Riga 0: Header (Titolo DEPOSITUM e Data) -->
+            <RowDefinition Height="Auto" />
+            <!-- Riga 1: Area Depositi (2 colonne con scroll in caso di molti elementi) -->
+            <RowDefinition Height="*" />
+            <!-- Riga 2: Rilevazione Totale -->
+            <RowDefinition Height="Auto" />
+            <!-- Riga 3: Pulsanti sul fondo -->
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-                <!-- Intestazione -->
-                <TextBlock Text="Depositum" Style="{StaticResource TitleTextBlockStyle}" FontWeight="Bold" />
+        <!-- HEADER: DEPOSITUM a sinistra, Data a destra -->
+        <Grid Grid.Row="0" Padding="30, 0, 30, 0">
+            <TextBlock Text="DEPOSITUM" 
+                       FontFamily="Constantia, Georgia, Times New Roman" 
+                       FontSize="29" 
+                       FontWeight="Bold" 
+                       CharacterSpacing="80"
+                       Foreground="White" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Left" />
 
-                <!-- Avviso di stato / errori -->
-                <InfoBar x:Name="StatusInfoBar" IsOpen="False" Severity="Informational" Margin="0,0,0,4" />
+            <TextBlock x:Name="TxtDataHeader" 
+                       Text="00/00/0000" 
+                       FontFamily="Constantia, Georgia, Segoe UI" 
+                       FontSize="20" 
+                       FontWeight="SemiBold"
+                       Foreground="white" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Right" />
+        </Grid>
 
-                <!-- SEZIONE 1: Ultima rilevazione -->
-                <TextBlock Text="Ultima Rilevazione" Style="{StaticResource SubtitleTextBlockStyle}" />
+        <!-- AREA DEPOSITI: Griglia a 2 colonne -->
+        <ScrollViewer Grid.Row="1" 
+                      VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Disabled"
+                      Padding="30, 0, 30, 0">
+            <StackPanel Spacing="10">
+                <!-- InfoBar discreta in caso di avvisi/errori -->
+                <InfoBar x:Name="StatusInfoBar" IsOpen="False" Severity="Warning" Margin="0,0,0,4" />
 
-                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                        BorderThickness="1"
-                        CornerRadius="8"
-                        Padding="16">
-                    <StackPanel Spacing="8">
-                        <TextBlock x:Name="TxtUltimaData" FontSize="16" FontWeight="SemiBold" Text="Data: --" />
-                        <TextBlock x:Name="TxtUltimoTotale" FontSize="16" FontWeight="SemiBold" Text="Totale: --" />
-                        
-                        <TextBlock Text="Depositi:" FontWeight="Medium" Margin="0,4,0,0" />
-                        <TextBlock x:Name="TxtUltimiDepositi" TextWrapping="Wrap" FontFamily="Consolas" FontSize="13" Text="Nessun dato" />
-                    </StackPanel>
-                </Border>
-
-                <!-- SEPARATORE GRAFICO: Barra orizzontale in evidenza -->
-                <Border Height="3" 
-                        Background="{ThemeResource AccentFillColorDefaultBrush}" 
-                        CornerRadius="2" 
-                        Margin="0,8,0,8" />
-
-                <!-- SEZIONE 2: Dump completo delle rilevazioni -->
-                <TextBlock Text="Storico Rilevazioni (Dump Completo)" Style="{StaticResource SubtitleTextBlockStyle}" />
-
-                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                        BorderThickness="1"
-                        CornerRadius="8"
-                        Padding="16">
-                    <TextBlock x:Name="TxtDumpCompleto" 
-                               TextWrapping="Wrap" 
-                               FontFamily="Consolas" 
-                               FontSize="13" 
-                               Text="Nessuna rilevazione salvata." />
-                </Border>
-
+                <!-- Griglia dei depositi popolata dinamicamente a 2 colonne -->
+                <Grid x:Name="DepositiGrid" ColumnSpacing="12" RowSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                </Grid>
             </StackPanel>
         </ScrollViewer>
+
+        <!-- SEZIONE TOTALE: Subito prima dei pulsanti -->
+        <Grid Grid.Row="2" Margin="30,15,30,15">
+            <TextBlock Text="Totale:"
+                       FontSize="20" 
+                       FontFamily="Constantia, Georgia, Segoe UI"
+                       FontWeight="SemiBold" 
+                       Foreground="#E6E6E6" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Left" />
+
+            <TextBlock x:Name="TxtTotaleValore" 
+                       Text="0000€" 
+                       FontSize="24" 
+                       FontFamily="Constantia, Georgia, Segoe UI"
+                       FontWeight="Bold" 
+                       Foreground="White" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Right" />
+        </Grid>
+
+        <!-- PULSANTI SUL FONDO -->
+        <StackPanel Grid.Row="3" Spacing="10" Padding="30, 0, 30, 0">
+            <!-- Pulsante 1: Registra Depositi -->
+            <Button x:Name="BtnRegistraDepositi"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    Height="54"
+                    CornerRadius="10"
+                    Background="#1E1E1E"
+                    BorderBrush="#333333"
+                    BorderThickness="1"
+                    Padding="18, 0">
+                <Grid HorizontalAlignment="Stretch">
+                    <TextBlock Text="Registra Depositi" 
+                               FontSize="16" 
+                               FontWeight="SemiBold" 
+                               Foreground="White" 
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Left" />
+                    <FontIcon Glyph="&#xE896;" 
+                              FontSize="18" 
+                              Foreground="White" 
+                              VerticalAlignment="Center" 
+                              HorizontalAlignment="Right" />
+                </Grid>
+            </Button>
+
+            <!-- Pulsante 2: Osserva nel tempo -->
+            <Button x:Name="BtnOsservaNelTempo"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    Height="54"
+                    CornerRadius="10"
+                    Background="#1E1E1E"
+                    BorderBrush="#333333"
+                    BorderThickness="1"
+                    Padding="18, 0">
+                <Grid HorizontalAlignment="Stretch">
+                    <TextBlock Text="Osserva nel tempo" 
+                               FontSize="16" 
+                               FontWeight="SemiBold" 
+                               Foreground="White" 
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Left" />
+                    <FontIcon Glyph="&#xE735;" 
+                              FontSize="18" 
+                              Foreground="White" 
+                              VerticalAlignment="Center" 
+                              HorizontalAlignment="Right" />
+                </Grid>
+            </Button>
+        </StackPanel>
+
     </Grid>
 </Window>
