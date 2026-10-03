@@ -7,27 +7,61 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="codebase">
+    Title="MoneyBank - Rilevazioni">
 
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid>
-        <Button x:Name="Button" Content="Cliccami" Click="Stampa"/>
+    <Grid Padding="24">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Spacing="8">
 
-        <StackPanel Orientation="Vertical" Spacing="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!-- Intestazione -->
+                <TextBlock Text="Depositum" Style="{StaticResource TitleTextBlockStyle}" FontWeight="Bold" />
 
-            <!-- Casella di testo. x:Name permette al C# di leggerne il contenuto -->
-            <TextBox x:Name="InputDati" PlaceholderText="Inserisci un valore" Width="250"/>
+                <!-- Avviso di stato / errori -->
+                <InfoBar x:Name="StatusInfoBar" IsOpen="False" Severity="Informational" Margin="0,0,0,4" />
 
-            <!-- Bottone. Click definisce quale metodo C# eseguire -->
-            <Button Content="Salva Dato" Click="Salva_Click" Width="250"/>
+                <!-- SEZIONE 1: Ultima rilevazione -->
+                <TextBlock Text="Ultima Rilevazione" Style="{StaticResource SubtitleTextBlockStyle}" />
 
-            <!-- Lista per mostrare i dati storici -->
-            <ListView x:Name="ListaDati" Width="250" Height="200" BorderBrush="Gray" BorderThickness="1"/>
+                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="16">
+                    <StackPanel Spacing="8">
+                        <TextBlock x:Name="TxtUltimaData" FontSize="16" FontWeight="SemiBold" Text="Data: --" />
+                        <TextBlock x:Name="TxtUltimoTotale" FontSize="16" FontWeight="SemiBold" Text="Totale: --" />
+                        
+                        <TextBlock Text="Depositi:" FontWeight="Medium" Margin="0,4,0,0" />
+                        <TextBlock x:Name="TxtUltimiDepositi" TextWrapping="Wrap" FontFamily="Consolas" FontSize="13" Text="Nessun dato" />
+                    </StackPanel>
+                </Border>
 
-        </StackPanel>
+                <!-- SEPARATORE GRAFICO: Barra orizzontale in evidenza -->
+                <Border Height="3" 
+                        Background="{ThemeResource AccentFillColorDefaultBrush}" 
+                        CornerRadius="2" 
+                        Margin="0,8,0,8" />
 
+                <!-- SEZIONE 2: Dump completo delle rilevazioni -->
+                <TextBlock Text="Storico Rilevazioni (Dump Completo)" Style="{StaticResource SubtitleTextBlockStyle}" />
+
+                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="16">
+                    <TextBlock x:Name="TxtDumpCompleto" 
+                               TextWrapping="Wrap" 
+                               FontFamily="Consolas" 
+                               FontSize="13" 
+                               Text="Nessuna rilevazione salvata." />
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>
