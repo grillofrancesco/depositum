@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "codebase (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "codebase (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

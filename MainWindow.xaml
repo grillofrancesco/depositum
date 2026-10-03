@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="codebase.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:codebase"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="codebase">
+
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
+
+    <Grid>
+        <Button x:Name="Button" Content="Cliccami" Click="Stampa"/>
+
+        <StackPanel Orientation="Vertical" Spacing="15" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <!-- Casella di testo. x:Name permette al C# di leggerne il contenuto -->
+            <TextBox x:Name="InputDati" PlaceholderText="Inserisci un valore" Width="250"/>
+
+            <!-- Bottone. Click definisce quale metodo C# eseguire -->
+            <Button Content="Salva Dato" Click="Salva_Click" Width="250"/>
+
+            <!-- Lista per mostrare i dati storici -->
+            <ListView x:Name="ListaDati" Width="250" Height="200" BorderBrush="Gray" BorderThickness="1"/>
+
+        </StackPanel>
+
+    </Grid>
+</Window>
