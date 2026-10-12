@@ -8,14 +8,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="#121212" Padding="0, 30, 0, 30">
+    <Grid Background="#121212" 
+          Padding="{StaticResource PageEdgePaddingVertical}" 
+          RowSpacing="{StaticResource StandardElementSpacing}">
         <Grid.RowDefinitions>
             <!-- Riga 0: Header (Titolo) -->
             <RowDefinition Height="Auto" />
-            <!-- Riga 1: Campo Data -->
-            <RowDefinition Height="Auto" />
-            <!-- Riga 2: Lista depositi (scrollabile) -->
+            <!-- Riga 1: Lista depositi (scrollabile) -->
             <RowDefinition Height="*" />
+            <!-- Riga 2: Campo Data -->
+            <RowDefinition Height="Auto" />
             <!-- Riga 3: Pulsante Aggiungi Deposito -->
             <RowDefinition Height="Auto" />
             <!-- Riga 4: Tasti Annulla / Conferma -->
@@ -23,50 +25,35 @@
         </Grid.RowDefinitions>
 
         <!-- HEADER -->
-        <Grid Grid.Row="0" Padding="30, 0, 30, 0">
+        <Grid Grid.Row="0" Margin="{StaticResource PageEdgeMarginHorizontal}">
             <TextBlock Text="Registra Valori" 
                        Style="{StaticResource SubtitleSerifStyle}" 
                        HorizontalAlignment="Left" />
         </Grid>
 
-        <!-- CAMPO DATA SEMPLICE: Testo a sinistra, Box all'estrema destra -->
-        <Grid Grid.Row="1" Padding="30, 0, 30, 10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Text="Data:" 
-                       Style="{StaticResource FieldLabelStyle}" 
-                       HorizontalAlignment="Left" />
-            
-            <TextBox x:Name="TxtDataInput" 
-                     Grid.Column="1" 
-                     PlaceholderText="gg/mm/aaaa" 
-                     Width="140"
-                     HorizontalAlignment="Right"
-                     HorizontalContentAlignment="Center" />
-        </Grid>
-
-        <!-- LISTA DEPOSITI CON NOME, INPUT NUMERICO E TASTO '-' -->
-        <ScrollViewer Grid.Row="2" 
+        <!-- LISTA DEPOSITI: ScrollViewer a tutta larghezza per barra di scorrimento sul bordo finestra -->
+        <ScrollViewer Grid.Row="1" 
                       VerticalScrollBarVisibility="Auto" 
                       HorizontalScrollBarVisibility="Disabled"
-                      Padding="30, 0, 30, 0">
-            <StackPanel Spacing="8">
+                      Padding="{StaticResource ScrollViewerContentPadding}">
+            <StackPanel Spacing="{StaticResource StandardElementSpacing}">
                 <!-- InfoBar in caso di errori di validazione -->
-                <InfoBar x:Name="StatusInfoBar" IsOpen="False" Severity="Warning" Margin="0,0,0,6" Padding="5,5,5,5" />
+                <InfoBar x:Name="StatusInfoBar" IsOpen="False" Severity="Warning"  />
 
                 <!-- Lista Items -->
                 <ItemsControl x:Name="ItemsDepositi">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Spacing="{StaticResource StandardElementSpacing}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="local:DepositoEditItem">
                             <Border Background="#1C1C1C" 
                                     BorderBrush="#2C2C2C" 
                                     BorderThickness="1" 
                                     CornerRadius="8" 
-                                    Padding="14, 8" 
-                                    Margin="0, 0, 0, 8">
+                                    Padding="14, 8">
                                 <Grid VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -105,8 +92,27 @@
             </StackPanel>
         </ScrollViewer>
 
+        <!-- CAMPO DATA SEMPLICE: Testo a sinistra, Box all'estrema destra -->
+        <Grid Grid.Row="2" Margin="{StaticResource PageEdgeMarginHorizontal}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Data:" 
+               Style="{StaticResource FieldLabelStyle}" 
+               HorizontalAlignment="Left" />
+
+            <TextBox x:Name="TxtDataInput" 
+             Grid.Column="1" 
+             PlaceholderText="gg/mm/aaaa" 
+             Width="140"
+             HorizontalAlignment="Right"
+             HorizontalContentAlignment="Center" />
+        </Grid>
+
         <!-- PULSANTE AGGIUNGI DEPOSITO -->
-        <Grid Grid.Row="3" Padding="30, 10, 30, 10">
+        <Grid Grid.Row="3" Margin="{StaticResource PageEdgeMarginHorizontal}">
             <Button x:Name="BtnAggiungiDeposito" 
                     Click="BtnAggiungiDeposito_Click" 
                     HorizontalAlignment="Stretch" 
@@ -119,7 +125,9 @@
         </Grid>
 
         <!-- COPPIA TASTI CONFERMA / ANNULLA -->
-        <Grid Grid.Row="4" ColumnSpacing="12" Padding="30, 10, 30, 0">
+        <Grid Grid.Row="4" 
+              ColumnSpacing="{StaticResource StandardElementSpacing}" 
+              Margin="{StaticResource PageEdgeMarginHorizontal}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />

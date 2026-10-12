@@ -8,7 +8,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="#121212" Padding="0, 30, 0, 30">
+    <Grid Background="#121212" 
+          Padding="{StaticResource PageEdgePaddingVertical}" 
+          RowSpacing="{StaticResource StandardElementSpacing}">
         <Grid.RowDefinitions>
             <!-- Riga 0: Header (Titolo DEPOSITUM e Data) -->
             <RowDefinition Height="Auto" />
@@ -21,7 +23,7 @@
         </Grid.RowDefinitions>
 
         <!-- HEADER: DEPOSITUM a sinistra, Data a destra -->
-        <Grid Grid.Row="0" Padding="30, 0, 30, 10">
+        <Grid Grid.Row="0" Margin="{StaticResource PageEdgeMarginHorizontal}">
             <TextBlock Text="DEPOSITUM" 
                        Style="{StaticResource TitleSerifStyle}" 
                        HorizontalAlignment="Left" />
@@ -32,11 +34,11 @@
                        HorizontalAlignment="Right" />
         </Grid>
 
-        <!-- AREA DEPOSITI: Griglia a 2 colonne o messaggio stato vuoto -->
+        <!-- AREA DEPOSITI: ScrollViewer a tutta larghezza per barra di scorrimento sul bordo finestra -->
         <ScrollViewer Grid.Row="1" 
                       VerticalScrollBarVisibility="Auto" 
                       HorizontalScrollBarVisibility="Disabled"
-                      Padding="30, 0, 30, 0">
+                      Padding="{StaticResource ScrollViewerContentPadding}">
             <Grid>
                 <!-- Stato vuoto se non è presente alcun deposito -->
                 <StackPanel x:Name="EmptyStateContainer" 
@@ -57,7 +59,9 @@
                 </StackPanel>
 
                 <!-- Griglia dei depositi popolata dinamicamente a 2 colonne -->
-                <Grid x:Name="DepositiGrid" ColumnSpacing="12" RowSpacing="12">
+                <Grid x:Name="DepositiGrid" 
+                      ColumnSpacing="{StaticResource StandardElementSpacing}" 
+                      RowSpacing="{StaticResource StandardElementSpacing}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -67,7 +71,7 @@
         </ScrollViewer>
 
         <!-- SEZIONE TOTALE: Subito prima dei pulsanti -->
-        <Grid Grid.Row="2" Margin="30,15,30,15">
+        <Grid Grid.Row="2" Margin="{StaticResource PageEdgeMarginHorizontal}">
             <TextBlock Text="Totale:" 
                        Style="{StaticResource FieldLabelStyle}"
                        FontSize="20"
@@ -84,7 +88,9 @@
         </Grid>
 
         <!-- PULSANTI SUL FONDO -->
-        <StackPanel Grid.Row="3" Spacing="10" Padding="30, 0, 30, 0">
+        <StackPanel Grid.Row="3" 
+                    Spacing="{StaticResource StandardElementSpacing}" 
+                    Margin="{StaticResource PageEdgeMarginHorizontal}">
             <!-- Pulsante 1: Registra Depositi -->
             <Button x:Name="BtnRegistraDepositi"
                     Click="BtnRegistraDepositi_Click"
@@ -115,7 +121,7 @@
                                Foreground="White" 
                                VerticalAlignment="Center" 
                                HorizontalAlignment="Left" />
-                    <FontIcon Glyph="&#xE735;" 
+                    <FontIcon Glyph="&#xE9D2;" 
                               FontSize="18" 
                               Foreground="White" 
                               VerticalAlignment="Center" 

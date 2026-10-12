@@ -1,6 +1,8 @@
+using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.ObjectModel;
@@ -86,10 +88,6 @@ namespace codebase
             }
         }
 
-        /// <summary>
-        /// Apre un dialogo modale per inserire un nuovo deposito (Nome e Valore).
-        /// Ordine tasti: Annulla (sinistra) / Aggiungi (destra).
-        /// </summary>
         private async void BtnAggiungiDeposito_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -115,7 +113,8 @@ namespace codebase
 
                 var txtNome = new TextBox
                 {
-                    PlaceholderText = "Nome deposito"
+                    PlaceholderText = "Nome deposito (max 30 caratteri)",
+                    MaxLength = 30
                 };
 
                 var numValore = new NumberBox
@@ -126,33 +125,73 @@ namespace codebase
                     HorizontalContentAlignment = HorizontalAlignment.Right
                 };
 
+                var txtErrore = new TextBlock
+                {
+                    Foreground = new SolidColorBrush(Colors.Salmon),
+                    FontSize = 13,
+                    TextWrapping = TextWrapping.Wrap,
+                    Visibility = Visibility.Collapsed
+                };
+
                 sp.Children.Add(new TextBlock { Text = "Nome deposito:", FontWeight = FontWeights.SemiBold });
                 sp.Children.Add(txtNome);
                 sp.Children.Add(new TextBlock { Text = "Importo (€):", FontWeight = FontWeights.SemiBold });
                 sp.Children.Add(numValore);
+                sp.Children.Add(txtErrore);
 
                 dialog.Content = sp;
+
+                // Validazione al click su 'Aggiungi' (SecondaryButton)
+                dialog.SecondaryButtonClick += (d, args) =>
+                {
+                    string nome = txtNome.Text.Trim();
+
+                    if (string.IsNullOrWhiteSpace(nome))
+                    {
+                        txtErrore.Text = "Il nome del deposito non può essere vuoto.";
+                        txtErrore.Visibility = Visibility.Visible;
+                        args.Cancel = true;
+                        return;
+                    }
+
+                    if (nome.Length > 30)
+                    {
+                        txtErrore.Text = "La lunghezza del nome non deve superare 30 caratteri.";
+                        txtErrore.Visibility = Visibility.Visible;
+                        args.Cancel = true;
+                        return;
+                    }
+
+                    double val = numValore.Value;
+                    if (double.IsNaN(val) || val <= 0 || val >= 1_000_000_000)
+                    {
+                        txtErrore.Text = "L'importo deve essere compreso tra 1 e 1mlrd.";
+                        txtErrore.Visibility = Visibility.Visible;
+                        args.Cancel = true;
+                        return;
+                    }
+
+                    txtErrore.Visibility = Visibility.Collapsed;
+                };
 
                 var result = await dialog.ShowAsync();
                 if (result == ContentDialogResult.Secondary)
                 {
                     string nome = txtNome.Text.Trim();
-                    if (!string.IsNullOrWhiteSpace(nome))
+                    double valore = numValore.Value;
+
+                    var esistente = _depositi.FirstOrDefault(d => string.Equals(d.Nome, nome, StringComparison.OrdinalIgnoreCase));
+                    if (esistente != null)
                     {
-                        var esistente = _depositi.FirstOrDefault(d => string.Equals(d.Nome, nome, StringComparison.OrdinalIgnoreCase));
-                        if (esistente != null)
+                        esistente.Valore = valore;
+                    }
+                    else
+                    {
+                        _depositi.Add(new DepositoEditItem
                         {
-                            esistente.Valore = double.IsNaN(numValore.Value) ? 0 : numValore.Value;
-                        }
-                        else
-                        {
-                            double valore = double.IsNaN(numValore.Value) ? 0 : numValore.Value;
-                            _depositi.Add(new DepositoEditItem
-                            {
-                                Nome = nome,
-                                Valore = valore
-                            });
-                        }
+                            Nome = nome,
+                            Valore = valore
+                        });
                     }
                 }
             }
@@ -181,7 +220,7 @@ namespace codebase
         }
 
         /// <summary>
-        /// Valida la data, calcola il totale, salva la rilevazione in AppData e torna alla schermata principale.
+        /// Valida la data e tutti i depositi, calcola il totale, salva la rilevazione e torna alla schermata principale.
         /// </summary>
         private void BtnConferma_Click(object sender, RoutedEventArgs e)
         {
@@ -204,6 +243,29 @@ namespace codebase
                 StatusInfoBar.Message = "Aggiungi almeno un deposito prima di confermare.";
                 StatusInfoBar.IsOpen = true;
                 return;
+            }
+
+            // Validazione su tutti gli elementi della lista prima del salvataggio definitivo
+            foreach (var d in _depositi)
+            {
+                string nome = d.Nome.Trim();
+                if (string.IsNullOrWhiteSpace(nome) || nome.Length > 30)
+                {
+                    StatusInfoBar.Severity = InfoBarSeverity.Error;
+                    StatusInfoBar.Title = "Nome deposito non valido";
+                    StatusInfoBar.Message = $"Il deposito \"{d.Nome}\" non ha un nome valido.";
+                    StatusInfoBar.IsOpen = true;
+                    return;
+                }
+
+                if (d.Valore <= 0 || d.Valore >= 1_000_000_000)
+                {
+                    StatusInfoBar.Severity = InfoBarSeverity.Error;
+                    StatusInfoBar.Title = "Importo non valido";
+                    StatusInfoBar.Message = $"L'importo del deposito \"{d.Nome}\" non è valido.";
+                    StatusInfoBar.IsOpen = true;
+                    return;
+                }
             }
 
             // Calcolo automatico del Totale come somma di tutti i depositi

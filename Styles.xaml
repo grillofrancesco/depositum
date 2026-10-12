@@ -72,6 +72,23 @@
 
 
     <!-- ======================================================== -->
+    <!-- DESIGN TOKENS: MARGINI E SPAZIATURE CONDIVISI            -->
+    <!-- ======================================================== -->
+
+    <!-- Margine orizzontale dal bordo finestra per i blocchi interni (sinistra: 30, destra: 30) -->
+    <Thickness x:Key="PageEdgeMarginHorizontal">30, 0, 30, 0</Thickness>
+
+    <!-- Padding verticale dal bordo finestra (superiore: 30, inferiore: 30) -->
+    <Thickness x:Key="PageEdgePaddingVertical">0, 30, 0, 30</Thickness>
+
+    <!-- Padding interno per lo ScrollViewer a tutta larghezza (allinea il contenuto ai 30px) -->
+    <Thickness x:Key="ScrollViewerContentPadding">30, 0, 30, 0</Thickness>
+
+    <!-- Spaziatura costante uniforme tra sezioni, righe, colonne ed elementi interni (12px) -->
+    <x:Double x:Key="StandardElementSpacing">12</x:Double>
+
+
+    <!-- ======================================================== -->
     <!-- 1. STILI PULSANTI (BUTTONS)                              -->
     <!-- ======================================================== -->
 
@@ -196,7 +213,7 @@
     <Style TargetType="NumberBox">
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="Background" Value="#262626" />
-        <Setter Property="BorderBrush" Value="#3A3A3A" />
+        <Setter Property="BorderBrush" Value="#333333" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontSize" Value="15" />
