@@ -25,16 +25,11 @@
         <!-- HEADER -->
         <Grid Grid.Row="0" Padding="30, 0, 30, 0">
             <TextBlock Text="Registra Valori" 
-                       FontFamily="Constantia, Georgia, Times New Roman" 
-                       FontSize="26" 
-                       FontWeight="Bold" 
-                       CharacterSpacing="60"
-                       Foreground="White" 
-                       VerticalAlignment="Center" 
+                       Style="{StaticResource SubtitleSerifStyle}" 
                        HorizontalAlignment="Left" />
         </Grid>
 
-        <!-- CAMPO DATA SEMPLICE: Testo a sinistra, Box all'estrema destra con larghezza strettamente necessaria -->
+        <!-- CAMPO DATA SEMPLICE: Testo a sinistra, Box all'estrema destra -->
         <Grid Grid.Row="1" Padding="30, 0, 30, 10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -42,24 +37,14 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="Data:" 
-                       FontFamily="Constantia, Georgia, Segoe UI"
-                       FontSize="16" 
-                       FontWeight="SemiBold" 
-                       Foreground="#E6E6E6" 
-                       VerticalAlignment="Center" 
+                       Style="{StaticResource FieldLabelStyle}" 
                        HorizontalAlignment="Left" />
             
             <TextBox x:Name="TxtDataInput" 
                      Grid.Column="1" 
                      PlaceholderText="gg/mm/aaaa" 
                      Width="140"
-                     CornerRadius="8" 
-                     Background="#1E1E1E" 
-                     BorderBrush="#333333" 
-                     Foreground="White" 
-                     FontSize="15" 
                      HorizontalAlignment="Right"
-                     VerticalAlignment="Center"
                      HorizontalContentAlignment="Center" />
         </Grid>
 
@@ -97,18 +82,11 @@
                                                VerticalAlignment="Center" 
                                                TextTrimming="CharacterEllipsis" />
 
-                                    <!-- Input numerico per il valore con testo allineato a destra -->
+                                    <!-- Input numerico per il valore -->
                                     <NumberBox Grid.Column="1" 
                                                Value="{x:Bind Valore, Mode=TwoWay}" 
-                                               SpinButtonPlacementMode="Hidden" 
                                                Width="80" 
                                                Height="36" 
-                                               CornerRadius="6" 
-                                               Background="#262626" 
-                                               BorderBrush="#3A3A3A" 
-                                               Foreground="White" 
-                                               FontSize="15" 
-                                               HorizontalContentAlignment="Right"
                                                Margin="12, 0, 8, 0" 
                                                VerticalAlignment="Center" />
 
@@ -117,15 +95,7 @@
                                             Content="-" 
                                             Click="BtnRimuovi_Click" 
                                             Tag="{x:Bind}" 
-                                            Width="36" 
-                                            Height="36" 
-                                            CornerRadius="6" 
-                                            Background="#1c1c1c" 
-                                            Foreground="White" 
-                                            BorderBrush="#262626" 
-                                            FontWeight="Bold" 
-                                            FontSize="18" 
-                                            Padding="0" 
+                                            Style="{StaticResource RemoveItemButtonStyle}" 
                                             VerticalAlignment="Center" />
                                 </Grid>
                             </Border>
@@ -140,11 +110,7 @@
             <Button x:Name="BtnAggiungiDeposito" 
                     Click="BtnAggiungiDeposito_Click" 
                     HorizontalAlignment="Stretch" 
-                    Height="44" 
-                    CornerRadius="8" 
-                    Background="#1E1E1E" 
-                    BorderBrush="#333333" 
-                    BorderThickness="1">
+                    Height="44">
                 <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
                     <FontIcon Glyph="&#xE710;" FontSize="14" Foreground="White" />
                     <TextBlock Text="Aggiungi Deposito" FontSize="15" FontWeight="SemiBold" Foreground="White" />
@@ -163,27 +129,15 @@
                     Grid.Column="0" 
                     Content="Annulla" 
                     Click="BtnAnnulla_Click" 
-                    HorizontalAlignment="Stretch" 
-                    Height="48" 
-                    CornerRadius="10" 
-                    Background="#1E1E1E" 
-                    BorderBrush="#333333" 
-                    BorderThickness="1" 
-                    Foreground="#CCCCCC" 
-                    FontSize="15" 
-                    FontWeight="SemiBold" />
+                    Style="{StaticResource SecondaryActionButtonStyle}" 
+                    HorizontalAlignment="Stretch" />
 
             <Button x:Name="BtnConferma" 
                     Grid.Column="1" 
                     Content="Conferma" 
                     Click="BtnConferma_Click" 
-                    HorizontalAlignment="Stretch" 
-                    Height="48" 
-                    CornerRadius="10" 
-                    Background="{ThemeResource AccentFillColorDefaultBrush}" 
-                    Foreground="White" 
-                    FontSize="15" 
-                    FontWeight="Bold" />
+                    Style="{StaticResource PrimaryAccentButtonStyle}" 
+                    HorizontalAlignment="Stretch" />
         </Grid>
 
     </Grid>

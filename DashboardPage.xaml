@@ -23,21 +23,12 @@
         <!-- HEADER: DEPOSITUM a sinistra, Data a destra -->
         <Grid Grid.Row="0" Padding="30, 0, 30, 10">
             <TextBlock Text="DEPOSITUM" 
-                       FontFamily="Constantia, Georgia, Times New Roman" 
-                       FontSize="29" 
-                       FontWeight="Bold" 
-                       CharacterSpacing="80"
-                       Foreground="White" 
-                       VerticalAlignment="Center" 
+                       Style="{StaticResource TitleSerifStyle}" 
                        HorizontalAlignment="Left" />
 
             <TextBlock x:Name="TxtDataHeader" 
                        Text="00/00/0000" 
-                       FontFamily="Constantia, Georgia, Segoe UI" 
-                       FontSize="20" 
-                       FontWeight="SemiBold"
-                       Foreground="White" 
-                       VerticalAlignment="Center" 
+                       Style="{StaticResource HeaderDateStyle}" 
                        HorizontalAlignment="Right" />
         </Grid>
 
@@ -78,11 +69,8 @@
         <!-- SEZIONE TOTALE: Subito prima dei pulsanti -->
         <Grid Grid.Row="2" Margin="30,15,30,15">
             <TextBlock Text="Totale:" 
-                       FontSize="20" 
-                       FontFamily="Constantia, Georgia, Segoe UI"
-                       FontWeight="SemiBold" 
-                       Foreground="#E6E6E6" 
-                       VerticalAlignment="Center" 
+                       Style="{StaticResource FieldLabelStyle}"
+                       FontSize="20"
                        HorizontalAlignment="Left" />
 
             <TextBlock x:Name="TxtTotaleValore" 
@@ -100,14 +88,7 @@
             <!-- Pulsante 1: Registra Depositi -->
             <Button x:Name="BtnRegistraDepositi"
                     Click="BtnRegistraDepositi_Click"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    Height="54"
-                    CornerRadius="10"
-                    Background="#1E1E1E"
-                    BorderBrush="#333333"
-                    BorderThickness="1"
-                    Padding="18, 0">
+                    Style="{StaticResource BigActionButtonStyle}">
                 <Grid HorizontalAlignment="Stretch">
                     <TextBlock Text="Registra Depositi" 
                                FontSize="16" 
@@ -125,14 +106,8 @@
 
             <!-- Pulsante 2: Osserva nel tempo -->
             <Button x:Name="BtnOsservaNelTempo"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    Height="54"
-                    CornerRadius="10"
-                    Background="#1E1E1E"
-                    BorderBrush="#333333"
-                    BorderThickness="1"
-                    Padding="18, 0">
+                    Click="BtnOsservaNelTempo_Click"
+                    Style="{StaticResource BigActionButtonStyle}">
                 <Grid HorizontalAlignment="Stretch">
                     <TextBlock Text="Osserva nel tempo" 
                                FontSize="16" 
