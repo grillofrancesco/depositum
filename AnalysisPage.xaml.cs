@@ -326,7 +326,7 @@ namespace codebase
                     SKTypeface = SKTypeface.FromFamilyName("Constantia", SKFontStyle.Bold)
                 },
                 DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                DataLabelsSize = 14,
+                DataLabelsSize = 22,
 
 
                 ToolTipLabelFormatter = point => $"{point.Coordinate.PrimaryValue:N0} € ({(point.Coordinate.PrimaryValue / sumTotale):P1})"

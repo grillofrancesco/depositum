@@ -103,7 +103,8 @@
                                Foreground="White" 
                                VerticalAlignment="Center" 
                                HorizontalAlignment="Left" />
-                    <FontIcon Glyph="&#xE896;" 
+                    <FontIcon Glyph="&#xF10D;" 
+                              FontFamily="{StaticResource FluentIconsRegular}"
                               FontSize="18" 
                               Foreground="White" 
                               VerticalAlignment="Center" 
@@ -123,7 +124,8 @@
                                Foreground="White" 
                                VerticalAlignment="Center" 
                                HorizontalAlignment="Left" />
-                    <FontIcon Glyph="&#xE9D2;" 
+                    <FontIcon Glyph="&#xE45E;" 
+                              FontFamily="{StaticResource FluentIconsRegular}"
                               FontSize="18" 
                               Foreground="White" 
                               VerticalAlignment="Center" 

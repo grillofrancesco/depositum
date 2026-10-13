@@ -20,11 +20,11 @@
             <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Button Width="34" Height="34" MinWidth="0" MinHeight="0" Padding="0"
                         Click="BtnIndietro_Click" AutomationProperties.Name="Torna alla dashboard">
-                    <TextBlock Text="←" FontFamily="Segoe UI Symbol" FontSize="21" VerticalAlignment="Center" />
+                    <FontIcon Glyph="&#xF15C;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
                 </Button>
                 <Button x:Name="BtnOpzioni" Width="32" Height="32" MinWidth="0" MinHeight="0" Padding="0"
                         Click="BtnOpzioni_Click" AutomationProperties.Name="Opzioni del grafico">
-                    <TextBlock Text="⋮" FontFamily="Segoe UI Symbol" FontSize="24" FontWeight="Bold" />
+                    <FontIcon Glyph="&#xF557;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
                 </Button>
             </StackPanel>
         </Grid>
@@ -52,21 +52,21 @@
             <Button x:Name="BtnIstogramma" Grid.Column="0" Click="BtnGrafico_Click"
                     Tag="Istogramma" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="10,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
-                    <TextBlock Text="📊" FontFamily="Segoe UI Symbol" FontSize="17" VerticalAlignment="Center" />
+                    <FontIcon Glyph="&#xF342;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
                     <TextBlock Text="Istogramma" FontFamily="Segoe UI" FontSize="12" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
             <Button x:Name="BtnLinee" Grid.Column="1" Click="BtnGrafico_Click"
                     Tag="Linee" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="10,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
-                    <TextBlock Text="📈" FontFamily="Segoe UI Symbol" FontSize="20" VerticalAlignment="Center" />
+                    <FontIcon Glyph="&#xF343;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
                     <TextBlock Text="Linee" FontFamily="Segoe UI" FontSize="12" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
             <Button x:Name="BtnRadiale" Grid.Column="2" Click="BtnGrafico_Click"
                     Tag="Radiale" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="10,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
-                    <TextBlock Text="◔" FontFamily="Segoe UI Symbol" FontSize="18" VerticalAlignment="Center" />
+                    <FontIcon Glyph="&#xF345;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
                     <TextBlock Text="Radiale" FontFamily="Segoe UI" FontSize="12" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>

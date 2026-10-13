@@ -46,6 +46,7 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WinUI" Version="2.0.4" />
+    <PackageReference Include="FluentSystemIcons.WinUI" Version="1.1.343" />
   </ItemGroup>
 
   <!--
