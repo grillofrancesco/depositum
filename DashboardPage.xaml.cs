@@ -11,18 +11,6 @@ namespace codebase
 {
     public sealed partial class DashboardPage : Page
     {
-        private static readonly string[] PaletteColori = new[]
-        {
-            "#1A6B6B", // Teal desaturato
-            "#206535", // Forest Green desaturato
-            "#2B4A6F", // Slate Blue elegante
-            "#733F35", // Terracotta / Ruggine morbido
-            "#58395B", // Prugna / Melanzana profondo
-            "#1C4E5E", // Blu petrolio
-            "#644F2E", // Bronzo / Cuoio caldo
-            "#3A444C"  // Ardesia antracite
-        };
-
         public DashboardPage()
         {
             InitializeComponent();
@@ -72,7 +60,7 @@ namespace codebase
                     DepositiGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                 }
 
-                string hexColore = PaletteColori[index % PaletteColori.Length];
+                string hexColore = PaletteDepositi.ColoriHex[index % PaletteDepositi.ColoriHex.Count];
                 Color colore = HexToColor(hexColore);
 
                 var box = CreaBoxDeposito(deposito.Key, deposito.Value, colore);
@@ -141,7 +129,7 @@ namespace codebase
 
         private void BtnOsservaNelTempo_Click(object sender, RoutedEventArgs e)
         {
-            // Placeholder per funzionalità future
+            Frame.Navigate(typeof(AnalysisPage));
         }
     }
 }

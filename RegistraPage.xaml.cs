@@ -23,6 +23,29 @@ namespace codebase
             Loaded += (s, e) => InizializzaPagina();
         }
 
+        private void NumberBoxValore_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
+        {
+            if (sender.DataContext is not DepositoEditItem item)
+                return;
+
+            if (!double.IsFinite(args.NewValue))
+            {
+                sender.Value = item.Valore;
+                return;
+            }
+
+            int valore = (int)Math.Round(args.NewValue, MidpointRounding.AwayFromZero);
+            if (valore >= 1 && valore <= 999_999_999)
+            {
+                item.Valore = valore;
+                if (sender.Value != valore) sender.Value = valore;
+            }
+            else
+            {
+                sender.Value = item.Valore;
+            }
+        }
+
         private void InizializzaPagina()
         {
             // 1. Data precompilata con la data odierna

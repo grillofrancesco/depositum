@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="codebase.AnalysisPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI">
+
+    <Grid Background="#121212"
+          Padding="{StaticResource PageEdgePaddingVertical}"
+          RowSpacing="{StaticResource StandardElementSpacing}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="{StaticResource PageEdgeMarginHorizontal}">
+            <TextBlock Text="DEPOSITUM" Style="{StaticResource TitleSerifStyle}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Width="34" Height="34" MinWidth="0" MinHeight="0" Padding="0"
+                        Click="BtnIndietro_Click" AutomationProperties.Name="Torna alla dashboard">
+                    <TextBlock Text="←" FontSize="21" VerticalAlignment="Center" />
+                </Button>
+                <Button x:Name="BtnOpzioni" Width="32" Height="32" MinWidth="0" MinHeight="0" Padding="0"
+                        Click="BtnOpzioni_Click" AutomationProperties.Name="Opzioni del grafico">
+                    <TextBlock Text="⋮" FontSize="24" FontWeight="Bold" />
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="1" Margin="{StaticResource PageEdgeMarginHorizontal}"
+                Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1"
+                CornerRadius="12" Padding="12">
+            <Grid>
+                <lvc:CartesianChart x:Name="CartesianChart" Visibility="Collapsed" />
+                <lvc:PieChart x:Name="PieChart" Visibility="Collapsed" />
+                <TextBlock x:Name="TxtCanvasVuoto" Text="Nessun dato da visualizzare"
+                           Foreground="#888888" FontSize="15"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           TextAlignment="Center" TextWrapping="Wrap" />
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="2" Margin="{StaticResource PageEdgeMarginHorizontal}"
+              ColumnSpacing="{StaticResource StandardElementSpacing}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BtnIstogramma" Grid.Column="0" Click="BtnGrafico_Click"
+                    Tag="Istogramma" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="10,0">
+                <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
+                    <TextBlock Text="📊" FontFamily="Segoe UI Symbol" FontSize="17" VerticalAlignment="Center" />
+                    <TextBlock Text="Istogramma" FontSize="12" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="BtnLinee" Grid.Column="1" Click="BtnGrafico_Click"
+                    Tag="Linee" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="10,0">
+                <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
+                    <TextBlock Text="📈" FontFamily="Segoe UI Symbol" FontSize="20" VerticalAlignment="Center" />
+                    <TextBlock Text="Linee" FontSize="12" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="BtnRadiale" Grid.Column="2" Click="BtnGrafico_Click"
+                    Tag="Radiale" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="10,0">
+                <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
+                    <TextBlock Text="◔" FontFamily="Segoe UI Symbol" FontSize="18" VerticalAlignment="Center" />
+                    <TextBlock Text="Radiale" FontSize="12" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</Page>
