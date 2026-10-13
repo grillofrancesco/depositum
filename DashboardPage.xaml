@@ -97,6 +97,7 @@
                     Style="{StaticResource BigActionButtonStyle}">
                 <Grid HorizontalAlignment="Stretch">
                     <TextBlock Text="Registra Depositi" 
+                               FontFamily="Segoe UI"
                                FontSize="16" 
                                FontWeight="SemiBold" 
                                Foreground="White" 
@@ -116,6 +117,7 @@
                     Style="{StaticResource BigActionButtonStyle}">
                 <Grid HorizontalAlignment="Stretch">
                     <TextBlock Text="Osserva nel tempo" 
+                               FontFamily="Segoe UI"
                                FontSize="16" 
                                FontWeight="SemiBold" 
                                Foreground="White" 

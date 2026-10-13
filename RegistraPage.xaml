@@ -121,7 +121,7 @@
                     Height="44">
                 <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
                     <FontIcon Glyph="&#xE710;" FontSize="14" Foreground="White" />
-                    <TextBlock Text="Aggiungi Deposito" FontSize="15" FontWeight="SemiBold" Foreground="White" />
+                    <TextBlock Text="Aggiungi Deposito" FontFamily="Segoe UI" FontSize="15" FontWeight="SemiBold" Foreground="White" />
                 </StackPanel>
             </Button>
         </Grid>

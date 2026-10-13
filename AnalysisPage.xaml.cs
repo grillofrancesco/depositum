@@ -25,7 +25,8 @@ namespace codebase
         private readonly HashSet<string> _depositiVisibili = new(StringComparer.OrdinalIgnoreCase);
         private bool _depositiInizializzati;
 
-        private float _MAX_HEIGHT_MULTIPLIER = 1.6f;
+        private float _MAX_AVG_MULTIPLIER = 1.6f;
+        private float _MAX_HEIGHT_MULTIPLIER = 1.4f;
 
         public AnalysisPage()
         {
@@ -86,7 +87,7 @@ namespace codebase
                 return;
 
             var panel = new StackPanel { Spacing = 10, MinWidth = 260 };
-            panel.Children.Add(new TextBlock { Text = "Intervallo", FontWeight = Microsoft.UI.Text.FontWeights.SemiBold });
+            panel.Children.Add(new TextBlock { Text = "Intervallo", FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI"), FontWeight = Microsoft.UI.Text.FontWeights.SemiBold });
             var intervallo = new ComboBox { HorizontalAlignment = HorizontalAlignment.Stretch };
             intervallo.Items.Add(new ComboBoxItem { Content = "Tutto", Tag = FinestraTemporale.Tutto });
             intervallo.Items.Add(new ComboBoxItem { Content = "1 mese", Tag = FinestraTemporale.UnMese });
@@ -103,7 +104,7 @@ namespace codebase
                 }
             };
             panel.Children.Add(intervallo);
-            panel.Children.Add(new TextBlock { Text = "Depositi visibili", FontWeight = Microsoft.UI.Text.FontWeights.SemiBold, Margin = new Thickness(0, 4, 0, 0) });
+            panel.Children.Add(new TextBlock { Text = "Depositi visibili", FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI"), FontWeight = Microsoft.UI.Text.FontWeights.SemiBold, Margin = new Thickness(0, 4, 0, 0) });
 
             var nomi = DataService.Rilevazioni.SelectMany(r => r.Depositi.Keys)
                 .Distinct(StringComparer.OrdinalIgnoreCase).ToList();
@@ -197,13 +198,6 @@ namespace codebase
 
         private void MostraLinee(List<Rilevazione> rilevazioni)
         {
-            // Aggiunge spazio all'interno dell'area di tracciamento (nera), senza
-            // spostare o ridimensionare il controllo rispetto al wrapper.
-            CartesianChart.DrawMargin = new LiveChartsCore.Measure.Margin(
-                LiveChartsCore.Measure.Margin.Auto,
-                LiveChartsCore.Measure.Margin.Auto,
-                12,
-                12);
             DateOnly? inizio = _finestra switch
             {
                 FinestraTemporale.UnMese => rilevazioni[^1].Data.AddMonths(-1),
@@ -223,17 +217,44 @@ namespace codebase
                 _depositiInizializzati = true;
             }
 
-            var series = new List<ISeries>();
-            int colorIndex = 0;
+            var puntiPerDeposito = new Dictionary<string, ObservablePoint?[]>(StringComparer.OrdinalIgnoreCase);
             foreach (string nome in nomi)
             {
-                if (!_depositiVisibili.Contains(nome)) { colorIndex++; continue; }
-                var punti = visibili.Select(r => r.Depositi.TryGetValue(nome, out int valore)
-                    ? new ObservablePoint(r.Data.ToDateTime(TimeOnly.MinValue).ToOADate(), valore)
-                    : null).ToArray();
-                if (punti.All(p => p is null)) { colorIndex++; continue; }
+                if (_depositiVisibili.Contains(nome))
+                    puntiPerDeposito[nome] = new ObservablePoint?[visibili.Count];
+            }
 
-                string colore = PaletteDepositi.ColoriHex[colorIndex++ % PaletteDepositi.ColoriHex.Count];
+            long sommaValori = 0;
+            int massimoValore = int.MinValue;
+            int minimoValore = int.MaxValue;
+            int numeroValori = 0;
+            for (int indiceRilevazione = 0; indiceRilevazione < visibili.Count; indiceRilevazione++)
+            {
+                var rilevazione = visibili[indiceRilevazione];
+                double dataOa = rilevazione.Data.ToDateTime(TimeOnly.MinValue).ToOADate();
+                foreach (var deposito in rilevazione.Depositi)
+                {
+                    if (!puntiPerDeposito.TryGetValue(deposito.Key, out var punti))
+                        continue;
+
+                    punti[indiceRilevazione] = new ObservablePoint(dataOa, deposito.Value);
+                    sommaValori += deposito.Value;
+                    numeroValori++;
+                    if (deposito.Value > massimoValore)
+                        massimoValore = deposito.Value;
+                    if (deposito.Value < minimoValore)
+                        minimoValore = deposito.Value;
+                }
+            }
+
+            var series = new List<ISeries>();
+            for (int colorIndex = 0; colorIndex < nomi.Count; colorIndex++)
+            {
+                string nome = nomi[colorIndex];
+                if (!puntiPerDeposito.TryGetValue(nome, out var punti) || punti.All(p => p is null))
+                    continue;
+
+                string colore = PaletteDepositi.ColoriHex[colorIndex % PaletteDepositi.ColoriHex.Count];
                 var serie = new LineSeries<ObservablePoint?>
                 {
                     Name = nome,
@@ -249,12 +270,16 @@ namespace codebase
                 series.Add(serie);
             }
 
-            var valori = visibili.SelectMany(r => r.Depositi.Where(kv => _depositiVisibili.Contains(kv.Key)).Select(kv => kv.Value)).ToList();
-            if (series.Count == 0 || valori.Count == 0)
+            if (series.Count == 0 || numeroValori == 0)
             {
                 TxtCanvasVuoto.Text = "Nessun deposito selezionato per questo intervallo.";
                 return;
             }
+
+            double mediaValori = (double)sommaValori / numeroValori;
+            double valoreMassimoAsse = mediaValori * _MAX_AVG_MULTIPLIER;
+            if (valoreMassimoAsse < massimoValore)
+                valoreMassimoAsse = massimoValore * _MAX_HEIGHT_MULTIPLIER;
 
             CartesianChart.Series = series;
             CartesianChart.XAxes = new[]
@@ -269,8 +294,15 @@ namespace codebase
             CartesianChart.YAxes = new[] { new Axis { Labeler = value => $"{value:N0} €",
                 SeparatorsPaint = coloreGriglia,
                 ZeroPaint = new SolidColorPaint(new SKColor(90, 90, 90)),
-                MinLimit = Math.Min(0, valori.Min()), 
-                MaxLimit = Math.Max(1, valori.Max() * _MAX_HEIGHT_MULTIPLIER) } };
+                MinLimit = Math.Min(0, minimoValore), 
+                MaxLimit = Math.Max(1, valoreMassimoAsse) } };
+            // Riserva 12 px dentro l'area del grafico a destra e in basso.
+            // I lati degli assi restano automatici per mantenere l'allineamento.
+            CartesianChart.DrawMargin = new LiveChartsCore.Measure.Margin(
+                LiveChartsCore.Measure.Margin.Auto,
+                LiveChartsCore.Measure.Margin.Auto,
+                12,
+                24);
             CartesianChart.Visibility = Visibility.Visible;
             TxtCanvasVuoto.Visibility = Visibility.Collapsed;
         }
@@ -279,17 +311,25 @@ namespace codebase
         {
             if (ultima.Depositi.Count == 0 || ultima.Depositi.Values.Sum() <= 0) return;
             int colorIndex = 0;
+            int sumTotale = ultima.Depositi.Values.Sum();
             PieChart.Series = ultima.Depositi.Select(kv => (ISeries)new PieSeries<int>
             {
                 Name = kv.Key,
                 Values = new[] { kv.Value },
                 Fill = new SolidColorPaint(ToSkColor(PaletteDepositi.ColoriHex[colorIndex++ % PaletteDepositi.ColoriHex.Count])),
                 Pushout = 2,
+                HoverPushout = 10,
+                ShowDataLabels = _mostraLabelRadiale,
                 DataLabelsFormatter = _ => _mostraLabelRadiale ? kv.Key : string.Empty,
-                DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                DataLabelsPaint = new SolidColorPaint(SKColors.White)
+                {
+                    SKTypeface = SKTypeface.FromFamilyName("Constantia", SKFontStyle.Bold)
+                },
                 DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
                 DataLabelsSize = 14,
-                ToolTipLabelFormatter = point => $"{point.Coordinate.PrimaryValue:N0} € ({(point.Coordinate.PrimaryValue / ultima.Depositi.Values.Sum()):P1})"
+
+
+                ToolTipLabelFormatter = point => $"{point.Coordinate.PrimaryValue:N0} € ({(point.Coordinate.PrimaryValue / sumTotale):P1})"
             }).ToArray();
             PieChart.Visibility = Visibility.Visible;
             TxtCanvasVuoto.Visibility = Visibility.Collapsed;

@@ -155,6 +155,11 @@
     <!-- 2. STILI BLOCCHI DI TESTO (TEXTBLOCKS)                   -->
     <!-- ======================================================== -->
 
+    <!-- Font predefinito per i blocchi di testo fuori da pulsanti e popup informativi -->
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Constantia, Georgia, Times New Roman" />
+    </Style>
+
     <!-- Stile per i titoli principali in stile bancario / romano antico -->
     <Style x:Key="TitleSerifStyle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Constantia, Georgia, Times New Roman" />

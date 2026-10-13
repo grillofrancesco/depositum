@@ -158,15 +158,16 @@ namespace codebase
 
                 var txtErrore = new TextBlock
                 {
+                    FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI"),
                     Foreground = new SolidColorBrush(Colors.Salmon),
                     FontSize = 13,
                     TextWrapping = TextWrapping.Wrap,
                     Visibility = Visibility.Collapsed
                 };
 
-                sp.Children.Add(new TextBlock { Text = "Nome deposito:", FontWeight = FontWeights.SemiBold });
+                sp.Children.Add(new TextBlock { Text = "Nome deposito:", FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI"), FontWeight = FontWeights.SemiBold });
                 sp.Children.Add(txtNome);
-                sp.Children.Add(new TextBlock { Text = "Importo (€, intero):", FontWeight = FontWeights.SemiBold });
+                sp.Children.Add(new TextBlock { Text = "Importo (€, intero):", FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI"), FontWeight = FontWeights.SemiBold });
                 sp.Children.Add(numValore);
                 sp.Children.Add(txtErrore);
 
