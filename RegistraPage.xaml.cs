@@ -88,6 +88,13 @@ namespace codebase
             }
         }
 
+        /// <summary>
+        /// Apre un dialogo modale per inserire un nuovo deposito (Nome e Valore intero).
+        /// Controlli:
+        /// - Nome: non vuoto e massimo 30 caratteri.
+        /// - Valore: numero intero con 0 &lt; v &lt; 1.000.000.000.
+        /// Ordine tasti: Annulla (sinistra) / Aggiungi (destra).
+        /// </summary>
         private async void BtnAggiungiDeposito_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -119,10 +126,11 @@ namespace codebase
 
                 var numValore = new NumberBox
                 {
-                    PlaceholderText = "Importo iniziale",
+                    PlaceholderText = "Importo iniziale (intero)",
                     Value = 0,
                     SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Hidden,
-                    HorizontalContentAlignment = HorizontalAlignment.Right
+                    HorizontalContentAlignment = HorizontalAlignment.Right,
+                    AcceptsExpression = false
                 };
 
                 var txtErrore = new TextBlock
@@ -135,7 +143,7 @@ namespace codebase
 
                 sp.Children.Add(new TextBlock { Text = "Nome deposito:", FontWeight = FontWeights.SemiBold });
                 sp.Children.Add(txtNome);
-                sp.Children.Add(new TextBlock { Text = "Importo (€):", FontWeight = FontWeights.SemiBold });
+                sp.Children.Add(new TextBlock { Text = "Importo (€, intero):", FontWeight = FontWeights.SemiBold });
                 sp.Children.Add(numValore);
                 sp.Children.Add(txtErrore);
 
@@ -146,6 +154,7 @@ namespace codebase
                 {
                     string nome = txtNome.Text.Trim();
 
+                    // Controllo nome vuoto o lunghezza > 30 caratteri
                     if (string.IsNullOrWhiteSpace(nome))
                     {
                         txtErrore.Text = "Il nome del deposito non può essere vuoto.";
@@ -162,10 +171,11 @@ namespace codebase
                         return;
                     }
 
+                    // Controllo che il valore sia un numero intero e compreso tra 0 e 1.000.000.000 (esclusi)
                     double val = numValore.Value;
-                    if (double.IsNaN(val) || val <= 0 || val >= 1_000_000_000)
+                    if (double.IsNaN(val) || val <= 0 || val >= 1_000_000_000 || val % 1 != 0)
                     {
-                        txtErrore.Text = "L'importo deve essere compreso tra 1 e 1mlrd.";
+                        txtErrore.Text = "L'importo deve essere un numero intero compreso tra 1 e 1mlrd";
                         txtErrore.Visibility = Visibility.Visible;
                         args.Cancel = true;
                         return;
@@ -178,19 +188,19 @@ namespace codebase
                 if (result == ContentDialogResult.Secondary)
                 {
                     string nome = txtNome.Text.Trim();
-                    double valore = numValore.Value;
+                    int valoreIntero = (int)numValore.Value;
 
                     var esistente = _depositi.FirstOrDefault(d => string.Equals(d.Nome, nome, StringComparison.OrdinalIgnoreCase));
                     if (esistente != null)
                     {
-                        esistente.Valore = valore;
+                        esistente.Valore = valoreIntero;
                     }
                     else
                     {
                         _depositi.Add(new DepositoEditItem
                         {
                             Nome = nome,
-                            Valore = valore
+                            Valore = valoreIntero
                         });
                     }
                 }
@@ -253,7 +263,7 @@ namespace codebase
                 {
                     StatusInfoBar.Severity = InfoBarSeverity.Error;
                     StatusInfoBar.Title = "Nome deposito non valido";
-                    StatusInfoBar.Message = $"Il deposito \"{d.Nome}\" non ha un nome valido.";
+                    StatusInfoBar.Message = $"Il deposito \"{d.Nome}\" deve avere un nome compreso tra 1 e 30 caratteri.";
                     StatusInfoBar.IsOpen = true;
                     return;
                 }
@@ -262,14 +272,14 @@ namespace codebase
                 {
                     StatusInfoBar.Severity = InfoBarSeverity.Error;
                     StatusInfoBar.Title = "Importo non valido";
-                    StatusInfoBar.Message = $"L'importo del deposito \"{d.Nome}\" non è valido.";
+                    StatusInfoBar.Message = $"L'importo del deposito \"{d.Nome}\" deve essere un intero compreso tra 1 e 999.999.999 €.";
                     StatusInfoBar.IsOpen = true;
                     return;
                 }
             }
 
-            // Calcolo automatico del Totale come somma di tutti i depositi
-            int totaleCalcolato = _depositi.Sum(d => (int)Math.Round(d.Valore));
+            // Calcolo automatico del Totale come somma diretta di interi (senza Math.Round)
+            int totaleCalcolato = _depositi.Sum(d => d.Valore);
 
             var nuovaRilevazione = new Rilevazione
             {
@@ -279,7 +289,7 @@ namespace codebase
 
             foreach (var d in _depositi)
             {
-                nuovaRilevazione.Depositi[d.Nome] = (int)Math.Round(d.Valore);
+                nuovaRilevazione.Depositi[d.Nome] = d.Valore;
             }
 
             // Salvataggio su file CSV in AppData e in memoria

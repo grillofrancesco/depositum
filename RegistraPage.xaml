@@ -72,6 +72,7 @@
                                     <!-- Input numerico per il valore -->
                                     <NumberBox Grid.Column="1" 
                                                Value="{x:Bind Valore, Mode=TwoWay}" 
+                                               AcceptsExpression="False"
                                                Width="80" 
                                                Height="36" 
                                                Margin="12, 0, 8, 0" 

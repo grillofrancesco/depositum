@@ -5,11 +5,12 @@ namespace codebase
 {
     /// <summary>
     /// Modello per la modifica interattiva di un singolo deposito nella pagina di registrazione.
+    /// Tutti i valori dei depositi sono rigorosamente numeri interi (int).
     /// </summary>
     public class DepositoEditItem : INotifyPropertyChanged
     {
         private string _nome = string.Empty;
-        private double _valore;
+        private int _valore;
 
         public string Nome
         {
@@ -24,7 +25,7 @@ namespace codebase
             }
         }
 
-        public double Valore
+        public int Valore
         {
             get => _valore;
             set
