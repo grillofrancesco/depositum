@@ -16,23 +16,15 @@
             <SolidColorBrush x:Key="SecondaryTextBrush" Color="#B8B9AC" />
             <SolidColorBrush x:Key="MutedTextBrush" Color="#888B7E" />
             <SolidColorBrush x:Key="AccentActionBackground" Color="#657747" />
+            <SolidColorBrush x:Key="AccentActionPointerOverBrush" Color="#7B8D58" />
+            <SolidColorBrush x:Key="AccentActionPressedBrush" Color="#53633D" />
+            <SolidColorBrush x:Key="AccentActionDisabledBrush" Color="#242520" />
+            <SolidColorBrush x:Key="AccentActionDisabledForegroundBrush" Color="#8A8C83" />
             <SolidColorBrush x:Key="AccentActionBorder" Color="#87996A" />
             <SolidColorBrush x:Key="AccentActionForeground" Color="#FFFFFF" />
             <SolidColorBrush x:Key="DestructiveSurfaceBrush" Color="#29251F" />
             <SolidColorBrush x:Key="DestructiveBorderBrush" Color="#55453A" />
             <SolidColorBrush x:Key="DestructiveForegroundBrush" Color="#D7A997" />
-            <SolidColorBrush x:Key="ButtonBackground" Color="#242820" />
-            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#30362B" />
-            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#1C2018" />
-            <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="#4C5A3A" />
-            <SolidColorBrush x:Key="ButtonBorderBrush" Color="#41483A" />
-            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="#687650" />
-            <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#566443" />
-            <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="#829267" />
-            <SolidColorBrush x:Key="ButtonForeground" Color="#F1EEDF" />
-            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#D7DDCA" />
-            <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="#FFFFFF" />
             <SolidColorBrush x:Key="TextControlBackground" Color="#20231D" />
             <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#282C24" />
             <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#252A20" />
@@ -58,23 +50,15 @@
             <SolidColorBrush x:Key="SecondaryTextBrush" Color="#B8B9AC" />
             <SolidColorBrush x:Key="MutedTextBrush" Color="#888B7E" />
             <SolidColorBrush x:Key="AccentActionBackground" Color="#657747" />
+            <SolidColorBrush x:Key="AccentActionPointerOverBrush" Color="#7B8D58" />
+            <SolidColorBrush x:Key="AccentActionPressedBrush" Color="#53633D" />
+            <SolidColorBrush x:Key="AccentActionDisabledBrush" Color="#242520" />
+            <SolidColorBrush x:Key="AccentActionDisabledForegroundBrush" Color="#8A8C83" />
             <SolidColorBrush x:Key="AccentActionBorder" Color="#87996A" />
             <SolidColorBrush x:Key="AccentActionForeground" Color="#FFFFFF" />
             <SolidColorBrush x:Key="DestructiveSurfaceBrush" Color="#29251F" />
             <SolidColorBrush x:Key="DestructiveBorderBrush" Color="#55453A" />
             <SolidColorBrush x:Key="DestructiveForegroundBrush" Color="#D7A997" />
-            <SolidColorBrush x:Key="ButtonBackground" Color="#242820" />
-            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#30362B" />
-            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#1C2018" />
-            <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="#4C5A3A" />
-            <SolidColorBrush x:Key="ButtonBorderBrush" Color="#41483A" />
-            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="#687650" />
-            <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="#566443" />
-            <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="#829267" />
-            <SolidColorBrush x:Key="ButtonForeground" Color="#F1EEDF" />
-            <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#D7DDCA" />
-            <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="#FFFFFF" />
             <SolidColorBrush x:Key="TextControlBackground" Color="#20231D" />
             <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#282C24" />
             <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#252A20" />
@@ -112,8 +96,6 @@
         <Setter Property="BorderBrush" Value="{ThemeResource ButtonBorderBrush}" />
         <Setter Property="Foreground" Value="{ThemeResource ButtonForeground}" />
     </Style>
-    <Style TargetType="Button" BasedOn="{StaticResource BaseDarkButtonStyle}" />
-
     <Style x:Key="BigActionButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseDarkButtonStyle}">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -136,6 +118,68 @@
         <Setter Property="Background" Value="{ThemeResource AccentActionBackground}" />
         <Setter Property="BorderBrush" Value="{ThemeResource AccentActionBorder}" />
         <Setter Property="Foreground" Value="{ThemeResource AccentActionForeground}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid x:Name="PrimaryButtonRoot">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PrimaryButtonBorder" Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentActionPointerOverBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PrimaryButtonBorder" Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentActionPressedBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PrimaryButtonBorder" Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentActionDisabledBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PrimaryButtonContent" Storyboard.TargetProperty="Foreground">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource AccentActionDisabledForegroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Unfocused" />
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PrimaryButtonBorder" Storyboard.TargetProperty="BorderBrush">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource LaurelLightBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PointerFocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="PrimaryButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+                            <ContentPresenter x:Name="PrimaryButtonContent"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentTransitions="{TemplateBinding ContentTransitions}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Padding="{TemplateBinding Padding}"
+                                              Foreground="{TemplateBinding Foreground}" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style x:Key="RemoveItemButtonStyle" TargetType="Button">
         <Setter Property="Width" Value="36" />

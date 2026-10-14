@@ -19,10 +19,12 @@
                        HorizontalAlignment="Left" VerticalAlignment="Center" />
             <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Button Width="34" Height="34" MinWidth="0" MinHeight="0" Padding="0"
+                        Style="{StaticResource BaseDarkButtonStyle}"
                         Click="BtnIndietro_Click" AutomationProperties.Name="Torna alla dashboard">
                     <FontIcon Glyph="&#xF15C;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
                 </Button>
                 <Button x:Name="BtnOpzioni" Width="32" Height="32" MinWidth="0" MinHeight="0" Padding="0"
+                        Style="{StaticResource BaseDarkButtonStyle}"
                         Click="BtnOpzioni_Click" AutomationProperties.Name="Opzioni del grafico">
                     <FontIcon Glyph="&#xF557;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
                 </Button>

@@ -317,8 +317,8 @@ namespace Depositum
                 Name = kv.Key,
                 Values = new[] { kv.Value },
                 Fill = new SolidColorPaint(ToSkColor(PaletteDepositi.ColoriHex[colorIndex++ % PaletteDepositi.ColoriHex.Count])),
-                Pushout = 2,
-                HoverPushout = 10,
+                Pushout = 5,
+                HoverPushout = 15,
                 ShowDataLabels = _mostraLabelRadiale,
                 DataLabelsFormatter = _ => _mostraLabelRadiale ? kv.Key : string.Empty,
                 DataLabelsPaint = new SolidColorPaint(SKColors.White)
