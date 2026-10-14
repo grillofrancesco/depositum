@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI">
 
-    <Grid Background="#121212"
+    <Grid Background="{ThemeResource CanvasBrush}"
           Padding="{StaticResource PageEdgePaddingVertical}"
           RowSpacing="{StaticResource StandardElementSpacing}">
         <Grid.RowDefinitions>
@@ -30,13 +30,13 @@
         </Grid>
 
         <Border Grid.Row="1" Margin="{StaticResource PageEdgeMarginHorizontal}"
-                Background="#1E1E1E" BorderBrush="#333333" BorderThickness="1"
-                CornerRadius="12" Padding="12">
+                Background="{ThemeResource SurfaceBrush}" BorderBrush="{ThemeResource BorderBrushSubtle}" BorderThickness="1"
+                CornerRadius="10" Padding="16">
             <Grid>
                 <lvc:CartesianChart x:Name="CartesianChart" Visibility="Collapsed" />
                 <lvc:PieChart x:Name="PieChart" Visibility="Collapsed" />
                 <TextBlock x:Name="TxtCanvasVuoto" Text="Nessun dato da visualizzare"
-                           Foreground="#888888" FontSize="15"
+                           Foreground="{ThemeResource MutedTextBrush}" FontSize="15"
                            HorizontalAlignment="Center" VerticalAlignment="Center"
                            TextAlignment="Center" TextWrapping="Wrap" />
             </Grid>
@@ -50,24 +50,24 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button x:Name="BtnIstogramma" Grid.Column="0" Click="BtnGrafico_Click"
-                    Tag="Istogramma" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="10,0">
+                    Tag="Istogramma" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
                     <FontIcon Glyph="&#xF342;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
-                    <TextBlock Text="Istogramma" FontFamily="Segoe UI" FontSize="12" VerticalAlignment="Center" />
+                    <TextBlock Text="Istogramma" FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
             <Button x:Name="BtnLinee" Grid.Column="1" Click="BtnGrafico_Click"
-                    Tag="Linee" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="10,0">
+                    Tag="Linee" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
                     <FontIcon Glyph="&#xF343;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
-                    <TextBlock Text="Linee" FontFamily="Segoe UI" FontSize="12" VerticalAlignment="Center" />
+                    <TextBlock Text="Linee" FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
             <Button x:Name="BtnRadiale" Grid.Column="2" Click="BtnGrafico_Click"
-                    Tag="Radiale" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="10,0">
+                    Tag="Radiale" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
                     <FontIcon Glyph="&#xF345;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
-                    <TextBlock Text="Radiale" FontFamily="Segoe UI" FontSize="12" VerticalAlignment="Center" />
+                    <TextBlock Text="Radiale" FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
         </Grid>

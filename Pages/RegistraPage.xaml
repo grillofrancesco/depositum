@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="#121212" 
+    <Grid Background="{ThemeResource CanvasBrush}" 
           Padding="{StaticResource PageEdgePaddingVertical}" 
           RowSpacing="{StaticResource StandardElementSpacing}">
         <Grid.RowDefinitions>
@@ -49,11 +49,11 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="local:DepositoEditItem">
-                            <Border Background="#1C1C1C" 
-                                    BorderBrush="#2C2C2C" 
+                            <Border Background="{ThemeResource SurfaceBrush}" 
+                                    BorderBrush="{ThemeResource BorderBrushSubtle}" 
                                     BorderThickness="1" 
                                     CornerRadius="8" 
-                                    Padding="14, 8">
+                                    Padding="14, 10">
                                 <Grid VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -65,7 +65,7 @@
                                     <TextBlock Text="{x:Bind Nome}" 
                                                FontSize="15" 
                                                FontWeight="SemiBold" 
-                                               Foreground="White" 
+                                               Foreground="{ThemeResource IvoryBrush}" 
                                                VerticalAlignment="Center" 
                                                TextTrimming="CharacterEllipsis" />
 
@@ -121,11 +121,16 @@
             <Button x:Name="BtnAggiungiDeposito" 
                     Click="BtnAggiungiDeposito_Click" 
                     HorizontalAlignment="Stretch" 
-                    Height="44">
-                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                    <FontIcon Glyph="&#xF10A;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="14" Foreground="White" />
-                    <TextBlock Text="Aggiungi Deposito" FontFamily="Segoe UI" FontSize="15" FontWeight="SemiBold" Foreground="White" />
-                </StackPanel>
+                    Height="48"
+                    Style="{StaticResource BigActionButtonStyle}">
+                <Grid ColumnSpacing="8" HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xF10A;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="16" Foreground="{ThemeResource IvoryBrush}" />
+                    <TextBlock Grid.Column="1" Text="Aggiungi Deposito" FontFamily="Segoe UI" FontSize="15" FontWeight="SemiBold" Foreground="{ThemeResource IvoryBrush}" VerticalAlignment="Center" />
+                </Grid>
             </Button>
         </Grid>
 

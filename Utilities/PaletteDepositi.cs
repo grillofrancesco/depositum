@@ -7,8 +7,9 @@ namespace Depositum
     {
         public static IReadOnlyList<string> ColoriHex { get; } = new[]
         {
-            "#1A6B6B", "#206535", "#2B4A6F", "#733F35",
-            "#58395B", "#1C4E5E", "#644F2E", "#3A444C"
+            // Toni profondi e terrosi, con contrasto sufficiente per il testo chiaro.
+            "#43523A", "#3B5146", "#4B4937", "#41464D",
+            "#514359", "#37505A", "#59443A", "#4B5142"
         };
     }
 }

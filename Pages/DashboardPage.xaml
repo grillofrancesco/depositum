@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="#121212" 
+    <Grid Background="{ThemeResource CanvasBrush}" 
           Padding="{StaticResource PageEdgePaddingVertical}" 
           RowSpacing="{StaticResource StandardElementSpacing}">
         <Grid.RowDefinitions>
@@ -50,11 +50,11 @@
                     <TextBlock Text="Nessun Deposito" 
                                FontSize="20" 
                                FontWeight="SemiBold" 
-                               Foreground="#888888" 
+                               Foreground="{ThemeResource SecondaryTextBrush}" 
                                HorizontalAlignment="Center" />
                     <TextBlock Text="Premi 'Registra Depositi' per creare la prima rilevazione." 
                                FontSize="13" 
-                               Foreground="#555555" 
+                               Foreground="{ThemeResource MutedTextBrush}" 
                                HorizontalAlignment="Center" />
                 </StackPanel>
 
@@ -79,10 +79,10 @@
 
             <TextBlock x:Name="TxtTotaleValore" 
                        Text="0€" 
-                       FontSize="24" 
-                       FontFamily="Constantia, Georgia, Segoe UI"
+                       FontSize="30" 
+                       FontFamily="Constantia, Georgia, Times New Roman"
                        FontWeight="Bold" 
-                       Foreground="White" 
+                       Foreground="{ThemeResource LaurelLightBrush}" 
                        VerticalAlignment="Center" 
                        HorizontalAlignment="Right" />
         </Grid>
@@ -94,16 +94,24 @@
             <!-- Pulsante 1: Registra Depositi -->
             <Button x:Name="BtnRegistraDepositi"
                     Click="BtnRegistraDepositi_Click"
-                    Style="{StaticResource BigActionButtonStyle}">
-                <Grid HorizontalAlignment="Stretch">
-                    <TextBlock Text="Registra Depositi" 
+                    Style="{StaticResource PrimaryAccentButtonStyle}"
+                    Height="56"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    Padding="18,0">
+                <Grid HorizontalAlignment="Stretch" ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Registra depositi" 
                                FontFamily="Segoe UI"
                                FontSize="16" 
                                FontWeight="SemiBold" 
                                Foreground="White" 
                                VerticalAlignment="Center" 
                                HorizontalAlignment="Left" />
-                    <FontIcon Glyph="&#xF10A;" 
+                    <FontIcon Grid.Column="1" Glyph="&#xF10A;" 
                               FontFamily="{StaticResource FluentIconsRegular}"
                               FontSize="18" 
                               Foreground="White" 

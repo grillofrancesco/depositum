@@ -13,7 +13,7 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
         
-    <Grid RequestedTheme="Dark" Background="#121212">
+    <Grid RequestedTheme="Dark" Background="{ThemeResource CanvasBrush}">
         <Frame x:Name="RootFrame" />
     </Grid>
 </Window>
