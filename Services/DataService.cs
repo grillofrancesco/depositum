@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace codebase
+namespace Depositum
 {
     /// <summary>
     /// Servizio centralizzato per il caricamento, parsing e salvataggio dei dati delle rilevazioni.

@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 
-namespace codebase
+namespace Depositum
 {
     public sealed partial class RegistraPage : Page
     {
@@ -143,7 +143,7 @@ namespace codebase
 
                 var txtNome = new TextBox
                 {
-                    PlaceholderText = "Nome deposito (max 30 caratteri)",
+                    PlaceholderText = "Nome deposito",
                     MaxLength = 30
                 };
 

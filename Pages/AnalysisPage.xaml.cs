@@ -12,7 +12,7 @@ using System.Globalization;
 using System.Linq;
 using Windows.UI;
 
-namespace codebase
+namespace Depositum
 {
     public sealed partial class AnalysisPage : Page
     {

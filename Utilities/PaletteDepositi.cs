@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace codebase
+namespace Depositum
 {
     /// <summary>Palette condivisa per depositi in dashboard e grafici.</summary>
     internal static class PaletteDepositi

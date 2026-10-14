@@ -1,7 +1,7 @@
 using Microsoft.UI.Xaml;
 using Windows.Graphics;
 
-namespace codebase
+namespace Depositum
 {
     public sealed partial class MainWindow : Window
     {

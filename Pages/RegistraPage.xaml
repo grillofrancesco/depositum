@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="codebase.RegistraPage"
+    x:Class="Depositum.RegistraPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:codebase"
+    xmlns:local="using:Depositum"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -123,7 +123,7 @@
                     HorizontalAlignment="Stretch" 
                     Height="44">
                 <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                    <FontIcon Glyph="&#xF10D;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="14" Foreground="White" />
+                    <FontIcon Glyph="&#xF10A;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="14" Foreground="White" />
                     <TextBlock Text="Aggiungi Deposito" FontFamily="Segoe UI" FontSize="15" FontWeight="SemiBold" Foreground="White" />
                 </StackPanel>
             </Button>

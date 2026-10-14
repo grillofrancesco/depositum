@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "codebase (Package)": {
+    "Depositum (Package)": {
       "commandName": "MsixPackage"
     },
-    "codebase (Unpackaged)": {
+    "Depositum (Unpackaged)": {
       "commandName": "Project"
     }
   }

@@ -7,7 +7,7 @@ using Microsoft.UI.Xaml.Navigation;
 using System.Globalization;
 using Windows.UI;
 
-namespace codebase
+namespace Depositum
 {
     public sealed partial class DashboardPage : Page
     {
@@ -89,7 +89,7 @@ namespace codebase
             var txtNome = new TextBlock
             {
                 Text = nome,
-                FontSize = 15,
+                FontSize = 20,
                 FontWeight = FontWeights.SemiBold,
                 Foreground = new SolidColorBrush(Colors.White),
                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -99,7 +99,7 @@ namespace codebase
             var txtImporto = new TextBlock
             {
                 Text = $"{importo:N0}€",
-                FontSize = 24,
+                FontSize = 32,
                 FontWeight = FontWeights.Bold,
                 Foreground = new SolidColorBrush(Colors.White),
                 HorizontalAlignment = HorizontalAlignment.Right,

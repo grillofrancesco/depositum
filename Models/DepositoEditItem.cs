@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace codebase
+namespace Depositum
 {
     /// <summary>
     /// Modello per la modifica interattiva di un singolo deposito nella pagina di registrazione.

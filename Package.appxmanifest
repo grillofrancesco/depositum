@@ -16,7 +16,7 @@
   <mp:PhoneIdentity PhoneProductId="532f8103-0c8c-47e7-8c35-6c6e592bbc57" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>codebase</DisplayName>
+    <DisplayName>Depositum</DisplayName>
     <PublisherDisplayName>Hinoki</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -35,8 +35,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="codebase"
-        Description="codebase"
+        DisplayName="Depositum"
+        Description="Depositum"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
