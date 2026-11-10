@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="Depositum.AggiungiDepositoDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Style="{StaticResource DefaultContentDialogStyle}"
+    Title="Aggiungi Deposito"
+    PrimaryButtonText="Annulla"
+    SecondaryButtonText="Aggiungi"
+    DefaultButton="Secondary"
+    SecondaryButtonClick="Aggiungi_Click">
+
+    <!-- Ordine dei tasti: Annulla (sinistra) / Aggiungi (destra) -->
+    <StackPanel Spacing="10" Width="300">
+        <TextBlock Text="Nome deposito:" Style="{StaticResource DialogLabelStyle}" />
+        <TextBox x:Name="TxtNome" PlaceholderText="Nome deposito" />
+
+        <TextBlock Text="Importo (€, intero):" Style="{StaticResource DialogLabelStyle}" />
+        <NumberBox x:Name="NumValore"
+                   PlaceholderText="Importo iniziale (intero)"
+                   Value="0"
+                   SpinButtonPlacementMode="Hidden"
+                   HorizontalContentAlignment="Right"
+                   AcceptsExpression="False" />
+
+        <TextBlock x:Name="TxtErrore" Style="{StaticResource DialogErrorStyle}" Visibility="Collapsed" />
+    </StackPanel>
+</ContentDialog>

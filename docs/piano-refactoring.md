@@ -327,3 +327,12 @@ vanno trattati dopo (decisione del 10/11/2026). Alcuni toccano i dati.
     usano ancora i colori predefiniti di LiveCharts. Per questo `Tema` fornisce
     ai grafici solo i colori che già erano impostati dall'app: griglia,
     etichette del radiale, colori dei depositi.
+- **Fase 5.** Fatta: `Dialogs/` (AggiungiDeposito, OpzioniLinee, OpzioniRadiale),
+  `Charts/CostruttoreGrafici`, `DatiGrafici` in Core con test, card della
+  dashboard in `ItemsRepeater`, un solo aggiornamento all'apertura delle pagine.
+  Le 14 schermate di confronto sono identiche a quelle di partenza.
+  **Non ancora provato in automatico:** le interazioni dentro i dialoghi
+  (spunte dei depositi, cambio di intervallo, aggiunta e rimozione di un
+  deposito). Vanno provate a mano o con lo scenario di verifica da completare.
+- **Stato al termine della sessione dell'11/11/2026:** fasi 0-5 concluse e
+  salvate, una per commit. Restano le fasi 6 e 7 e la correzione delle anomalie.

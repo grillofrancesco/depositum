@@ -52,6 +52,37 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
+    <!-- Card di un deposito nella dashboard -->
+    <Style x:Key="DepositCardNameStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{ThemeResource OnAccentBrush}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+    <Style x:Key="DepositCardAmountStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{ThemeResource OnAccentBrush}" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+    </Style>
+
+    <!-- Dialoghi -->
+    <Style x:Key="DialogLabelStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}" />
+    </Style>
+    <Style x:Key="DialogErrorStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{ThemeResource ErrorTextBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
     <!-- Testo dentro i pulsanti -->
     <Style x:Key="ButtonLabelStyle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />

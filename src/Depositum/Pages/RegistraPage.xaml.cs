@@ -1,8 +1,6 @@
 using Depositum.Core;
-using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,6 +19,10 @@ namespace Depositum
             Loaded += (s, e) => InizializzaPagina();
         }
 
+        /// <summary>
+        /// Accetta nella lista solo importi validi: un valore non valido viene scartato
+        /// e la casella torna a mostrare l'ultimo importo buono.
+        /// </summary>
         private void NumberBoxValore_ValueChanged(NumberBox sender, NumberBoxValueChangedEventArgs args)
         {
             if (sender.DataContext is not DepositoEditItem item)
@@ -107,9 +109,8 @@ namespace Depositum
         }
 
         /// <summary>
-        /// Apre un dialogo modale per inserire un nuovo deposito (Nome e Valore intero).
-        /// Nome e importo sono controllati da <see cref="RegoleDeposito.Valida"/>.
-        /// Ordine tasti: Annulla (sinistra) / Aggiungi (destra).
+        /// Apre il dialogo per inserire un nuovo deposito e ne applica il risultato alla lista.
+        /// Se esiste già un deposito con lo stesso nome, ne aggiorna l'importo.
         /// </summary>
         private async void BtnAggiungiDeposito_Click(object sender, RoutedEventArgs e)
         {
@@ -118,89 +119,25 @@ namespace Depositum
                 var xamlRoot = (sender as FrameworkElement)?.XamlRoot ?? this.XamlRoot;
                 if (xamlRoot == null) return;
 
-                var dialog = new ContentDialog
-                {
-                    XamlRoot = xamlRoot,
-                    Title = "Aggiungi Deposito",
-                    PrimaryButtonText = "Annulla",
-                    SecondaryButtonText = "Aggiungi",
-                    DefaultButton = ContentDialogButton.Secondary
-                };
+                var dialog = new AggiungiDepositoDialog { XamlRoot = xamlRoot };
+                if (await dialog.ShowAsync() != ContentDialogResult.Secondary)
+                    return;
 
-                if (Application.Current.Resources.TryGetValue("DefaultContentDialogStyle", out var styleObj) && styleObj is Style style)
+                string nome = dialog.NomeDeposito;
+                int valoreIntero = dialog.Importo;
+
+                var esistente = _depositi.FirstOrDefault(d => string.Equals(d.Nome, nome, StringComparison.OrdinalIgnoreCase));
+                if (esistente != null)
                 {
-                    dialog.Style = style;
+                    esistente.Valore = valoreIntero;
                 }
-
-                var fontCorpo = (FontFamily)Application.Current.Resources["BodyFontFamily"];
-                var sp = new StackPanel { Spacing = 10, Width = 300 };
-
-                var txtNome = new TextBox
+                else
                 {
-                    PlaceholderText = "Nome deposito",
-                    MaxLength = RegoleDeposito.LunghezzaMassimaNome
-                };
-
-                var numValore = new NumberBox
-                {
-                    PlaceholderText = "Importo iniziale (intero)",
-                    Value = 0,
-                    SpinButtonPlacementMode = NumberBoxSpinButtonPlacementMode.Hidden,
-                    HorizontalContentAlignment = HorizontalAlignment.Right,
-                    AcceptsExpression = false
-                };
-
-                var txtErrore = new TextBlock
-                {
-                    FontFamily = fontCorpo,
-                    Foreground = (Brush)Application.Current.Resources["ErrorTextBrush"],
-                    FontSize = 13,
-                    TextWrapping = TextWrapping.Wrap,
-                    Visibility = Visibility.Collapsed
-                };
-
-                sp.Children.Add(new TextBlock { Text = "Nome deposito:", FontFamily = fontCorpo, FontWeight = FontWeights.SemiBold });
-                sp.Children.Add(txtNome);
-                sp.Children.Add(new TextBlock { Text = "Importo (€, intero):", FontFamily = fontCorpo, FontWeight = FontWeights.SemiBold });
-                sp.Children.Add(numValore);
-                sp.Children.Add(txtErrore);
-
-                dialog.Content = sp;
-
-                // Validazione al click su 'Aggiungi' (SecondaryButton)
-                dialog.SecondaryButtonClick += (d, args) =>
-                {
-                    string? errore = RegoleDeposito.Valida(txtNome.Text, numValore.Value);
-                    if (errore != null)
+                    _depositi.Add(new DepositoEditItem
                     {
-                        txtErrore.Text = errore;
-                        txtErrore.Visibility = Visibility.Visible;
-                        args.Cancel = true;
-                        return;
-                    }
-
-                    txtErrore.Visibility = Visibility.Collapsed;
-                };
-
-                var result = await dialog.ShowAsync();
-                if (result == ContentDialogResult.Secondary)
-                {
-                    string nome = txtNome.Text.Trim();
-                    int valoreIntero = (int)numValore.Value;
-
-                    var esistente = _depositi.FirstOrDefault(d => string.Equals(d.Nome, nome, StringComparison.OrdinalIgnoreCase));
-                    if (esistente != null)
-                    {
-                        esistente.Valore = valoreIntero;
-                    }
-                    else
-                    {
-                        _depositi.Add(new DepositoEditItem
-                        {
-                            Nome = nome,
-                            Valore = valoreIntero
-                        });
-                    }
+                        Nome = nome,
+                        Valore = valoreIntero
+                    });
                 }
             }
             catch (Exception ex)

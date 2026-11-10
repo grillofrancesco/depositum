@@ -1,41 +1,30 @@
 using Depositum.Core;
-using LiveChartsCore;
-using LiveChartsCore.Defaults;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Depositum
 {
+    /// <summary>
+    /// Pagina dei grafici. Tiene le scelte dell'utente (grafico, intervallo, depositi visibili)
+    /// e decide cosa mostrare; i calcoli sono in <see cref="DatiGrafici"/>, l'aspetto dei grafici
+    /// in <see cref="CostruttoreGrafici"/>, le opzioni nei dialoghi della cartella Dialogs.
+    /// </summary>
     public sealed partial class AnalysisPage : Page
     {
-        private enum TipoGrafico { Istogramma, Linee, Radiale }
-        private enum FinestraTemporale { Tutto, UnMese, SeiMesi, UnAnno, CinqueAnni }
-
         private TipoGrafico _grafico = TipoGrafico.Istogramma;
         private FinestraTemporale _finestra = FinestraTemporale.Tutto;
-        private bool _mostraLabelRadiale = true;
+        private bool _mostraEtichetteRadiale = true;
         private readonly HashSet<string> _depositiVisibili = new(StringComparer.OrdinalIgnoreCase);
         private bool _depositiInizializzati;
-
-        private const float MaxAvgMultiplier = 1.6f;
-        private const float MaxHeightMultiplier = 1.4f;
 
         public AnalysisPage()
         {
             InitializeComponent();
-            Loaded += (_, _) =>
-            {
-                Tema.TemaCambiato += Tema_TemaCambiato;
-                AggiornaGrafico();
-            };
+            Loaded += (_, _) => Tema.TemaCambiato += Tema_TemaCambiato;
             Unloaded += (_, _) => Tema.TemaCambiato -= Tema_TemaCambiato;
         }
 
@@ -56,86 +45,40 @@ namespace Depositum
 
         private void BtnGrafico_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is not Button { Tag: string nome }) return;
-            _grafico = nome switch
-            {
-                "Linee" => TipoGrafico.Linee,
-                "Radiale" => TipoGrafico.Radiale,
-                _ => TipoGrafico.Istogramma
-            };
+            if (sender is not Button { Tag: TipoGrafico tipo }) return;
+            _grafico = tipo;
             AggiornaGrafico();
         }
 
         private async void BtnOpzioni_Click(object sender, RoutedEventArgs e)
         {
-            if (_grafico == TipoGrafico.Radiale)
+            switch (_grafico)
             {
-                var checkLabel = new CheckBox
-                {
-                    Content = "Mostra etichette dei depositi",
-                    IsChecked = _mostraLabelRadiale
-                };
-                var dialogRadiale = new ContentDialog
-                {
-                    XamlRoot = XamlRoot,
-                    Title = "Opzioni del grafico radiale",
-                    Content = checkLabel,
-                    CloseButtonText = "Chiudi"
-                };
-                await dialogRadiale.ShowAsync();
-                _mostraLabelRadiale = checkLabel.IsChecked == true;
-                AggiornaGrafico();
-                return;
-            }
-
-            if (_grafico != TipoGrafico.Linee)
-                return;
-
-            var fontCorpo = (FontFamily)Application.Current.Resources["BodyFontFamily"];
-            var panel = new StackPanel { Spacing = 10, MinWidth = 260 };
-            panel.Children.Add(new TextBlock { Text = "Intervallo", FontFamily = fontCorpo, FontWeight = Microsoft.UI.Text.FontWeights.SemiBold });
-            var intervallo = new ComboBox { HorizontalAlignment = HorizontalAlignment.Stretch };
-            intervallo.Items.Add(new ComboBoxItem { Content = "Tutto", Tag = FinestraTemporale.Tutto });
-            intervallo.Items.Add(new ComboBoxItem { Content = "1 mese", Tag = FinestraTemporale.UnMese });
-            intervallo.Items.Add(new ComboBoxItem { Content = "6 mesi", Tag = FinestraTemporale.SeiMesi });
-            intervallo.Items.Add(new ComboBoxItem { Content = "1 anno", Tag = FinestraTemporale.UnAnno });
-            intervallo.Items.Add(new ComboBoxItem { Content = "5 anni", Tag = FinestraTemporale.CinqueAnni });
-            intervallo.SelectedIndex = (int)_finestra;
-            intervallo.SelectionChanged += (_, _) =>
-            {
-                if (intervallo.SelectedItem is ComboBoxItem { Tag: FinestraTemporale selezione })
-                {
-                    _finestra = selezione;
+                case TipoGrafico.Radiale:
+                    var opzioniRadiale = new OpzioniRadialeDialog
+                    {
+                        XamlRoot = XamlRoot,
+                        MostraEtichette = _mostraEtichetteRadiale
+                    };
+                    await opzioniRadiale.ShowAsync();
+                    _mostraEtichetteRadiale = opzioniRadiale.MostraEtichette;
                     AggiornaGrafico();
-                }
-            };
-            panel.Children.Add(intervallo);
-            panel.Children.Add(new TextBlock { Text = "Depositi visibili", FontFamily = fontCorpo, FontWeight = Microsoft.UI.Text.FontWeights.SemiBold, Margin = new Thickness(0, 4, 0, 0) });
+                    break;
 
-            var nomi = DataService.Rilevazioni.SelectMany(r => r.Depositi.Keys)
-                .Distinct(StringComparer.OrdinalIgnoreCase).ToList();
-            if (!_depositiInizializzati)
-            {
-                _depositiVisibili.UnionWith(nomi);
-                _depositiInizializzati = true;
+                case TipoGrafico.Linee:
+                    var nomi = DatiGrafici.NomiDepositi(DataService.Rilevazioni);
+                    InizializzaDepositiVisibili(nomi);
+
+                    var opzioniLinee = new OpzioniLineeDialog(_finestra, nomi, _depositiVisibili) { XamlRoot = XamlRoot };
+                    // Il grafico dietro al dialogo si aggiorna a ogni scelta.
+                    opzioniLinee.OpzioniCambiate += (_, _) =>
+                    {
+                        _finestra = opzioniLinee.Finestra;
+                        AggiornaGrafico();
+                    };
+                    await opzioniLinee.ShowAsync();
+                    break;
             }
-
-            foreach (string nome in nomi)
-            {
-                var check = new CheckBox { Content = nome, IsChecked = _depositiVisibili.Contains(nome) };
-                check.Checked += (_, _) => { _depositiVisibili.Add(nome); AggiornaGrafico(); };
-                check.Unchecked += (_, _) => { _depositiVisibili.Remove(nome); AggiornaGrafico(); };
-                panel.Children.Add(check);
-            }
-
-            var dialog = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = "Opzioni del grafico a linee",
-                Content = new ScrollViewer { Content = panel, MaxHeight = 420 },
-                CloseButtonText = "Chiudi"
-            };
-            await dialog.ShowAsync();
         }
 
         private void AggiornaGrafico()
@@ -174,175 +117,48 @@ namespace Depositum
         private void MostraIstogramma(Rilevazione ultima)
         {
             if (ultima.Depositi.Count == 0) return;
-            var dati = ultima.Depositi.Select(kv => new ValoreDeposito(kv.Key, kv.Value)).ToArray();
-            var series = new ColumnSeries<ValoreDeposito>
-            {
-                Values = dati,
-                Name = "Depositi",
-                Mapping = (item, index) => new(index, item.Valore),
-                YToolTipLabelFormatter = point => point.Model is null ? string.Empty : Formati.ImportoGrafico(point.Model.Valore),
-                Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(0)),
-                MaxBarWidth = 38
-            };
-            series.PointMeasured += point =>
-            {
-                if (point.Model is { } item && point.Visual is { } visual)
-                {
-                    int index = Array.FindIndex(dati, d => ReferenceEquals(d, item));
-                    if (index >= 0)
-                        visual.Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(index));
-                }
-            };
-            CartesianChart.Series = new ISeries[] { series };
-            CartesianChart.XAxes = new[] { new Axis { Labels = dati.Select(d => d.Nome).ToArray(), LabelsRotation = 0 } };
-            CartesianChart.YAxes = new[] { new Axis { Labeler = Formati.ImportoGrafico, 
-                MinLimit = Math.Min(0, dati.Min(d => d.Valore)), 
-                MaxLimit = Math.Max(1, dati.Max(d => d.Valore)) * MaxHeightMultiplier } };
-            CartesianChart.Visibility = Visibility.Visible;
-            TxtCanvasVuoto.Visibility = Visibility.Collapsed;
+
+            CostruttoreGrafici.Istogramma(CartesianChart, ultima);
+            Mostra(CartesianChart);
         }
 
         private void MostraLinee(List<Rilevazione> rilevazioni)
         {
-            DateOnly? inizio = _finestra switch
-            {
-                FinestraTemporale.UnMese => rilevazioni[^1].Data.AddMonths(-1),
-                FinestraTemporale.SeiMesi => rilevazioni[^1].Data.AddMonths(-6),
-                FinestraTemporale.UnAnno => rilevazioni[^1].Data.AddYears(-1),
-                FinestraTemporale.CinqueAnni => rilevazioni[^1].Data.AddYears(-5),
-                _ => null
-            };
-            var visibili = rilevazioni.Where(r => inizio is null || r.Data >= inizio.Value).ToList();
-            if (visibili.Count == 0) return;
+            InizializzaDepositiVisibili(DatiGrafici.NomiDepositi(rilevazioni));
 
-            var nomi = rilevazioni.SelectMany(r => r.Depositi.Keys)
-                .Distinct(StringComparer.OrdinalIgnoreCase).ToList();
-            if (!_depositiInizializzati)
-            {
-                _depositiVisibili.UnionWith(nomi);
-                _depositiInizializzati = true;
-            }
-
-            var puntiPerDeposito = new Dictionary<string, ObservablePoint?[]>(StringComparer.OrdinalIgnoreCase);
-            foreach (string nome in nomi)
-            {
-                if (_depositiVisibili.Contains(nome))
-                    puntiPerDeposito[nome] = new ObservablePoint?[visibili.Count];
-            }
-
-            long sommaValori = 0;
-            int massimoValore = int.MinValue;
-            int minimoValore = int.MaxValue;
-            int numeroValori = 0;
-            for (int indiceRilevazione = 0; indiceRilevazione < visibili.Count; indiceRilevazione++)
-            {
-                var rilevazione = visibili[indiceRilevazione];
-                double dataOa = rilevazione.Data.ToDateTime(TimeOnly.MinValue).ToOADate();
-                foreach (var deposito in rilevazione.Depositi)
-                {
-                    if (!puntiPerDeposito.TryGetValue(deposito.Key, out var punti))
-                        continue;
-
-                    punti[indiceRilevazione] = new ObservablePoint(dataOa, deposito.Value);
-                    sommaValori += deposito.Value;
-                    numeroValori++;
-                    if (deposito.Value > massimoValore)
-                        massimoValore = deposito.Value;
-                    if (deposito.Value < minimoValore)
-                        minimoValore = deposito.Value;
-                }
-            }
-
-            var series = new List<ISeries>();
-            for (int colorIndex = 0; colorIndex < nomi.Count; colorIndex++)
-            {
-                string nome = nomi[colorIndex];
-                if (!puntiPerDeposito.TryGetValue(nome, out var punti) || punti.All(p => p is null))
-                    continue;
-
-                SKColor colore = Tema.ColoreGraficoPerDeposito(colorIndex);
-                var serie = new LineSeries<ObservablePoint?>
-                {
-                    Name = nome,
-                    Values = punti,
-                    Fill = null,
-                    GeometrySize = 9,
-                    Stroke = new SolidColorPaint(colore, 3),
-                    GeometryFill = new SolidColorPaint(colore),
-                    YToolTipLabelFormatter = p => p.Model is { X: double x, Y: double y }
-                        ? Formati.ImportoGrafico(y)
-                        : nome
-                };
-                series.Add(serie);
-            }
-
-            if (series.Count == 0 || numeroValori == 0)
+            DatiLinee? dati = DatiGrafici.PreparaLinee(rilevazioni, _finestra, _depositiVisibili);
+            if (dati is null)
             {
                 TxtCanvasVuoto.Text = "Nessun deposito selezionato per questo intervallo.";
                 return;
             }
 
-            double mediaValori = (double)sommaValori / numeroValori;
-            double valoreMassimoAsse = mediaValori * MaxAvgMultiplier;
-            if (valoreMassimoAsse < massimoValore)
-                valoreMassimoAsse = massimoValore * MaxHeightMultiplier;
-
-            CartesianChart.Series = series;
-            CartesianChart.XAxes = new[]
-            {
-                new Axis
-                {
-                    Labeler = _ => string.Empty,
-                    CustomSeparators = visibili.Select(r => r.Data.ToDateTime(TimeOnly.MinValue).ToOADate()).Distinct().ToArray()
-                }
-            };
-            var coloreGriglia = new SolidColorPaint(Tema.GrigliaGrafico);
-            CartesianChart.YAxes = new[] { new Axis { Labeler = Formati.ImportoGrafico,
-                SeparatorsPaint = coloreGriglia,
-                ZeroPaint = new SolidColorPaint(Tema.GrigliaGrafico),
-                MinLimit = Math.Min(0, minimoValore), 
-                MaxLimit = Math.Max(1, valoreMassimoAsse) } };
-            // Riserva 12 px dentro l'area del grafico a destra e in basso.
-            // I lati degli assi restano automatici per mantenere l'allineamento.
-            CartesianChart.DrawMargin = new LiveChartsCore.Measure.Margin(
-                LiveChartsCore.Measure.Margin.Auto,
-                LiveChartsCore.Measure.Margin.Auto,
-                12,
-                24);
-            CartesianChart.Visibility = Visibility.Visible;
-            TxtCanvasVuoto.Visibility = Visibility.Collapsed;
+            CostruttoreGrafici.Linee(CartesianChart, dati);
+            Mostra(CartesianChart);
         }
 
         private void MostraRadiale(Rilevazione ultima)
         {
             if (ultima.Depositi.Count == 0 || ultima.Depositi.Values.Sum() <= 0) return;
-            int colorIndex = 0;
-            int sumTotale = ultima.Depositi.Values.Sum();
-            // Il grafico vuole un solo nome di font: il primo della famiglia con grazie.
-            string fontSerif = ((FontFamily)Application.Current.Resources["SerifFontFamily"]).Source.Split(',')[0].Trim();
-            PieChart.Series = ultima.Depositi.Select(kv => (ISeries)new PieSeries<int>
-            {
-                Name = kv.Key,
-                Values = new[] { kv.Value },
-                Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(colorIndex++)),
-                Pushout = 5,
-                HoverPushout = 15,
-                ShowDataLabels = _mostraLabelRadiale,
-                DataLabelsFormatter = _ => _mostraLabelRadiale ? kv.Key : string.Empty,
-                DataLabelsPaint = new SolidColorPaint(Tema.EtichetteGrafico)
-                {
-                    SKTypeface = SKTypeface.FromFamilyName(fontSerif, SKFontStyle.Bold)
-                },
-                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                DataLabelsSize = 22,
 
+            CostruttoreGrafici.Radiale(PieChart, ultima, _mostraEtichetteRadiale);
+            Mostra(PieChart);
+        }
 
-                ToolTipLabelFormatter = point => $"{Formati.ImportoGrafico(point.Coordinate.PrimaryValue)} ({(point.Coordinate.PrimaryValue / sumTotale):P1})"
-            }).ToArray();
-            PieChart.Visibility = Visibility.Visible;
+        /// <summary>Rende visibile il grafico indicato al posto del messaggio "nessun dato".</summary>
+        private void Mostra(UIElement grafico)
+        {
+            grafico.Visibility = Visibility.Visible;
             TxtCanvasVuoto.Visibility = Visibility.Collapsed;
         }
 
-        private sealed record ValoreDeposito(string Nome, int Valore);
+        /// <summary>Alla prima occasione dopo l'apertura della pagina, tutti i depositi sono visibili.</summary>
+        private void InizializzaDepositiVisibili(IEnumerable<string> nomi)
+        {
+            if (_depositiInizializzati) return;
+
+            _depositiVisibili.UnionWith(nomi);
+            _depositiInizializzati = true;
+        }
     }
 }

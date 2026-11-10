@@ -2,7 +2,8 @@
 <Page
     x:Class="Depositum.DashboardPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Depositum">
 
     <Grid Background="{ThemeResource CanvasBrush}" 
           Padding="{StaticResource PageEdgePaddingVertical}" 
@@ -54,15 +55,30 @@
                                HorizontalAlignment="Center" />
                 </StackPanel>
 
-                <!-- Griglia dei depositi popolata dinamicamente a 2 colonne -->
-                <Grid x:Name="DepositiGrid" 
-                      ColumnSpacing="{StaticResource StandardElementSpacing}" 
-                      RowSpacing="{StaticResource StandardElementSpacing}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                </Grid>
+                <!-- Card dei depositi su 2 colonne di pari larghezza -->
+                <ItemsRepeater x:Name="DepositiRepeater">
+                    <ItemsRepeater.Layout>
+                        <UniformGridLayout MaximumRowsOrColumns="2"
+                                           MinItemWidth="100"
+                                           MinItemHeight="88"
+                                           MinColumnSpacing="{StaticResource StandardElementSpacing}"
+                                           MinRowSpacing="{StaticResource StandardElementSpacing}"
+                                           ItemsStretch="Fill" />
+                    </ItemsRepeater.Layout>
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate x:DataType="local:DepositoCard">
+                            <Border Height="88"
+                                    CornerRadius="12"
+                                    Background="{x:Bind Sfondo}"
+                                    Padding="14,10,14,10">
+                                <Grid>
+                                    <TextBlock Text="{x:Bind Nome}" Style="{StaticResource DepositCardNameStyle}" />
+                                    <TextBlock Text="{x:Bind Importo}" Style="{StaticResource DepositCardAmountStyle}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
             </Grid>
         </ScrollViewer>
 
