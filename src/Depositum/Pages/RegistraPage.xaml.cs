@@ -5,7 +5,6 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 
 namespace Depositum
@@ -34,7 +33,7 @@ namespace Depositum
             }
 
             int valore = (int)Math.Round(args.NewValue, MidpointRounding.AwayFromZero);
-            if (valore >= 1 && valore <= 999_999_999)
+            if (RegoleDeposito.ImportoValido(valore))
             {
                 item.Valore = valore;
                 if (sender.Value != valore) sender.Value = valore;
@@ -48,7 +47,7 @@ namespace Depositum
         private void InizializzaPagina()
         {
             // 1. Data precompilata con la data odierna
-            TxtDataInput.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            TxtDataInput.Text = Formati.Data(DateOnly.FromDateTime(DateTime.Today));
 
             // 2. Precompila la lista con i depositi dell'ultima rilevazione (se esiste)
             _depositi.Clear();
@@ -102,19 +101,14 @@ namespace Depositum
                 }
                 catch (Exception ex)
                 {
-                    StatusInfoBar.Severity = InfoBarSeverity.Error;
-                    StatusInfoBar.Title = "Errore durante la rimozione";
-                    StatusInfoBar.Message = ex.Message;
-                    StatusInfoBar.IsOpen = true;
+                    MostraMessaggio(InfoBarSeverity.Error, "Errore durante la rimozione", ex.Message);
                 }
             }
         }
 
         /// <summary>
         /// Apre un dialogo modale per inserire un nuovo deposito (Nome e Valore intero).
-        /// Controlli:
-        /// - Nome: non vuoto e massimo 30 caratteri.
-        /// - Valore: numero intero con 0 &lt; v &lt; 1.000.000.000.
+        /// Nome e importo sono controllati da <see cref="RegoleDeposito.Valida"/>.
         /// Ordine tasti: Annulla (sinistra) / Aggiungi (destra).
         /// </summary>
         private async void BtnAggiungiDeposito_Click(object sender, RoutedEventArgs e)
@@ -144,7 +138,7 @@ namespace Depositum
                 var txtNome = new TextBox
                 {
                     PlaceholderText = "Nome deposito",
-                    MaxLength = 30
+                    MaxLength = RegoleDeposito.LunghezzaMassimaNome
                 };
 
                 var numValore = new NumberBox
@@ -176,30 +170,10 @@ namespace Depositum
                 // Validazione al click su 'Aggiungi' (SecondaryButton)
                 dialog.SecondaryButtonClick += (d, args) =>
                 {
-                    string nome = txtNome.Text.Trim();
-
-                    // Controllo nome vuoto o lunghezza > 30 caratteri
-                    if (string.IsNullOrWhiteSpace(nome))
+                    string? errore = RegoleDeposito.Valida(txtNome.Text, numValore.Value);
+                    if (errore != null)
                     {
-                        txtErrore.Text = "Il nome del deposito non può essere vuoto.";
-                        txtErrore.Visibility = Visibility.Visible;
-                        args.Cancel = true;
-                        return;
-                    }
-
-                    if (nome.Length > 30)
-                    {
-                        txtErrore.Text = "La lunghezza del nome non deve superare 30 caratteri.";
-                        txtErrore.Visibility = Visibility.Visible;
-                        args.Cancel = true;
-                        return;
-                    }
-
-                    // Controllo che il valore sia un numero intero e compreso tra 0 e 1.000.000.000 (esclusi)
-                    double val = numValore.Value;
-                    if (double.IsNaN(val) || val <= 0 || val >= 1_000_000_000 || val % 1 != 0)
-                    {
-                        txtErrore.Text = "L'importo deve essere un numero intero compreso tra 1 e 1mlrd";
+                        txtErrore.Text = errore;
                         txtErrore.Visibility = Visibility.Visible;
                         args.Cancel = true;
                         return;
@@ -231,10 +205,7 @@ namespace Depositum
             }
             catch (Exception ex)
             {
-                StatusInfoBar.Severity = InfoBarSeverity.Error;
-                StatusInfoBar.Title = "Errore durante l'apertura del dialogo";
-                StatusInfoBar.Message = ex.Message;
-                StatusInfoBar.IsOpen = true;
+                MostraMessaggio(InfoBarSeverity.Error, "Errore durante l'apertura del dialogo", ex.Message);
             }
         }
 
@@ -243,14 +214,7 @@ namespace Depositum
         /// </summary>
         private void BtnAnnulla_Click(object sender, RoutedEventArgs e)
         {
-            if (Frame.CanGoBack)
-            {
-                Frame.GoBack();
-            }
-            else
-            {
-                Frame.Navigate(typeof(DashboardPage));
-            }
+            Frame.TornaIndietro();
         }
 
         /// <summary>
@@ -260,44 +224,32 @@ namespace Depositum
         {
             string dataStr = TxtDataInput.Text.Trim();
 
-            if (!DateOnly.TryParseExact(dataStr, new[] { "dd/MM/yyyy", "d/M/yyyy", "yyyy-MM-dd" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dataParsed) &&
-                !DateOnly.TryParse(dataStr, out dataParsed))
+            if (!Formati.ProvaALeggereData(dataStr, out var dataParsed))
             {
-                StatusInfoBar.Severity = InfoBarSeverity.Error;
-                StatusInfoBar.Title = "Data non valida";
-                StatusInfoBar.Message = "Inserisci una data valida nel formato gg/mm/aaaa.";
-                StatusInfoBar.IsOpen = true;
+                MostraMessaggio(InfoBarSeverity.Error, "Data non valida", "Inserisci una data valida nel formato gg/mm/aaaa.");
                 return;
             }
 
             if (_depositi.Count == 0)
             {
-                StatusInfoBar.Severity = InfoBarSeverity.Warning;
-                StatusInfoBar.Title = "Nessun deposito";
-                StatusInfoBar.Message = "Aggiungi almeno un deposito prima di confermare.";
-                StatusInfoBar.IsOpen = true;
+                MostraMessaggio(InfoBarSeverity.Warning, "Nessun deposito", "Aggiungi almeno un deposito prima di confermare.");
                 return;
             }
 
             // Validazione su tutti gli elementi della lista prima del salvataggio definitivo
             foreach (var d in _depositi)
             {
-                string nome = d.Nome.Trim();
-                if (string.IsNullOrWhiteSpace(nome) || nome.Length > 30)
+                if (!RegoleDeposito.NomeValido(d.Nome))
                 {
-                    StatusInfoBar.Severity = InfoBarSeverity.Error;
-                    StatusInfoBar.Title = "Nome deposito non valido";
-                    StatusInfoBar.Message = $"Il deposito \"{d.Nome}\" deve avere un nome compreso tra 1 e 30 caratteri.";
-                    StatusInfoBar.IsOpen = true;
+                    MostraMessaggio(InfoBarSeverity.Error, "Nome deposito non valido",
+                        $"Il deposito \"{d.Nome}\" deve avere un nome compreso tra 1 e {RegoleDeposito.LunghezzaMassimaNome} caratteri.");
                     return;
                 }
 
-                if (d.Valore <= 0 || d.Valore >= 1_000_000_000)
+                if (!RegoleDeposito.ImportoValido(d.Valore))
                 {
-                    StatusInfoBar.Severity = InfoBarSeverity.Error;
-                    StatusInfoBar.Title = "Importo non valido";
-                    StatusInfoBar.Message = $"L'importo del deposito \"{d.Nome}\" deve essere un intero compreso tra 1 e 999.999.999 €.";
-                    StatusInfoBar.IsOpen = true;
+                    MostraMessaggio(InfoBarSeverity.Error, "Importo non valido",
+                        $"L'importo del deposito \"{d.Nome}\" deve essere un intero compreso tra {RegoleDeposito.ImportoMinimo} e {Formati.ImportoGrafico(RegoleDeposito.ImportoMassimo)}.");
                     return;
                 }
             }
@@ -320,14 +272,15 @@ namespace Depositum
             DataService.AggiungiRilevazione(nuovaRilevazione);
 
             // Ritorno alla dashboard principale
-            if (Frame.CanGoBack)
-            {
-                Frame.GoBack();
-            }
-            else
-            {
-                Frame.Navigate(typeof(DashboardPage));
-            }
+            Frame.TornaIndietro();
+        }
+
+        private void MostraMessaggio(InfoBarSeverity gravita, string titolo, string messaggio)
+        {
+            StatusInfoBar.Severity = gravita;
+            StatusInfoBar.Title = titolo;
+            StatusInfoBar.Message = messaggio;
+            StatusInfoBar.IsOpen = true;
         }
     }
 }

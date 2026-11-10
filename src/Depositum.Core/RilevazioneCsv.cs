@@ -36,13 +36,9 @@ namespace Depositum.Core
 
                 if (string.Equals(chiave, "Data", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (DateOnly.TryParseExact(valore, new[] { "dd/MM/yyyy", "d/M/yyyy", "yyyy-MM-dd" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out var data))
+                    if (Formati.ProvaALeggereData(valore, out var data))
                     {
                         rilevazione.Data = data;
-                    }
-                    else if (DateOnly.TryParse(valore, out var dataFallback))
-                    {
-                        rilevazione.Data = dataFallback;
                     }
                 }
                 else if (string.Equals(chiave, "Totale", StringComparison.OrdinalIgnoreCase))
@@ -70,7 +66,7 @@ namespace Depositum.Core
         public static string InRiga(Rilevazione rilevazione)
         {
             var sb = new StringBuilder();
-            sb.Append($"Data:{rilevazione.Data:dd/MM/yyyy}");
+            sb.Append($"Data:{Formati.Data(rilevazione.Data)}");
             foreach (var dep in rilevazione.Depositi)
             {
                 sb.Append($",{dep.Key}:{dep.Value}");

@@ -22,7 +22,7 @@ namespace Depositum.Core
         public override string ToString()
         {
             string depositiStr = string.Join(", ", Depositi.Select(d => $"{d.Key}: {d.Value}"));
-            return $"Data: {Data:dd/MM/yyyy} | {depositiStr} | Totale: {Totale}";
+            return $"Data: {Formati.Data(Data)} | {depositiStr} | Totale: {Totale}";
         }
     }
 }

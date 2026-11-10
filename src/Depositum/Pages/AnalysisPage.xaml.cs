@@ -10,7 +10,6 @@ using Microsoft.UI.Xaml.Navigation;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace Depositum
@@ -52,10 +51,7 @@ namespace Depositum
 
         private void BtnIndietro_Click(object sender, RoutedEventArgs e)
         {
-            if (Frame.CanGoBack)
-                Frame.GoBack();
-            else
-                Frame.Navigate(typeof(DashboardPage));
+            Frame.TornaIndietro();
         }
 
         private void BtnGrafico_Click(object sender, RoutedEventArgs e)
@@ -184,7 +180,7 @@ namespace Depositum
                 Values = dati,
                 Name = "Depositi",
                 Mapping = (item, index) => new(index, item.Valore),
-                YToolTipLabelFormatter = point => point.Model is null ? string.Empty : $"{point.Model.Valore:N0} €",
+                YToolTipLabelFormatter = point => point.Model is null ? string.Empty : Formati.ImportoGrafico(point.Model.Valore),
                 Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(0)),
                 MaxBarWidth = 38
             };
@@ -199,7 +195,7 @@ namespace Depositum
             };
             CartesianChart.Series = new ISeries[] { series };
             CartesianChart.XAxes = new[] { new Axis { Labels = dati.Select(d => d.Nome).ToArray(), LabelsRotation = 0 } };
-            CartesianChart.YAxes = new[] { new Axis { Labeler = value => $"{value:N0} €", 
+            CartesianChart.YAxes = new[] { new Axis { Labeler = Formati.ImportoGrafico, 
                 MinLimit = Math.Min(0, dati.Min(d => d.Valore)), 
                 MaxLimit = Math.Max(1, dati.Max(d => d.Valore)) * MaxHeightMultiplier } };
             CartesianChart.Visibility = Visibility.Visible;
@@ -274,7 +270,7 @@ namespace Depositum
                     Stroke = new SolidColorPaint(colore, 3),
                     GeometryFill = new SolidColorPaint(colore),
                     YToolTipLabelFormatter = p => p.Model is { X: double x, Y: double y }
-                        ? $"{y.ToString("N0", CultureInfo.CurrentCulture)} €"
+                        ? Formati.ImportoGrafico(y)
                         : nome
                 };
                 series.Add(serie);
@@ -301,7 +297,7 @@ namespace Depositum
                 }
             };
             var coloreGriglia = new SolidColorPaint(Tema.GrigliaGrafico);
-            CartesianChart.YAxes = new[] { new Axis { Labeler = value => $"{value:N0} €",
+            CartesianChart.YAxes = new[] { new Axis { Labeler = Formati.ImportoGrafico,
                 SeparatorsPaint = coloreGriglia,
                 ZeroPaint = new SolidColorPaint(Tema.GrigliaGrafico),
                 MinLimit = Math.Min(0, minimoValore), 
@@ -341,7 +337,7 @@ namespace Depositum
                 DataLabelsSize = 22,
 
 
-                ToolTipLabelFormatter = point => $"{point.Coordinate.PrimaryValue:N0} € ({(point.Coordinate.PrimaryValue / sumTotale):P1})"
+                ToolTipLabelFormatter = point => $"{Formati.ImportoGrafico(point.Coordinate.PrimaryValue)} ({(point.Coordinate.PrimaryValue / sumTotale):P1})"
             }).ToArray();
             PieChart.Visibility = Visibility.Visible;
             TxtCanvasVuoto.Visibility = Visibility.Collapsed;

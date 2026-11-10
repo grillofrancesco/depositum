@@ -1,3 +1,4 @@
+using Depositum.Core;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -34,7 +35,7 @@ namespace Depositum
             {
                 // Stato vuoto: nascondi la data nell'header
                 TxtDataHeader.Visibility = Visibility.Collapsed;
-                TxtTotaleValore.Text = "0€";
+                TxtTotaleValore.Text = Formati.Importo(0);
                 DepositiGrid.Visibility = Visibility.Collapsed;
                 EmptyStateContainer.Visibility = Visibility.Visible;
                 return;
@@ -42,7 +43,7 @@ namespace Depositum
 
             // Presenza di dati: mostra la data nell'header e la griglia
             TxtDataHeader.Visibility = Visibility.Visible;
-            TxtDataHeader.Text = ultima.Data.ToString("dd/MM/yyyy");
+            TxtDataHeader.Text = Formati.Data(ultima.Data);
             EmptyStateContainer.Visibility = Visibility.Collapsed;
             DepositiGrid.Visibility = Visibility.Visible;
 
@@ -65,7 +66,7 @@ namespace Depositum
                 index++;
             }
 
-            TxtTotaleValore.Text = $"{ultima.Totale:N0}€";
+            TxtTotaleValore.Text = Formati.Importo(ultima.Totale);
         }
 
         private static Border CreaBoxDeposito(string nome, int importo, Brush sfondo)
@@ -94,7 +95,7 @@ namespace Depositum
 
             var txtImporto = new TextBlock
             {
-                Text = $"{importo:N0}€",
+                Text = Formati.Importo(importo),
                 FontSize = 32,
                 FontWeight = FontWeights.Bold,
                 Foreground = coloreTesto,
