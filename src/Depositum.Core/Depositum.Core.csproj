@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Logica senza interfaccia: nessuna dipendenza da WinUI, così è testabile da Depositum.Tests. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Depositum.Core</RootNamespace>
+    <Nullable>enable</Nullable>
+    <IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
+
+</Project>

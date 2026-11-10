@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Depositum
+namespace Depositum.Core
 {
     /// <summary>
     /// Rappresenta una singola rilevazione letta dal file CSV.
