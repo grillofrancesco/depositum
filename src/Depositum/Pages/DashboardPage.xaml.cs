@@ -1,11 +1,8 @@
-using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using System.Globalization;
-using Windows.UI;
 
 namespace Depositum
 {
@@ -60,10 +57,7 @@ namespace Depositum
                     DepositiGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                 }
 
-                string hexColore = PaletteDepositi.ColoriHex[index % PaletteDepositi.ColoriHex.Count];
-                Color colore = HexToColor(hexColore);
-
-                var box = CreaBoxDeposito(deposito.Key, deposito.Value, colore);
+                var box = CreaBoxDeposito(deposito.Key, deposito.Value, PaletteDepositi.Pennello(index));
                 Grid.SetRow(box, riga);
                 Grid.SetColumn(box, colonna);
                 DepositiGrid.Children.Add(box);
@@ -74,13 +68,15 @@ namespace Depositum
             TxtTotaleValore.Text = $"{ultima.Totale:N0}€";
         }
 
-        private static Border CreaBoxDeposito(string nome, int importo, Color coloreSfondo)
+        private static Border CreaBoxDeposito(string nome, int importo, Brush sfondo)
         {
+            var coloreTesto = (Brush)Application.Current.Resources["OnAccentBrush"];
+
             var border = new Border
             {
                 Height = 88,
                 CornerRadius = new CornerRadius(12),
-                Background = new SolidColorBrush(coloreSfondo),
+                Background = sfondo,
                 Padding = new Thickness(14, 10, 14, 10)
             };
 
@@ -91,7 +87,7 @@ namespace Depositum
                 Text = nome,
                 FontSize = 20,
                 FontWeight = FontWeights.SemiBold,
-                Foreground = new SolidColorBrush(Colors.White),
+                Foreground = coloreTesto,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top
             };
@@ -101,7 +97,7 @@ namespace Depositum
                 Text = $"{importo:N0}€",
                 FontSize = 32,
                 FontWeight = FontWeights.Bold,
-                Foreground = new SolidColorBrush(Colors.White),
+                Foreground = coloreTesto,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom
             };
@@ -111,15 +107,6 @@ namespace Depositum
 
             border.Child = gridInterno;
             return border;
-        }
-
-        private static Color HexToColor(string hex)
-        {
-            hex = hex.TrimStart('#');
-            byte r = byte.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
-            byte g = byte.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
-            byte b = byte.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
-            return Color.FromArgb(255, r, g, b);
         }
 
         private void BtnRegistraDepositi_Click(object sender, RoutedEventArgs e)

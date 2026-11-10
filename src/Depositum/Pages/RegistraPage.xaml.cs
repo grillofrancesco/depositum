@@ -1,5 +1,4 @@
 using Depositum.Core;
-using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -139,6 +138,7 @@ namespace Depositum
                     dialog.Style = style;
                 }
 
+                var fontCorpo = (FontFamily)Application.Current.Resources["BodyFontFamily"];
                 var sp = new StackPanel { Spacing = 10, Width = 300 };
 
                 var txtNome = new TextBox
@@ -158,16 +158,16 @@ namespace Depositum
 
                 var txtErrore = new TextBlock
                 {
-                    FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI"),
-                    Foreground = new SolidColorBrush(Colors.Salmon),
+                    FontFamily = fontCorpo,
+                    Foreground = (Brush)Application.Current.Resources["ErrorTextBrush"],
                     FontSize = 13,
                     TextWrapping = TextWrapping.Wrap,
                     Visibility = Visibility.Collapsed
                 };
 
-                sp.Children.Add(new TextBlock { Text = "Nome deposito:", FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI"), FontWeight = FontWeights.SemiBold });
+                sp.Children.Add(new TextBlock { Text = "Nome deposito:", FontFamily = fontCorpo, FontWeight = FontWeights.SemiBold });
                 sp.Children.Add(txtNome);
-                sp.Children.Add(new TextBlock { Text = "Importo (€, intero):", FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI"), FontWeight = FontWeights.SemiBold });
+                sp.Children.Add(new TextBlock { Text = "Importo (€, intero):", FontFamily = fontCorpo, FontWeight = FontWeights.SemiBold });
                 sp.Children.Add(numValore);
                 sp.Children.Add(txtErrore);
 

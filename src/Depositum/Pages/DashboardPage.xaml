@@ -75,11 +75,7 @@
 
             <TextBlock x:Name="TxtTotaleValore" 
                        Text="0€" 
-                       FontSize="30" 
-                       FontFamily="Constantia, Georgia, Times New Roman"
-                       FontWeight="Bold" 
-                       Foreground="{ThemeResource LaurelLightBrush}" 
-                       VerticalAlignment="Center" 
+                       Style="{StaticResource AmountStyle}" 
                        HorizontalAlignment="Right" />
         </Grid>
 
@@ -100,19 +96,8 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Registra depositi" 
-                               FontFamily="Segoe UI"
-                               FontSize="16" 
-                               FontWeight="SemiBold" 
-                               Foreground="White" 
-                               VerticalAlignment="Center" 
-                               HorizontalAlignment="Left" />
-                    <FontIcon Grid.Column="1" Glyph="&#xF10A;" 
-                              FontFamily="{StaticResource FluentIconsRegular}"
-                              FontSize="18" 
-                              Foreground="White" 
-                              VerticalAlignment="Center" 
-                              HorizontalAlignment="Right" />
+                    <TextBlock Text="Registra depositi" Style="{StaticResource BigButtonLabelStyle}" />
+                    <FontIcon Grid.Column="1" Glyph="&#xF10A;" Style="{StaticResource BigButtonIconStyle}" />
                 </Grid>
             </Button>
 
@@ -121,19 +106,8 @@
                     Click="BtnOsservaNelTempo_Click"
                     Style="{StaticResource BigActionButtonStyle}">
                 <Grid HorizontalAlignment="Stretch">
-                    <TextBlock Text="Osserva nel tempo" 
-                               FontFamily="Segoe UI"
-                               FontSize="16" 
-                               FontWeight="SemiBold" 
-                               Foreground="White" 
-                               VerticalAlignment="Center" 
-                               HorizontalAlignment="Left" />
-                    <FontIcon Glyph="&#xE45E;" 
-                              FontFamily="{StaticResource FluentIconsRegular}"
-                              FontSize="18" 
-                              Foreground="White" 
-                              VerticalAlignment="Center" 
-                              HorizontalAlignment="Right" />
+                    <TextBlock Text="Osserva nel tempo" Style="{StaticResource BigButtonLabelStyle}" />
+                    <FontIcon Glyph="&#xE45E;" Style="{StaticResource BigButtonIconStyle}" />
                 </Grid>
             </Button>
         </StackPanel>

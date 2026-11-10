@@ -62,7 +62,7 @@
                                     <TextBlock Text="{x:Bind Nome}" 
                                                FontSize="15" 
                                                FontWeight="SemiBold" 
-                                               Foreground="{ThemeResource IvoryBrush}" 
+                                               Foreground="{ThemeResource TextPrimaryBrush}" 
                                                VerticalAlignment="Center" 
                                                TextTrimming="CharacterEllipsis" />
 
@@ -82,9 +82,7 @@
                                             Tag="{x:Bind}"
                                             Style="{StaticResource RemoveItemButtonStyle}"
                                             VerticalAlignment="Center">
-                                        <FontIcon Glyph="&#xF34D;"
-                                                  FontFamily="{StaticResource FluentIconsRegular}"
-                                                  FontSize="16" />
+                                        <FontIcon Glyph="&#xF34D;" Style="{StaticResource ButtonIconStyle}" FontSize="16" />
                                     </Button>
                                 </Grid>
                             </Border>
@@ -125,8 +123,8 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <FontIcon Glyph="&#xF10A;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="16" Foreground="{ThemeResource IvoryBrush}" />
-                    <TextBlock Grid.Column="1" Text="Aggiungi Deposito" FontFamily="Segoe UI" FontSize="15" FontWeight="SemiBold" Foreground="{ThemeResource IvoryBrush}" VerticalAlignment="Center" />
+                    <FontIcon Glyph="&#xF10A;" Style="{StaticResource ButtonIconStyle}" FontSize="16" Foreground="{ThemeResource TextPrimaryBrush}" />
+                    <TextBlock Grid.Column="1" Text="Aggiungi Deposito" Style="{StaticResource ButtonLabelStyle}" />
                 </Grid>
             </Button>
         </Grid>

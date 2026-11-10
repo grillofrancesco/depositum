@@ -295,3 +295,10 @@ vanno trattati dopo (decisione del 10/11/2026). Alcuni toccano i dati.
   vecchia posizione del progetto e non vengono più aggiornate. Il pacchetto di
   sviluppo registrato in Windows punta ancora lì: dopo il primo avvio da Visual
   Studio (che lo registra dalla nuova posizione) si possono cancellare.
+- **Fase 2.** I ruoli nuovi sono pennelli, quindi hanno il suffisso `Brush`
+  invece dei nomi ipotizzati nel piano: `ChartGridBrush`, `ChartLabelBrush`,
+  `Deposito1Brush … Deposito8Brush`. Serve che siano pennelli perché la fase 3
+  ne cambia il colore dal vivo, cosa impossibile con una risorsa `Color`.
+  Stili di testo aggiunti: `AmountStyle`, `ButtonLabelStyle`,
+  `BigButtonLabelStyle`, `SmallButtonLabelStyle`; per le icone
+  `ButtonIconStyle` e `BigButtonIconStyle`.

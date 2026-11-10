@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Font e stili di testo. I colori arrivano da Colors.xaml. -->
+
+    <FontFamily x:Key="BodyFontFamily">Segoe UI</FontFamily>
+    <FontFamily x:Key="SerifFontFamily">Constantia, Georgia, Times New Roman</FontFamily>
+
+    <!-- Testo predefinito di tutta l'app -->
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}" />
+    </Style>
+
+    <!-- Titoli -->
+    <Style x:Key="TitleSerifStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource SerifFontFamily}" />
+        <Setter Property="FontSize" Value="29" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="CharacterSpacing" Value="110" />
+        <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="SubtitleSerifStyle" TargetType="TextBlock" BasedOn="{StaticResource TitleSerifStyle}">
+        <Setter Property="FontSize" Value="25" />
+        <Setter Property="CharacterSpacing" Value="50" />
+    </Style>
+    <Style x:Key="HeaderDateStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{ThemeResource AccentTextBrush}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <!-- Etichette e valori -->
+    <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{ThemeResource SecondaryTextBrush}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <!-- Importo in evidenza (totale della dashboard) -->
+    <Style x:Key="AmountStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource SerifFontFamily}" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{ThemeResource AccentTextBrush}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <!-- Testo dentro i pulsanti -->
+    <Style x:Key="ButtonLabelStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <!-- Pulsanti grandi della dashboard: testo a sinistra, icona a destra -->
+    <Style x:Key="BigButtonLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource ButtonLabelStyle}">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Foreground" Value="{ThemeResource OnAccentBrush}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <!-- Pulsanti di scelta del grafico -->
+    <Style x:Key="SmallButtonLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource ButtonLabelStyle}">
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+</ResourceDictionary>

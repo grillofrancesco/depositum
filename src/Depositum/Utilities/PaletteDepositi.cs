@@ -1,15 +1,21 @@
-using System.Collections.Generic;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
+using Windows.UI;
 
 namespace Depositum
 {
-    /// <summary>Palette condivisa per depositi in dashboard e grafici.</summary>
+    /// <summary>
+    /// Colori dei depositi, condivisi tra dashboard e grafici.
+    /// I valori sono in Theme/Colors.xaml (Deposito1Brush … Deposito8Brush).
+    /// </summary>
     internal static class PaletteDepositi
     {
-        public static IReadOnlyList<string> ColoriHex { get; } = new[]
-        {
-            // Toni profondi e terrosi, con contrasto sufficiente per il testo chiaro.
-            "#43523A", "#3B5146", "#4B4937", "#41464D",
-            "#514359", "#37505A", "#59443A", "#4B5142"
-        };
+        private const int NumeroColori = 8;
+
+        /// <summary>Pennello del deposito in posizione <paramref name="indice"/>; oltre l'ottavo i colori si ripetono.</summary>
+        public static SolidColorBrush Pennello(int indice) =>
+            (SolidColorBrush)Application.Current.Resources[$"Deposito{indice % NumeroColori + 1}Brush"];
+
+        public static Color Colore(int indice) => Pennello(indice).Color;
     }
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        Tutti i colori dell'app. Ogni chiave dice a cosa serve il colore, non che tinta ha.
+        Nelle pagine e negli stili non vanno scritti colori: si usa una di queste chiavi.
+    -->
+
+    <!-- ===== Chiavi di sistema: sovrascrivono risorse di WinUI ===== -->
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+            <Color x:Key="SystemAccentColor">#78885A</Color>
+
+            <!-- Campi di testo (TextBox, NumberBox) -->
+            <SolidColorBrush x:Key="TextControlBackground" Color="#20231D" />
+            <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#282C24" />
+            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#252A20" />
+            <SolidColorBrush x:Key="TextControlBorderBrush" Color="#41483A" />
+            <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#59664A" />
+            <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#A8B58A" />
+            <SolidColorBrush x:Key="TextControlForeground" Color="#F1EEDF" />
+            <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="TextControlForegroundFocused" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="#898D7F" />
+            <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#A8AA9E" />
+            <SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="#A8B58A" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
+    <!-- ===== Chiavi dell'app ===== -->
+
+    <!-- Sfondi e bordi -->
+    <SolidColorBrush x:Key="CanvasBrush" Color="#141613" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#1C1F1A" />
+    <SolidColorBrush x:Key="RaisedSurfaceBrush" Color="#242820" />
+    <SolidColorBrush x:Key="BorderBrushSubtle" Color="#3A4034" />
+
+    <!-- Testi -->
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F1EEDF" />
+    <SolidColorBrush x:Key="SecondaryTextBrush" Color="#B8B9AC" />
+    <SolidColorBrush x:Key="MutedTextBrush" Color="#888B7E" />
+    <SolidColorBrush x:Key="AccentTextBrush" Color="#A8B58A" />
+    <SolidColorBrush x:Key="ErrorTextBrush" Color="#FA8072" />
+    <!-- Testo e icone sopra superfici colorate: pulsanti grandi, card dei depositi -->
+    <SolidColorBrush x:Key="OnAccentBrush" Color="#FFFFFF" />
+
+    <!-- Pulsante d'azione principale -->
+    <SolidColorBrush x:Key="AccentActionBackground" Color="#657747" />
+    <SolidColorBrush x:Key="AccentActionPointerOverBrush" Color="#7B8D58" />
+    <SolidColorBrush x:Key="AccentActionPressedBrush" Color="#53633D" />
+    <SolidColorBrush x:Key="AccentActionDisabledBrush" Color="#242520" />
+    <SolidColorBrush x:Key="AccentActionDisabledForegroundBrush" Color="#8A8C83" />
+    <SolidColorBrush x:Key="AccentActionBorder" Color="#87996A" />
+    <SolidColorBrush x:Key="AccentActionForeground" Color="#FFFFFF" />
+
+    <!-- Azione distruttiva (rimozione di un deposito) -->
+    <SolidColorBrush x:Key="DestructiveSurfaceBrush" Color="#29251F" />
+    <SolidColorBrush x:Key="DestructiveBorderBrush" Color="#55453A" />
+    <SolidColorBrush x:Key="DestructiveForegroundBrush" Color="#D7A997" />
+
+    <!-- Grafici -->
+    <SolidColorBrush x:Key="ChartGridBrush" Color="#5A5A5A" />
+    <SolidColorBrush x:Key="ChartLabelBrush" Color="#FFFFFF" />
+
+    <!-- Depositi: toni profondi e terrosi, con contrasto sufficiente per il testo chiaro.
+         Assegnati in ordine e riusati ciclicamente oltre l'ottavo. -->
+    <SolidColorBrush x:Key="Deposito1Brush" Color="#43523A" />
+    <SolidColorBrush x:Key="Deposito2Brush" Color="#3B5146" />
+    <SolidColorBrush x:Key="Deposito3Brush" Color="#4B4937" />
+    <SolidColorBrush x:Key="Deposito4Brush" Color="#41464D" />
+    <SolidColorBrush x:Key="Deposito5Brush" Color="#514359" />
+    <SolidColorBrush x:Key="Deposito6Brush" Color="#37505A" />
+    <SolidColorBrush x:Key="Deposito7Brush" Color="#59443A" />
+    <SolidColorBrush x:Key="Deposito8Brush" Color="#4B5142" />
+</ResourceDictionary>

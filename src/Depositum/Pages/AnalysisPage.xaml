@@ -21,12 +21,12 @@
                 <Button Width="34" Height="34" MinWidth="0" MinHeight="0" Padding="0"
                         Style="{StaticResource BaseDarkButtonStyle}"
                         Click="BtnIndietro_Click" AutomationProperties.Name="Torna alla dashboard">
-                    <FontIcon Glyph="&#xF15C;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
+                    <FontIcon Glyph="&#xF15C;" Style="{StaticResource ButtonIconStyle}" />
                 </Button>
                 <Button x:Name="BtnOpzioni" Width="32" Height="32" MinWidth="0" MinHeight="0" Padding="0"
                         Style="{StaticResource BaseDarkButtonStyle}"
                         Click="BtnOpzioni_Click" AutomationProperties.Name="Opzioni del grafico">
-                    <FontIcon Glyph="&#xF557;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
+                    <FontIcon Glyph="&#xF557;" Style="{StaticResource ButtonIconStyle}" />
                 </Button>
             </StackPanel>
         </Grid>
@@ -54,22 +54,22 @@
             <Button x:Name="BtnIstogramma" Grid.Column="0" Click="BtnGrafico_Click"
                     Tag="Istogramma" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
-                    <FontIcon Glyph="&#xF342;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
-                    <TextBlock Text="Istogramma" FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    <FontIcon Glyph="&#xF342;" Style="{StaticResource ButtonIconStyle}" />
+                    <TextBlock Text="Istogramma" Style="{StaticResource SmallButtonLabelStyle}" />
                 </StackPanel>
             </Button>
             <Button x:Name="BtnLinee" Grid.Column="1" Click="BtnGrafico_Click"
                     Tag="Linee" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
-                    <FontIcon Glyph="&#xF343;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
-                    <TextBlock Text="Linee" FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    <FontIcon Glyph="&#xF343;" Style="{StaticResource ButtonIconStyle}" />
+                    <TextBlock Text="Linee" Style="{StaticResource SmallButtonLabelStyle}" />
                 </StackPanel>
             </Button>
             <Button x:Name="BtnRadiale" Grid.Column="2" Click="BtnGrafico_Click"
                     Tag="Radiale" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
-                    <FontIcon Glyph="&#xF345;" FontFamily="{StaticResource FluentIconsRegular}" FontSize="18" />
-                    <TextBlock Text="Radiale" FontFamily="Segoe UI" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    <FontIcon Glyph="&#xF345;" Style="{StaticResource ButtonIconStyle}" />
+                    <TextBlock Text="Radiale" Style="{StaticResource SmallButtonLabelStyle}" />
                 </StackPanel>
             </Button>
         </Grid>

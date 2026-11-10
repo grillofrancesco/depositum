@@ -5,12 +5,14 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Windows.UI;
 
 namespace Depositum
 {
@@ -86,8 +88,9 @@ namespace Depositum
             if (_grafico != TipoGrafico.Linee)
                 return;
 
+            var fontCorpo = (FontFamily)Application.Current.Resources["BodyFontFamily"];
             var panel = new StackPanel { Spacing = 10, MinWidth = 260 };
-            panel.Children.Add(new TextBlock { Text = "Intervallo", FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI"), FontWeight = Microsoft.UI.Text.FontWeights.SemiBold });
+            panel.Children.Add(new TextBlock { Text = "Intervallo", FontFamily = fontCorpo, FontWeight = Microsoft.UI.Text.FontWeights.SemiBold });
             var intervallo = new ComboBox { HorizontalAlignment = HorizontalAlignment.Stretch };
             intervallo.Items.Add(new ComboBoxItem { Content = "Tutto", Tag = FinestraTemporale.Tutto });
             intervallo.Items.Add(new ComboBoxItem { Content = "1 mese", Tag = FinestraTemporale.UnMese });
@@ -104,7 +107,7 @@ namespace Depositum
                 }
             };
             panel.Children.Add(intervallo);
-            panel.Children.Add(new TextBlock { Text = "Depositi visibili", FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe UI"), FontWeight = Microsoft.UI.Text.FontWeights.SemiBold, Margin = new Thickness(0, 4, 0, 0) });
+            panel.Children.Add(new TextBlock { Text = "Depositi visibili", FontFamily = fontCorpo, FontWeight = Microsoft.UI.Text.FontWeights.SemiBold, Margin = new Thickness(0, 4, 0, 0) });
 
             var nomi = DataService.Rilevazioni.SelectMany(r => r.Depositi.Keys)
                 .Distinct(StringComparer.OrdinalIgnoreCase).ToList();
@@ -175,7 +178,7 @@ namespace Depositum
                 Name = "Depositi",
                 Mapping = (item, index) => new(index, item.Valore),
                 YToolTipLabelFormatter = point => point.Model is null ? string.Empty : $"{point.Model.Valore:N0} €",
-                Fill = new SolidColorPaint(ToSkColor(PaletteDepositi.ColoriHex[0])),
+                Fill = new SolidColorPaint(ToSkColor(PaletteDepositi.Colore(0))),
                 MaxBarWidth = 38
             };
             series.PointMeasured += point =>
@@ -184,7 +187,7 @@ namespace Depositum
                 {
                     int index = Array.FindIndex(dati, d => ReferenceEquals(d, item));
                     if (index >= 0)
-                        visual.Fill = new SolidColorPaint(ToSkColor(PaletteDepositi.ColoriHex[index % PaletteDepositi.ColoriHex.Count]));
+                        visual.Fill = new SolidColorPaint(ToSkColor(PaletteDepositi.Colore(index)));
                 }
             };
             CartesianChart.Series = new ISeries[] { series };
@@ -254,7 +257,7 @@ namespace Depositum
                 if (!puntiPerDeposito.TryGetValue(nome, out var punti) || punti.All(p => p is null))
                     continue;
 
-                string colore = PaletteDepositi.ColoriHex[colorIndex % PaletteDepositi.ColoriHex.Count];
+                Color colore = PaletteDepositi.Colore(colorIndex);
                 var serie = new LineSeries<ObservablePoint?>
                 {
                     Name = nome,
@@ -290,10 +293,10 @@ namespace Depositum
                     CustomSeparators = visibili.Select(r => r.Data.ToDateTime(TimeOnly.MinValue).ToOADate()).Distinct().ToArray()
                 }
             };
-            var coloreGriglia = new SolidColorPaint(new SKColor(90, 90, 90));
+            var coloreGriglia = new SolidColorPaint(ColoreRisorsa("ChartGridBrush"));
             CartesianChart.YAxes = new[] { new Axis { Labeler = value => $"{value:N0} €",
                 SeparatorsPaint = coloreGriglia,
-                ZeroPaint = new SolidColorPaint(new SKColor(90, 90, 90)),
+                ZeroPaint = new SolidColorPaint(ColoreRisorsa("ChartGridBrush")),
                 MinLimit = Math.Min(0, minimoValore), 
                 MaxLimit = Math.Max(1, valoreMassimoAsse) } };
             // Riserva 12 px dentro l'area del grafico a destra e in basso.
@@ -312,18 +315,20 @@ namespace Depositum
             if (ultima.Depositi.Count == 0 || ultima.Depositi.Values.Sum() <= 0) return;
             int colorIndex = 0;
             int sumTotale = ultima.Depositi.Values.Sum();
+            // Il grafico vuole un solo nome di font: il primo della famiglia con grazie.
+            string fontSerif = ((FontFamily)Application.Current.Resources["SerifFontFamily"]).Source.Split(',')[0].Trim();
             PieChart.Series = ultima.Depositi.Select(kv => (ISeries)new PieSeries<int>
             {
                 Name = kv.Key,
                 Values = new[] { kv.Value },
-                Fill = new SolidColorPaint(ToSkColor(PaletteDepositi.ColoriHex[colorIndex++ % PaletteDepositi.ColoriHex.Count])),
+                Fill = new SolidColorPaint(ToSkColor(PaletteDepositi.Colore(colorIndex++))),
                 Pushout = 5,
                 HoverPushout = 15,
                 ShowDataLabels = _mostraLabelRadiale,
                 DataLabelsFormatter = _ => _mostraLabelRadiale ? kv.Key : string.Empty,
-                DataLabelsPaint = new SolidColorPaint(SKColors.White)
+                DataLabelsPaint = new SolidColorPaint(ColoreRisorsa("ChartLabelBrush"))
                 {
-                    SKTypeface = SKTypeface.FromFamilyName("Constantia", SKFontStyle.Bold)
+                    SKTypeface = SKTypeface.FromFamilyName(fontSerif, SKFontStyle.Bold)
                 },
                 DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
                 DataLabelsSize = 22,
@@ -335,7 +340,10 @@ namespace Depositum
             TxtCanvasVuoto.Visibility = Visibility.Collapsed;
         }
 
-        private static SKColor ToSkColor(string hex) => SKColor.Parse(hex);
+        private static SKColor ToSkColor(Color colore) => new(colore.R, colore.G, colore.B, colore.A);
+
+        private static SKColor ColoreRisorsa(string chiave) =>
+            ToSkColor(((SolidColorBrush)Application.Current.Resources[chiave]).Color);
 
         private sealed record ValoreDeposito(string Nome, int Valore);
     }
