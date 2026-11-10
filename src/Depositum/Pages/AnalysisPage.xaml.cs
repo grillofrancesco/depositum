@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Windows.UI;
 
 namespace Depositum
 {
@@ -26,8 +25,8 @@ namespace Depositum
         private readonly HashSet<string> _depositiVisibili = new(StringComparer.OrdinalIgnoreCase);
         private bool _depositiInizializzati;
 
-        private float _MAX_AVG_MULTIPLIER = 1.6f;
-        private float _MAX_HEIGHT_MULTIPLIER = 1.4f;
+        private const float MaxAvgMultiplier = 1.6f;
+        private const float MaxHeightMultiplier = 1.4f;
 
         public AnalysisPage()
         {
@@ -192,7 +191,7 @@ namespace Depositum
             CartesianChart.XAxes = new[] { new Axis { Labels = dati.Select(d => d.Nome).ToArray(), LabelsRotation = 0 } };
             CartesianChart.YAxes = new[] { new Axis { Labeler = value => $"{value:N0} €", 
                 MinLimit = Math.Min(0, dati.Min(d => d.Valore)), 
-                MaxLimit = Math.Max(1, dati.Max(d => d.Valore)) * _MAX_HEIGHT_MULTIPLIER } };
+                MaxLimit = Math.Max(1, dati.Max(d => d.Valore)) * MaxHeightMultiplier } };
             CartesianChart.Visibility = Visibility.Visible;
             TxtCanvasVuoto.Visibility = Visibility.Collapsed;
         }
@@ -278,9 +277,9 @@ namespace Depositum
             }
 
             double mediaValori = (double)sommaValori / numeroValori;
-            double valoreMassimoAsse = mediaValori * _MAX_AVG_MULTIPLIER;
+            double valoreMassimoAsse = mediaValori * MaxAvgMultiplier;
             if (valoreMassimoAsse < massimoValore)
-                valoreMassimoAsse = massimoValore * _MAX_HEIGHT_MULTIPLIER;
+                valoreMassimoAsse = massimoValore * MaxHeightMultiplier;
 
             CartesianChart.Series = series;
             CartesianChart.XAxes = new[]

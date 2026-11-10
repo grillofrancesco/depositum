@@ -25,12 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="records_test.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 

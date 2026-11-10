@@ -10,7 +10,6 @@
             <SolidColorBrush x:Key="SurfaceBrush" Color="#1C1F1A" />
             <SolidColorBrush x:Key="RaisedSurfaceBrush" Color="#242820" />
             <SolidColorBrush x:Key="BorderBrushSubtle" Color="#3A4034" />
-            <SolidColorBrush x:Key="LaurelBrush" Color="#78885A" />
             <SolidColorBrush x:Key="LaurelLightBrush" Color="#A8B58A" />
             <SolidColorBrush x:Key="IvoryBrush" Color="#F1EEDF" />
             <SolidColorBrush x:Key="SecondaryTextBrush" Color="#B8B9AC" />
@@ -44,7 +43,6 @@
             <SolidColorBrush x:Key="SurfaceBrush" Color="#1C1F1A" />
             <SolidColorBrush x:Key="RaisedSurfaceBrush" Color="#242820" />
             <SolidColorBrush x:Key="BorderBrushSubtle" Color="#3A4034" />
-            <SolidColorBrush x:Key="LaurelBrush" Color="#78885A" />
             <SolidColorBrush x:Key="LaurelLightBrush" Color="#A8B58A" />
             <SolidColorBrush x:Key="IvoryBrush" Color="#F1EEDF" />
             <SolidColorBrush x:Key="SecondaryTextBrush" Color="#B8B9AC" />
