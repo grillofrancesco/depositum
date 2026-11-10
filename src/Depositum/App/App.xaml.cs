@@ -27,6 +27,10 @@ namespace Depositum
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
+            // Assegna i colori ai pennelli prima che nasca la finestra.
+            // Non si può fare nel costruttore: lì le risorse dell'app non sono ancora accessibili.
+            Tema.Applica(Palette.Verde);
+
             _window = new MainWindow();
             _window.Activate();
         }

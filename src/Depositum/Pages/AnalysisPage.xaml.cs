@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Windows.UI;
 
 namespace Depositum
 {
@@ -33,7 +32,12 @@ namespace Depositum
         public AnalysisPage()
         {
             InitializeComponent();
-            Loaded += (_, _) => AggiornaGrafico();
+            Loaded += (_, _) =>
+            {
+                Tema.TemaCambiato += Tema_TemaCambiato;
+                AggiornaGrafico();
+            };
+            Unloaded += (_, _) => Tema.TemaCambiato -= Tema_TemaCambiato;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -42,6 +46,9 @@ namespace Depositum
             _depositiInizializzati = false;
             AggiornaGrafico();
         }
+
+        // I colori dei grafici non sono pennelli XAML: al cambio di tema vanno ridisegnati.
+        private void Tema_TemaCambiato(object? sender, EventArgs e) => AggiornaGrafico();
 
         private void BtnIndietro_Click(object sender, RoutedEventArgs e)
         {
@@ -178,7 +185,7 @@ namespace Depositum
                 Name = "Depositi",
                 Mapping = (item, index) => new(index, item.Valore),
                 YToolTipLabelFormatter = point => point.Model is null ? string.Empty : $"{point.Model.Valore:N0} €",
-                Fill = new SolidColorPaint(ToSkColor(PaletteDepositi.Colore(0))),
+                Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(0)),
                 MaxBarWidth = 38
             };
             series.PointMeasured += point =>
@@ -187,7 +194,7 @@ namespace Depositum
                 {
                     int index = Array.FindIndex(dati, d => ReferenceEquals(d, item));
                     if (index >= 0)
-                        visual.Fill = new SolidColorPaint(ToSkColor(PaletteDepositi.Colore(index)));
+                        visual.Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(index));
                 }
             };
             CartesianChart.Series = new ISeries[] { series };
@@ -257,15 +264,15 @@ namespace Depositum
                 if (!puntiPerDeposito.TryGetValue(nome, out var punti) || punti.All(p => p is null))
                     continue;
 
-                Color colore = PaletteDepositi.Colore(colorIndex);
+                SKColor colore = Tema.ColoreGraficoPerDeposito(colorIndex);
                 var serie = new LineSeries<ObservablePoint?>
                 {
                     Name = nome,
                     Values = punti,
                     Fill = null,
                     GeometrySize = 9,
-                    Stroke = new SolidColorPaint(ToSkColor(colore), 3),
-                    GeometryFill = new SolidColorPaint(ToSkColor(colore)),
+                    Stroke = new SolidColorPaint(colore, 3),
+                    GeometryFill = new SolidColorPaint(colore),
                     YToolTipLabelFormatter = p => p.Model is { X: double x, Y: double y }
                         ? $"{y.ToString("N0", CultureInfo.CurrentCulture)} €"
                         : nome
@@ -293,10 +300,10 @@ namespace Depositum
                     CustomSeparators = visibili.Select(r => r.Data.ToDateTime(TimeOnly.MinValue).ToOADate()).Distinct().ToArray()
                 }
             };
-            var coloreGriglia = new SolidColorPaint(ColoreRisorsa("ChartGridBrush"));
+            var coloreGriglia = new SolidColorPaint(Tema.GrigliaGrafico);
             CartesianChart.YAxes = new[] { new Axis { Labeler = value => $"{value:N0} €",
                 SeparatorsPaint = coloreGriglia,
-                ZeroPaint = new SolidColorPaint(ColoreRisorsa("ChartGridBrush")),
+                ZeroPaint = new SolidColorPaint(Tema.GrigliaGrafico),
                 MinLimit = Math.Min(0, minimoValore), 
                 MaxLimit = Math.Max(1, valoreMassimoAsse) } };
             // Riserva 12 px dentro l'area del grafico a destra e in basso.
@@ -321,12 +328,12 @@ namespace Depositum
             {
                 Name = kv.Key,
                 Values = new[] { kv.Value },
-                Fill = new SolidColorPaint(ToSkColor(PaletteDepositi.Colore(colorIndex++))),
+                Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(colorIndex++)),
                 Pushout = 5,
                 HoverPushout = 15,
                 ShowDataLabels = _mostraLabelRadiale,
                 DataLabelsFormatter = _ => _mostraLabelRadiale ? kv.Key : string.Empty,
-                DataLabelsPaint = new SolidColorPaint(ColoreRisorsa("ChartLabelBrush"))
+                DataLabelsPaint = new SolidColorPaint(Tema.EtichetteGrafico)
                 {
                     SKTypeface = SKTypeface.FromFamilyName(fontSerif, SKFontStyle.Bold)
                 },
@@ -339,11 +346,6 @@ namespace Depositum
             PieChart.Visibility = Visibility.Visible;
             TxtCanvasVuoto.Visibility = Visibility.Collapsed;
         }
-
-        private static SKColor ToSkColor(Color colore) => new(colore.R, colore.G, colore.B, colore.A);
-
-        private static SKColor ColoreRisorsa(string chiave) =>
-            ToSkColor(((SolidColorBrush)Application.Current.Resources[chiave]).Color);
 
         private sealed record ValoreDeposito(string Nome, int Valore);
     }

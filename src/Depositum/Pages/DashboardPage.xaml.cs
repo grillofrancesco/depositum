@@ -57,7 +57,7 @@ namespace Depositum
                     DepositiGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                 }
 
-                var box = CreaBoxDeposito(deposito.Key, deposito.Value, PaletteDepositi.Pennello(index));
+                var box = CreaBoxDeposito(deposito.Key, deposito.Value, Tema.PennelloPerDeposito(index));
                 Grid.SetRow(box, riga);
                 Grid.SetColumn(box, colonna);
                 DepositiGrid.Children.Add(box);

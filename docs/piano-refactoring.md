@@ -302,3 +302,28 @@ vanno trattati dopo (decisione del 10/11/2026). Alcuni toccano i dati.
   Stili di testo aggiunti: `AmountStyle`, `ButtonLabelStyle`,
   `BigButtonLabelStyle`, `SmallButtonLabelStyle`; per le icone
   `ButtonIconStyle` e `BigButtonIconStyle`.
+- **Fase 3.** I valori dei colori ora stanno solo in `Theme/Palette.cs`
+  (`Palette.Verde`); `Theme/Colors.xaml` dichiara i pennelli senza colore e
+  `Tema.Applica` li riempie. `Tema.Applica` va chiamato in `App.OnLaunched`:
+  nel costruttore di `App` le risorse non sono ancora accessibili e l'app si
+  chiude. In debug `Tema` segnala i pennelli di `Colors.xaml` dimenticati dalla palette.
+
+  **Esito della prova** (cambio palette ad app aperta, fatto su una copia di
+  verifica con una palette di prova):
+  - si aggiornano dal vivo, senza ricaricare la pagina: sfondi, bordi, testi,
+    pulsanti, card dei depositi, campi di testo (`TextControl*`), messaggio
+    d'errore e, tramite `TemaCambiato`, i grafici;
+  - tornando alla palette verde le schermate sono identiche pixel per pixel
+    a quelle di partenza;
+  - `SystemAccentColor` non ha alcun effetto visibile, né prima né dopo: caselle
+    di spunta e pulsante predefinito dei dialoghi usano le sfumature d'accento di
+    Windows, non questa chiave.
+
+  Da fare quando si costruirà la funzionalità dei temi, perché oggi cambierebbe
+  l'aspetto dell'app:
+  - dare un colore di palette a caselle di spunta, caselle a discesa e pulsante
+    predefinito dei dialoghi (chiavi `AccentFillColor*` di WinUI);
+  - sfondo dell'area dei grafici (oggi nero fisso) ed etichette degli assi, che
+    usano ancora i colori predefiniti di LiveCharts. Per questo `Tema` fornisce
+    ai grafici solo i colori che già erano impostati dall'app: griglia,
+    etichette del radiale, colori dei depositi.
