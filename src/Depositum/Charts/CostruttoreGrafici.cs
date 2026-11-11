@@ -117,7 +117,7 @@ namespace Depositum.Charts
         /// <param name="indiciColore">Indice di colore di ogni deposito, da <see cref="Storico.IndiciColore"/>.</param>
         public static void Radiale(PieChart grafico, Rilevazione rilevazione, bool mostraEtichette, IReadOnlyDictionary<string, int> indiciColore)
         {
-            int sumTotale = rilevazione.Depositi.Values.Sum();
+            long sumTotale = rilevazione.SommaDepositi();
             // Il grafico vuole un solo nome di font: il primo della famiglia con grazie.
             string fontSerif = ((FontFamily)Application.Current.Resources["SerifFontFamily"]).Source.Split(',')[0].Trim();
 

@@ -38,7 +38,7 @@ namespace Depositum.Tests
         {
             var rilevazioni = new[] { Ril(2026, 11, 2, 1), Ril(2025, 1, 5, 2), Ril(2026, 11, 2, 3), Ril(2025, 6, 1, 4) };
 
-            Assert.Equal(new[] { 2, 4, 1, 3 }, Storico.OrdinatePerData(rilevazioni).Select(r => r.Totale));
+            Assert.Equal(new long[] { 2, 4, 1, 3 }, Storico.OrdinatePerData(rilevazioni).Select(r => r.Totale));
         }
 
         [Fact]

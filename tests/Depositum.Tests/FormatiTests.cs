@@ -54,7 +54,8 @@ namespace Depositum.Tests
         [InlineData(500, "500€")]
         [InlineData(1800, "1.800€")]
         [InlineData(999999999, "999.999.999€")]
-        public void Importo_SeparatoreDelleMigliaiaSenzaSpazio(int valore, string atteso)
+        [InlineData(2999999997, "2.999.999.997€")]
+        public void Importo_SeparatoreDelleMigliaiaSenzaSpazio(long valore, string atteso)
         {
             Assert.Equal(atteso, Formati.Importo(valore));
         }

@@ -196,19 +196,15 @@ namespace Depositum.Pages
                 }
             }
 
-            // Calcolo automatico del Totale come somma diretta di interi (senza Math.Round)
-            int totaleCalcolato = _depositi.Sum(d => d.Valore);
-
-            var nuovaRilevazione = new Rilevazione
-            {
-                Data = dataParsed,
-                Totale = totaleCalcolato
-            };
+            var nuovaRilevazione = new Rilevazione { Data = dataParsed };
 
             foreach (var d in _depositi)
             {
                 nuovaRilevazione.Depositi[d.Nome] = d.Valore;
             }
+
+            // Il totale è la somma dei depositi appena inseriti
+            nuovaRilevazione.Totale = nuovaRilevazione.SommaDepositi();
 
             // Salvataggio su file CSV in AppData e in memoria
             try

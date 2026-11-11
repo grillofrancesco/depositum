@@ -144,7 +144,7 @@ namespace Depositum.Pages
 
         private void MostraRadiale(Rilevazione ultima, IReadOnlyDictionary<string, int> indiciColore)
         {
-            if (ultima.Depositi.Count == 0 || ultima.Depositi.Values.Sum() <= 0) return;
+            if (ultima.Depositi.Count == 0 || ultima.SommaDepositi() <= 0) return;
 
             CostruttoreGrafici.Radiale(PieChart, ultima, _mostraEtichetteRadiale, indiciColore);
             Mostra(PieChart);

@@ -186,6 +186,28 @@ namespace Depositum.Tests
             Assert.Equal(originale.Depositi.ToArray(), riletta.Depositi.ToArray());
         }
 
+        // Anomalia 5 corretta: tre depositi al massimo consentito superano il limite di un int;
+        // prima la somma sollevava un'eccezione e l'app si chiudeva alla conferma.
+        [Fact]
+        public void TotaleOltreIlLimiteDiUnInt_CalcolatoSalvatoERiletto()
+        {
+            var originale = new Rilevazione { Data = new DateOnly(2025, 1, 5) };
+            originale.Depositi["A"] = RegoleDeposito.ImportoMassimo;
+            originale.Depositi["B"] = RegoleDeposito.ImportoMassimo;
+            originale.Depositi["C"] = RegoleDeposito.ImportoMassimo;
+            originale.Totale = originale.SommaDepositi();
+
+            Assert.Equal(2_999_999_997L, originale.Totale);
+            Assert.True(originale.Totale > int.MaxValue);
+
+            string riga = RilevazioneCsv.InRiga(originale);
+            var riletta = RilevazioneCsv.DaRiga(riga);
+
+            Assert.Equal("Data:05/01/2025,A:999999999,B:999999999,C:999999999,Totale:2999999997", riga);
+            Assert.Equal(2_999_999_997L, riletta!.Totale);
+            Assert.Equal(2_999_999_997L, riletta.SommaDepositi());
+        }
+
         // ---------- Limiti del formato ----------
         // Il file non protegge i nomi con virgola o due punti: per questo RegoleDeposito li
         // rifiuta prima che arrivino qui (anomalia 2, corretta lì).

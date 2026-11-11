@@ -46,7 +46,7 @@ namespace Depositum.Core
                 }
                 else if (string.Equals(chiave, "Totale", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (int.TryParse(valore, NumberStyles.Integer, CultureInfo.InvariantCulture, out int tot))
+                    if (long.TryParse(valore, NumberStyles.Integer, CultureInfo.InvariantCulture, out long tot))
                     {
                         rilevazione.Totale = tot;
                     }

@@ -26,7 +26,7 @@ namespace Depositum.Core
         }
 
         /// <summary>Importo come appare nella dashboard: <c>1.800€</c>.</summary>
-        public static string Importo(int valore) => $"{valore:N0}€";
+        public static string Importo(long valore) => $"{valore:N0}€";
 
         /// <summary>Importo come appare nei grafici (assi e suggerimenti): <c>1.800 €</c>.</summary>
         public static string ImportoGrafico(double valore) => $"{valore:N0} €";
