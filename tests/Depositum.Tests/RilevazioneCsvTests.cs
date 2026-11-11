@@ -215,19 +215,16 @@ namespace Depositum.Tests
             Assert.Equal(5, riletta.Depositi["mare"]);
         }
 
-        // ---------- Anomalie note (comportamento attuale, da correggere) ----------
+        // ---------- Righe senza data ----------
 
         [Theory]
         [InlineData("Conto:5,Totale:5")]              // data assente
         [InlineData("Data:non-una-data,Conto:5,Totale:5")] // data illeggibile
-        public void Anomalia4_RigaSenzaDataValida_CaricataConDataPredefinita(string riga)
+        [InlineData(";")]                             // solo il terminatore
+        public void RigaSenzaDataValida_NonProduceRilevazione(string riga)
         {
-            var r = RilevazioneCsv.DaRiga(riga);
-
-            Assert.NotNull(r);
-            Assert.Equal(default(DateOnly), r!.Data);
-            Assert.Equal(new DateOnly(1, 1, 1), r.Data);
-            Assert.Equal(5, r.Depositi["Conto"]);
+            // Anomalia 4 corretta: prima diventava una rilevazione datata 01/01/0001.
+            Assert.Null(RilevazioneCsv.DaRiga(riga));
         }
     }
 }

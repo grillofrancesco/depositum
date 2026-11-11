@@ -22,6 +22,12 @@ namespace Depositum.Services
         /// <summary>Rilevazioni nell'ordine in cui sono nel file, che può non essere quello delle date.</summary>
         public static List<Rilevazione> Rilevazioni { get; } = new();
 
+        /// <summary>
+        /// Numero di righe non vuote del file scartate dall'ultimo <see cref="CaricaDati"/>
+        /// perché senza una data valida. Restano nel file, ma l'app non le usa.
+        /// </summary>
+        public static int RigheIgnorate { get; private set; }
+
         /// <summary>La rilevazione con la data più recente, la stessa per dashboard, registrazione e grafici.</summary>
         public static Rilevazione? UltimaRilevazione => Storico.PiuRecente(Rilevazioni);
 
@@ -33,6 +39,7 @@ namespace Depositum.Services
         public static void CaricaDati()
         {
             Rilevazioni.Clear();
+            RigheIgnorate = 0;
 
             Debug.WriteLine(CsvFilePath);
 
@@ -43,9 +50,14 @@ namespace Depositum.Services
 
             foreach (var rigaGrezza in righe)
             {
+                if (string.IsNullOrWhiteSpace(rigaGrezza))
+                    continue;
+
                 var rilevazione = RilevazioneCsv.DaRiga(rigaGrezza);
                 if (rilevazione != null)
                     Rilevazioni.Add(rilevazione);
+                else
+                    RigheIgnorate++;
             }
         }
 

@@ -58,6 +58,16 @@ namespace Depositum
                     "Il file non è stato modificato: chiudi l'app, verifica che nessun altro programma lo stia usando e riprova." +
                     Environment.NewLine + Environment.NewLine + erroreLettura);
             }
+            else if (DataService.RigheIgnorate > 0)
+            {
+                int n = DataService.RigheIgnorate;
+                _window.MostraAvviso(
+                    "Righe non leggibili",
+                    (n == 1
+                        ? "Una riga del file delle rilevazioni non ha una data valida ed è stata ignorata."
+                        : $"{n} righe del file delle rilevazioni non hanno una data valida e sono state ignorate.") +
+                    " Il file non è stato modificato.");
+            }
         }
     }
 }

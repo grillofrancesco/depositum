@@ -11,8 +11,9 @@ namespace Depositum.Core
     public static class RilevazioneCsv
     {
         /// <summary>
-        /// Interpreta una riga del file. Restituisce <c>null</c> se la riga è vuota.
-        /// I campi non riconoscibili vengono ignorati senza segnalazione.
+        /// Interpreta una riga del file. Restituisce <c>null</c> se la riga è vuota oppure
+        /// non contiene una data valida: senza data una rilevazione non si può collocare nel tempo.
+        /// Gli altri campi non riconoscibili vengono ignorati senza segnalazione.
         /// </summary>
         public static Rilevazione? DaRiga(string rigaGrezza)
         {
@@ -24,6 +25,7 @@ namespace Depositum.Core
             var campi = riga.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
             var rilevazione = new Rilevazione();
+            bool dataTrovata = false;
 
             foreach (var campo in campi)
             {
@@ -39,6 +41,7 @@ namespace Depositum.Core
                     if (Formati.ProvaALeggereData(valore, out var data))
                     {
                         rilevazione.Data = data;
+                        dataTrovata = true;
                     }
                 }
                 else if (string.Equals(chiave, "Totale", StringComparison.OrdinalIgnoreCase))
@@ -57,7 +60,7 @@ namespace Depositum.Core
                 }
             }
 
-            return rilevazione;
+            return dataTrovata ? rilevazione : null;
         }
 
         /// <summary>
