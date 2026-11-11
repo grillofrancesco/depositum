@@ -97,7 +97,7 @@ namespace Depositum.Pages
             PieChart.Visibility = Visibility.Collapsed;
             TxtCanvasVuoto.Visibility = Visibility.Visible;
 
-            var rilevazioni = DataService.Rilevazioni.OrderBy(r => r.Data).ToList();
+            var rilevazioni = Storico.OrdinatePerData(DataService.Rilevazioni);
             if (rilevazioni.Count == 0)
             {
                 TxtCanvasVuoto.Text = "Nessuna rilevazione disponibile. Registra i depositi per visualizzare i grafici.";

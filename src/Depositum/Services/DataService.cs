@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace Depositum.Services
 {
@@ -20,9 +19,11 @@ namespace Depositum.Services
             "history.csv"
         );
 
+        /// <summary>Rilevazioni nell'ordine in cui sono nel file, che può non essere quello delle date.</summary>
         public static List<Rilevazione> Rilevazioni { get; } = new();
 
-        public static Rilevazione? UltimaRilevazione => Rilevazioni.LastOrDefault();
+        /// <summary>La rilevazione con la data più recente, la stessa per dashboard, registrazione e grafici.</summary>
+        public static Rilevazione? UltimaRilevazione => Storico.PiuRecente(Rilevazioni);
 
         /// <summary>
         /// Legge e interpreta il file CSV in AppData. Se non esiste, lascia la lista vuota.
