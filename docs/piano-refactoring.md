@@ -331,8 +331,13 @@ vanno trattati dopo (decisione del 10/11/2026). Alcuni toccano i dati.
   `Charts/CostruttoreGrafici`, `DatiGrafici` in Core con test, card della
   dashboard in `ItemsRepeater`, un solo aggiornamento all'apertura delle pagine.
   Le 14 schermate di confronto sono identiche a quelle di partenza.
-  **Non ancora provato in automatico:** le interazioni dentro i dialoghi
-  (spunte dei depositi, cambio di intervallo, aggiunta e rimozione di un
-  deposito). Vanno provate a mano o con lo scenario di verifica da completare.
-- **Stato al termine della sessione dell'11/11/2026:** fasi 0-5 concluse e
-  salvate, una per commit. Restano le fasi 6 e 7 e la correzione delle anomalie.
+  Provate in automatico anche le interazioni dentro i dialoghi (spunte dei
+  depositi, cambio di intervallo, etichette del radiale, aggiunta di un
+  deposito, aggiornamento di uno esistente, rimozione, salvataggio): 13
+  schermate e la riga salvata nel CSV coincidono con quelle dell'app di partenza.
+- **Fase 6.** `DataService.CaricaDati()` è chiamato da `App.OnLaunched`.
+  Se il file non si riesce a leggere, l'app parte senza dati e mostra un avviso
+  (prima si chiudeva). Se non si riesce a scrivere, la pagina di registrazione
+  mostra l'errore e resta aperta con i valori inseriti; la rilevazione viene
+  aggiunta in memoria solo dopo che la scrittura è riuscita. Provato tenendo
+  il file bloccato da un altro processo, all'avvio e al salvataggio.

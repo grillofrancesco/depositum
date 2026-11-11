@@ -1,4 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
+using System;
+using System.IO;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -10,7 +12,7 @@ namespace Depositum
     /// </summary>
     public partial class App : Application
     {
-        private Window? _window;
+        private MainWindow? _window;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -31,8 +33,29 @@ namespace Depositum
             // Non si può fare nel costruttore: lì le risorse dell'app non sono ancora accessibili.
             Tema.Applica(Palette.Verde);
 
+            // Carica le rilevazioni salvate. Se il file non si riesce a leggere l'app parte
+            // comunque, senza dati, e lo dice: il file sul disco non viene toccato.
+            string? erroreLettura = null;
+            try
+            {
+                DataService.CaricaDati();
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                erroreLettura = ex.Message;
+            }
+
             _window = new MainWindow();
             _window.Activate();
+
+            if (erroreLettura != null)
+            {
+                _window.MostraAvviso(
+                    "Impossibile leggere i dati",
+                    "Il file delle rilevazioni non è accessibile, quindi l'app è partita senza dati. " +
+                    "Il file non è stato modificato: chiudi l'app, verifica che nessun altro programma lo stia usando e riprova." +
+                    Environment.NewLine + Environment.NewLine + erroreLettura);
+            }
         }
     }
 }

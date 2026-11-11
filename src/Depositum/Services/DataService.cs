@@ -27,6 +27,8 @@ namespace Depositum
         /// <summary>
         /// Legge e interpreta il file CSV in AppData. Se non esiste, lascia la lista vuota.
         /// </summary>
+        /// <exception cref="IOException">Il file esiste ma non si riesce a leggere (per esempio è in uso).</exception>
+        /// <exception cref="UnauthorizedAccessException">Manca il permesso di leggere il file.</exception>
         public static void CaricaDati()
         {
             Rilevazioni.Clear();
@@ -47,13 +49,14 @@ namespace Depositum
         }
 
         /// <summary>
-        /// Aggiunge una nuova rilevazione in memoria e la appende a 'history.csv' in AppData,
-        /// creando la cartella 'Depositum' se non ancora esistente.
+        /// Appende una nuova rilevazione a 'history.csv' in AppData, creando la cartella
+        /// 'Depositum' se non ancora esistente, e poi la aggiunge a quelle in memoria.
+        /// Se la scrittura fallisce la rilevazione non viene aggiunta nemmeno in memoria.
         /// </summary>
+        /// <exception cref="IOException">Il file non si riesce a scrivere (per esempio è in uso).</exception>
+        /// <exception cref="UnauthorizedAccessException">Manca il permesso di scrivere il file.</exception>
         public static void AggiungiRilevazione(Rilevazione nuova)
         {
-            Rilevazioni.Add(nuova);
-
             string? cartella = Path.GetDirectoryName(CsvFilePath);
             if (!string.IsNullOrEmpty(cartella) && !Directory.Exists(cartella))
             {
@@ -61,6 +64,8 @@ namespace Depositum
             }
 
             File.AppendAllLines(CsvFilePath, new[] { RilevazioneCsv.InRiga(nuova) });
+
+            Rilevazioni.Add(nuova);
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 
 namespace Depositum
@@ -206,7 +207,16 @@ namespace Depositum
             }
 
             // Salvataggio su file CSV in AppData e in memoria
-            DataService.AggiungiRilevazione(nuovaRilevazione);
+            try
+            {
+                DataService.AggiungiRilevazione(nuovaRilevazione);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                MostraMessaggio(InfoBarSeverity.Error, "Salvataggio non riuscito",
+                    "La rilevazione non è stata salvata. " + ex.Message);
+                return;
+            }
 
             // Ritorno alla dashboard principale
             Frame.TornaIndietro();
