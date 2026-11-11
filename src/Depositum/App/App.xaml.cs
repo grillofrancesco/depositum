@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Depositum.Services;
+using Depositum.Theme;
+using Microsoft.UI.Xaml;
 using System;
 using System.IO;
 

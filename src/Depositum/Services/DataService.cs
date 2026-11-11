@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Depositum
+namespace Depositum.Services
 {
     /// <summary>
     /// Servizio centralizzato per il caricamento e il salvataggio delle rilevazioni.

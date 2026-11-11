@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Media;
 
-namespace Depositum
+namespace Depositum.Models
 {
     /// <summary>
     /// Una card della dashboard: nome del deposito, importo già formattato e colore di sfondo.

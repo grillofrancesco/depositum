@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="Depositum.DashboardPage"
+    x:Class="Depositum.Pages.DashboardPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Depositum">
+    xmlns:models="using:Depositum.Models">
 
     <Grid Background="{ThemeResource CanvasBrush}" 
           Padding="{StaticResource PageEdgePaddingVertical}" 
@@ -66,7 +66,7 @@
                                            ItemsStretch="Fill" />
                     </ItemsRepeater.Layout>
                     <ItemsRepeater.ItemTemplate>
-                        <DataTemplate x:DataType="local:DepositoCard">
+                        <DataTemplate x:DataType="models:DepositoCard">
                             <Border Height="88"
                                     CornerRadius="12"
                                     Background="{x:Bind Sfondo}"

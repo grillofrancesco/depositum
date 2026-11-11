@@ -1,4 +1,5 @@
 using Depositum.Core;
+using Depositum.Services;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
@@ -11,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Depositum
+namespace Depositum.Charts
 {
     /// <summary>Tipi di grafico offerti dalla pagina di analisi.</summary>
     public enum TipoGrafico { Istogramma, Linee, Radiale }

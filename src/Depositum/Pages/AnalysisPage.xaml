@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="Depositum.AnalysisPage"
+    x:Class="Depositum.Pages.AnalysisPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Depositum"
+    xmlns:charts="using:Depositum.Charts"
     xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI">
 
     <Grid Background="{ThemeResource CanvasBrush}"
@@ -53,21 +53,21 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button x:Name="BtnIstogramma" Grid.Column="0" Click="BtnGrafico_Click"
-                    Tag="{x:Bind local:TipoGrafico.Istogramma}" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
+                    Tag="{x:Bind charts:TipoGrafico.Istogramma}" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
                     <FontIcon Glyph="&#xF342;" Style="{StaticResource ButtonIconStyle}" />
                     <TextBlock Text="Istogramma" Style="{StaticResource SmallButtonLabelStyle}" />
                 </StackPanel>
             </Button>
             <Button x:Name="BtnLinee" Grid.Column="1" Click="BtnGrafico_Click"
-                    Tag="{x:Bind local:TipoGrafico.Linee}" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
+                    Tag="{x:Bind charts:TipoGrafico.Linee}" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
                     <FontIcon Glyph="&#xF343;" Style="{StaticResource ButtonIconStyle}" />
                     <TextBlock Text="Linee" Style="{StaticResource SmallButtonLabelStyle}" />
                 </StackPanel>
             </Button>
             <Button x:Name="BtnRadiale" Grid.Column="2" Click="BtnGrafico_Click"
-                    Tag="{x:Bind local:TipoGrafico.Radiale}" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
+                    Tag="{x:Bind charts:TipoGrafico.Radiale}" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
                     <FontIcon Glyph="&#xF345;" Style="{StaticResource ButtonIconStyle}" />
                     <TextBlock Text="Radiale" Style="{StaticResource SmallButtonLabelStyle}" />

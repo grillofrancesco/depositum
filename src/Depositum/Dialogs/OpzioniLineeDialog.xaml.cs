@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 
-namespace Depositum
+namespace Depositum.Dialogs
 {
     /// <summary>
     /// Opzioni del grafico a linee: intervallo di tempo e depositi da mostrare.

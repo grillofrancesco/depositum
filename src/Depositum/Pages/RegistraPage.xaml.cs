@@ -1,4 +1,8 @@
 using Depositum.Core;
+using Depositum.Dialogs;
+using Depositum.Models;
+using Depositum.Services;
+using Depositum.Utilities;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -6,7 +10,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
-namespace Depositum
+namespace Depositum.Pages
 {
     public sealed partial class RegistraPage : Page
     {

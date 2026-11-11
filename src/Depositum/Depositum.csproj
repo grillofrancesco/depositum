@@ -28,6 +28,13 @@
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
+  <!-- App.xaml sta nella cartella App insieme al suo code-behind: va indicato a mano,
+       perché in automatico viene cercato solo nella radice del progetto. -->
+  <ItemGroup>
+    <Page Remove="App\App.xaml" />
+    <ApplicationDefinition Include="App\App.xaml" />
+  </ItemGroup>
+
   <!--
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
     Tools extension to be activated for this project even if the Windows App SDK Nuget

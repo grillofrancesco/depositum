@@ -1,4 +1,8 @@
+using Depositum.Charts;
 using Depositum.Core;
+using Depositum.Dialogs;
+using Depositum.Services;
+using Depositum.Utilities;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -6,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Depositum
+namespace Depositum.Pages
 {
     /// <summary>
     /// Pagina dei grafici. Tiene le scelte dell'utente (grafico, intervallo, depositi visibili)

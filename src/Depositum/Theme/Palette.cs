@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using Windows.UI;
 
-namespace Depositum
+namespace Depositum.Theme
 {
     /// <summary>
     /// Una palette: un nome e un colore per ogni ruolo dell'interfaccia.
     /// Per aggiungere un tema basta definire un'altra palette qui sotto: pagine e stili
-    /// non cambiano, perché usano i ruoli e non i colori. La applica <see cref="Tema"/>.
+    /// non cambiano, perché usano i ruoli e non i colori. La applica <see cref="Services.Tema"/>.
     /// </summary>
     public sealed record Palette
     {

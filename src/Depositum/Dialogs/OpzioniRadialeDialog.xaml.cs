@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml.Controls;
 
-namespace Depositum
+namespace Depositum.Dialogs
 {
     /// <summary>
     /// Opzioni del grafico radiale: mostrare o no i nomi dei depositi sulle fette.

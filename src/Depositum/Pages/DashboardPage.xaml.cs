@@ -1,10 +1,12 @@
 using Depositum.Core;
+using Depositum.Models;
+using Depositum.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System.Linq;
 
-namespace Depositum
+namespace Depositum.Pages
 {
     public sealed partial class DashboardPage : Page
     {

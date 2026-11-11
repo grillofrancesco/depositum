@@ -2,7 +2,7 @@ using Depositum.Core;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-namespace Depositum
+namespace Depositum.Dialogs
 {
     /// <summary>
     /// Chiede nome e importo di un nuovo deposito. Si chiude con "Aggiungi" solo se i valori

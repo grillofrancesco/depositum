@@ -341,3 +341,9 @@ vanno trattati dopo (decisione del 10/11/2026). Alcuni toccano i dati.
   mostra l'errore e resta aperta con i valori inseriti; la rilevazione viene
   aggiunta in memoria solo dopo che la scrittura è riuscita. Provato tenendo
   il file bloccato da un altro processo, all'avvio e al salvataggio.
+- **Fase 7.** Namespace per cartella: `Depositum.Pages`, `Dialogs`, `Charts`,
+  `Models`, `Services`, `Theme`, `Utilities` (più `Depositum.Core` e
+  `Depositum.Tests`). `App` e `MainWindow` restano nel namespace `Depositum`:
+  un namespace `Depositum.App` entrerebbe in conflitto con la classe `App`.
+  `App.xaml` è ora in `App/` accanto ad `App.xaml.cs`; il csproj lo dichiara
+  come `ApplicationDefinition` perché in automatico viene cercato solo nella radice.

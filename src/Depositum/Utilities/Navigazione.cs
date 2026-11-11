@@ -1,6 +1,7 @@
+using Depositum.Pages;
 using Microsoft.UI.Xaml.Controls;
 
-namespace Depositum
+namespace Depositum.Utilities
 {
     internal static class Navigazione
     {

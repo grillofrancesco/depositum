@@ -1,3 +1,4 @@
+using Depositum.Theme;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using SkiaSharp;
@@ -7,7 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using Windows.UI;
 
-namespace Depositum
+namespace Depositum.Services
 {
     /// <summary>
     /// Unico punto da cui l'app ottiene i colori.

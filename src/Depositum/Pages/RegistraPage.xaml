@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="Depositum.RegistraPage"
+    x:Class="Depositum.Pages.RegistraPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Depositum">
+    xmlns:models="using:Depositum.Models">
 
     <Grid Background="{ThemeResource CanvasBrush}" 
           Padding="{StaticResource PageEdgePaddingVertical}" 
@@ -45,7 +45,7 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="local:DepositoEditItem">
+                        <DataTemplate x:DataType="models:DepositoEditItem">
                             <Border Background="{ThemeResource SurfaceBrush}" 
                                     BorderBrush="{ThemeResource BorderBrushSubtle}" 
                                     BorderThickness="1" 
