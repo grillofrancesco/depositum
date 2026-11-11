@@ -34,7 +34,7 @@ namespace Depositum.Charts
                 Values = dati,
                 Name = "Depositi",
                 Mapping = (item, index) => new(index, item.Valore),
-                YToolTipLabelFormatter = point => point.Model is null ? string.Empty : Formati.ImportoGrafico(point.Model.Valore),
+                YToolTipLabelFormatter = point => point.Model is null ? string.Empty : Formati.Importo(point.Model.Valore),
                 Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(indiciColore[dati[0].Nome])),
                 MaxBarWidth = 38
             };
@@ -53,7 +53,7 @@ namespace Depositum.Charts
 
             grafico.Series = new ISeries[] { series };
             grafico.XAxes = new[] { new Axis { Labels = dati.Select(d => d.Nome).ToArray(), LabelsRotation = 0 } };
-            grafico.YAxes = new[] { new Axis { Labeler = Formati.ImportoGrafico, MinLimit = minimo, MaxLimit = massimo } };
+            grafico.YAxes = new[] { new Axis { Labeler = Formati.Importo, MinLimit = minimo, MaxLimit = massimo } };
         }
 
         /// <summary>Una linea per ogni deposito, con le date sull'asse orizzontale.</summary>
@@ -79,7 +79,7 @@ namespace Depositum.Charts
                     Stroke = new SolidColorPaint(colore, 3),
                     GeometryFill = new SolidColorPaint(colore),
                     YToolTipLabelFormatter = p => p.Model is { X: double, Y: double y }
-                        ? Formati.ImportoGrafico(y)
+                        ? Formati.Importo(y)
                         : nome
                 });
             }
@@ -97,7 +97,7 @@ namespace Depositum.Charts
             {
                 new Axis
                 {
-                    Labeler = Formati.ImportoGrafico,
+                    Labeler = Formati.Importo,
                     SeparatorsPaint = new SolidColorPaint(Tema.GrigliaGrafico),
                     ZeroPaint = new SolidColorPaint(Tema.GrigliaGrafico),
                     MinLimit = dati.MinimoAsse,
@@ -136,7 +136,7 @@ namespace Depositum.Charts
                 },
                 DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
                 DataLabelsSize = 22,
-                ToolTipLabelFormatter = point => $"{Formati.ImportoGrafico(point.Coordinate.PrimaryValue)} ({(point.Coordinate.PrimaryValue / sumTotale):P1})"
+                ToolTipLabelFormatter = point => $"{Formati.Importo(point.Coordinate.PrimaryValue)} ({(point.Coordinate.PrimaryValue / sumTotale):P1})"
             }).ToArray();
         }
 

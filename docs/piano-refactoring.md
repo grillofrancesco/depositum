@@ -359,11 +359,14 @@ Refactoring concluso (fasi 0-7). Anomalie corrette, una per commit:
 | 3 | Corretta | Il colore dipende dalla posizione del nome in tutto lo storico ordinato per data, in ogni schermata. Nella dashboard i colori di alcuni depositi possono essere cambiati una volta rispetto a prima. |
 | 4 | Corretta | Le righe senza data valida vengono ignorate in lettura; all'avvio un avviso dice quante sono. Il file non viene modificato. |
 | 5 | Corretta | Il totale è un numero a 64 bit: tre depositi al massimo danno 2.999.999.999 e vengono salvati e mostrati. |
-| 6 | **Da fare** | Formato dell'importo non uniforme (`1.000€` nella dashboard, `1.000 €` nei grafici). Va scelto quale dei due tenere. |
+| 6 | Corretta | Un solo formato in tutta l'app, senza spazio: `1.000€` (scelta dell'utente). Cambiano le etichette degli assi, i suggerimenti dei grafici e il messaggio d'errore sull'importo massimo. |
 | 7 | **Da fare** | Data scritta nel file con il separatore della lingua di Windows. |
 
 Osservazione nuova, emersa provando l'anomalia 5: nelle card della dashboard un
 importo di nove cifre (`999.999.999€`) non entra nella card e viene tagliato a
 sinistra. Non dipende dalle modifiche: la card ha la stessa misura di prima.
 
-Dopo le anomalie 6 e 7 resta, in attesa di conferma, la funzionalità dei temi.
+Dal 11/11/2026, su richiesta dell'utente, prima di correggere ogni anomalia si chiede
+come la vuole risolvere.
+
+Dopo l'anomalia 7 resta, in attesa di conferma, la funzionalità dei temi.

@@ -25,10 +25,13 @@ namespace Depositum.Core
                 || DateOnly.TryParse(testo, out data);
         }
 
-        /// <summary>Importo come appare nella dashboard: <c>1.800€</c>.</summary>
+        /// <summary>Importo come appare in tutta l'app: <c>1.800€</c>, senza spazio prima del simbolo.</summary>
         public static string Importo(long valore) => $"{valore:N0}€";
 
-        /// <summary>Importo come appare nei grafici (assi e suggerimenti): <c>1.800 €</c>.</summary>
-        public static string ImportoGrafico(double valore) => $"{valore:N0} €";
+        /// <summary>
+        /// Come <see cref="Importo(long)"/>, per i valori dei grafici (assi e suggerimenti),
+        /// che possono non essere interi: vengono arrotondati all'unità.
+        /// </summary>
+        public static string Importo(double valore) => $"{valore:N0}€";
     }
 }

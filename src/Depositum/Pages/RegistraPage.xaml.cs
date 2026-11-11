@@ -191,7 +191,7 @@ namespace Depositum.Pages
                 if (!RegoleDeposito.ImportoValido(d.Valore))
                 {
                     MostraMessaggio(InfoBarSeverity.Error, "Importo non valido",
-                        $"L'importo del deposito \"{d.Nome}\" deve essere un intero compreso tra {RegoleDeposito.ImportoMinimo} e {Formati.ImportoGrafico(RegoleDeposito.ImportoMassimo)}.");
+                        $"L'importo del deposito \"{d.Nome}\" deve essere un intero compreso tra {RegoleDeposito.ImportoMinimo} e {Formati.Importo(RegoleDeposito.ImportoMassimo)}.");
                     return;
                 }
             }

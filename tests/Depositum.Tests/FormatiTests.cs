@@ -61,21 +61,25 @@ namespace Depositum.Tests
         }
 
         [Theory]
-        [InlineData(0, "0 €")]
-        [InlineData(1800, "1.800 €")]
-        [InlineData(2500.4, "2.500 €")] // i valori degli assi possono non essere interi
-        [InlineData(2500.6, "2.501 €")]
-        public void ImportoGrafico_SeparatoreDelleMigliaiaConSpazio(double valore, string atteso)
+        [InlineData(0.0, "0€")]
+        [InlineData(1800.0, "1.800€")]
+        [InlineData(2500.4, "2.500€")] // i valori degli assi possono non essere interi
+        [InlineData(2500.6, "2.501€")]
+        public void Importo_ValoreNonIntero_ArrotondatoSenzaSpazio(double valore, string atteso)
         {
-            Assert.Equal(atteso, Formati.ImportoGrafico(valore));
+            Assert.Equal(atteso, Formati.Importo(valore));
         }
 
-        // Anomalia 6 (docs/piano-refactoring.md, sezione 4): dashboard e grafici scrivono
-        // lo stesso importo in due modi diversi.
+        // Anomalia 6 corretta (docs/piano-refactoring.md, sezione 4): dashboard e grafici
+        // scrivono lo stesso importo nello stesso modo, senza spazio prima di €.
         [Fact]
-        public void Anomalia6_DashboardEGraficiUsanoFormatiDiversi()
+        public void DashboardEGrafici_StessoFormato()
         {
-            Assert.NotEqual(Formati.Importo(1000), Formati.ImportoGrafico(1000));
+            long daDashboard = 1000;
+            double daGrafico = 1000;
+
+            Assert.Equal(Formati.Importo(daDashboard), Formati.Importo(daGrafico));
+            Assert.Equal("1.000€", Formati.Importo(daGrafico));
         }
 
         // Anomalia 7: il separatore della data segue la lingua di Windows.
