@@ -25,7 +25,8 @@ namespace Depositum.Charts
     internal static class CostruttoreGrafici
     {
         /// <summary>Una barra per ogni deposito della rilevazione (che deve averne almeno uno).</summary>
-        public static void Istogramma(CartesianChart grafico, Rilevazione rilevazione)
+        /// <param name="indiciColore">Indice di colore di ogni deposito, da <see cref="Storico.IndiciColore"/>.</param>
+        public static void Istogramma(CartesianChart grafico, Rilevazione rilevazione, IReadOnlyDictionary<string, int> indiciColore)
         {
             var dati = rilevazione.Depositi.Select(kv => new ValoreDeposito(kv.Key, kv.Value)).ToArray();
             var series = new ColumnSeries<ValoreDeposito>
@@ -34,7 +35,7 @@ namespace Depositum.Charts
                 Name = "Depositi",
                 Mapping = (item, index) => new(index, item.Valore),
                 YToolTipLabelFormatter = point => point.Model is null ? string.Empty : Formati.ImportoGrafico(point.Model.Valore),
-                Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(0)),
+                Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(indiciColore[dati[0].Nome])),
                 MaxBarWidth = 38
             };
             // La serie ha un solo colore: ogni barra riceve il proprio quando viene misurata.
@@ -44,7 +45,7 @@ namespace Depositum.Charts
                 {
                     int index = Array.FindIndex(dati, d => ReferenceEquals(d, item));
                     if (index >= 0)
-                        visual.Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(index));
+                        visual.Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(indiciColore[item.Nome]));
                 }
             };
 
@@ -113,9 +114,9 @@ namespace Depositum.Charts
         }
 
         /// <summary>Una fetta per ogni deposito della rilevazione (la cui somma deve essere positiva).</summary>
-        public static void Radiale(PieChart grafico, Rilevazione rilevazione, bool mostraEtichette)
+        /// <param name="indiciColore">Indice di colore di ogni deposito, da <see cref="Storico.IndiciColore"/>.</param>
+        public static void Radiale(PieChart grafico, Rilevazione rilevazione, bool mostraEtichette, IReadOnlyDictionary<string, int> indiciColore)
         {
-            int colorIndex = 0;
             int sumTotale = rilevazione.Depositi.Values.Sum();
             // Il grafico vuole un solo nome di font: il primo della famiglia con grazie.
             string fontSerif = ((FontFamily)Application.Current.Resources["SerifFontFamily"]).Source.Split(',')[0].Trim();
@@ -124,7 +125,7 @@ namespace Depositum.Charts
             {
                 Name = kv.Key,
                 Values = new[] { kv.Value },
-                Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(colorIndex++)),
+                Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(indiciColore[kv.Key])),
                 Pushout = 5,
                 HoverPushout = 15,
                 ShowDataLabels = mostraEtichette,

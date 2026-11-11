@@ -192,17 +192,18 @@ namespace Depositum.Tests
             Assert.Equal(-200, dati!.MinimoAsse);
         }
 
-        // Anomalia 3 (docs/piano-refactoring.md, sezione 4): nel grafico a linee il colore
-        // dipende dalla posizione del deposito in tutto lo storico; dashboard, istogramma e
-        // radiale usano invece la posizione nell'ultima rilevazione.
+        // Anomalia 3 corretta (docs/piano-refactoring.md, sezione 4): il grafico a linee e
+        // Storico.IndiciColore, usato da dashboard, istogramma e radiale, danno a ogni
+        // deposito lo stesso indice di colore.
         [Fact]
-        public void Anomalia3_IndiceColoreDiversoDallaPosizioneNellUltimaRilevazione()
+        public void IndiceColoreDelleLinee_UgualeAQuelloDelleAltreSchermate()
         {
-            var dati = DatiGrafici.PreparaLinee(Storico, FinestraTemporale.Tutto, Visibili("Fondo"));
-            int posizioneNellUltima = Storico[^1].Depositi.Keys.ToList().IndexOf("Fondo");
+            var indici = Core.Storico.IndiciColore(Storico);
+            var dati = DatiGrafici.PreparaLinee(Storico, FinestraTemporale.Tutto,
+                Visibili("Conto", "Risparmi", "Contanti", "Fondo", "Azioni", "Buoni"));
 
-            Assert.Equal(3, dati!.Serie.Single().IndiceColore);
-            Assert.Equal(2, posizioneNellUltima);
+            foreach (var serie in dati!.Serie)
+                Assert.Equal(indici[serie.Nome], serie.IndiceColore);
         }
     }
 }

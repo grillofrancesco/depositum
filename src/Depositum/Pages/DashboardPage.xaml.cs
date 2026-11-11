@@ -45,12 +45,13 @@ namespace Depositum.Pages
             EmptyStateContainer.Visibility = Visibility.Collapsed;
             DepositiRepeater.Visibility = Visibility.Visible;
 
-            // Una card per deposito; il colore dipende dalla posizione nella rilevazione.
+            // Una card per deposito, con lo stesso colore che il deposito ha nei grafici.
+            var indiciColore = Storico.IndiciColore(DataService.Rilevazioni);
             DepositiRepeater.ItemsSource = ultima.Depositi
-                .Select((deposito, indice) => new DepositoCard(
+                .Select(deposito => new DepositoCard(
                     deposito.Key,
                     Formati.Importo(deposito.Value),
-                    Tema.PennelloPerDeposito(indice)))
+                    Tema.PennelloPerDeposito(indiciColore[deposito.Key])))
                 .ToList();
 
             TxtTotaleValore.Text = Formati.Importo(ultima.Totale);

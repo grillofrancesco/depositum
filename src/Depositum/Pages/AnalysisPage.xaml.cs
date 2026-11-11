@@ -104,25 +104,26 @@ namespace Depositum.Pages
                 return;
             }
 
+            var indiciColore = Storico.IndiciColore(rilevazioni);
             switch (_grafico)
             {
                 case TipoGrafico.Istogramma:
-                    MostraIstogramma(rilevazioni[^1]);
+                    MostraIstogramma(rilevazioni[^1], indiciColore);
                     break;
                 case TipoGrafico.Linee:
                     MostraLinee(rilevazioni);
                     break;
                 case TipoGrafico.Radiale:
-                    MostraRadiale(rilevazioni[^1]);
+                    MostraRadiale(rilevazioni[^1], indiciColore);
                     break;
             }
         }
 
-        private void MostraIstogramma(Rilevazione ultima)
+        private void MostraIstogramma(Rilevazione ultima, IReadOnlyDictionary<string, int> indiciColore)
         {
             if (ultima.Depositi.Count == 0) return;
 
-            CostruttoreGrafici.Istogramma(CartesianChart, ultima);
+            CostruttoreGrafici.Istogramma(CartesianChart, ultima, indiciColore);
             Mostra(CartesianChart);
         }
 
@@ -141,11 +142,11 @@ namespace Depositum.Pages
             Mostra(CartesianChart);
         }
 
-        private void MostraRadiale(Rilevazione ultima)
+        private void MostraRadiale(Rilevazione ultima, IReadOnlyDictionary<string, int> indiciColore)
         {
             if (ultima.Depositi.Count == 0 || ultima.Depositi.Values.Sum() <= 0) return;
 
-            CostruttoreGrafici.Radiale(PieChart, ultima, _mostraEtichetteRadiale);
+            CostruttoreGrafici.Radiale(PieChart, ultima, _mostraEtichetteRadiale, indiciColore);
             Mostra(PieChart);
         }
 
