@@ -186,10 +186,12 @@ namespace Depositum.Tests
             Assert.Equal(originale.Depositi.ToArray(), riletta.Depositi.ToArray());
         }
 
-        // ---------- Anomalie note (comportamento attuale, da correggere dopo il refactoring) ----------
+        // ---------- Limiti del formato ----------
+        // Il file non protegge i nomi con virgola o due punti: per questo RegoleDeposito li
+        // rifiuta prima che arrivino qui (anomalia 2, corretta lì).
 
         [Fact]
-        public void Anomalia2_NomeConDuePunti_SiPerdeAllaRilettura()
+        public void Formato_NomeConDuePunti_SiPerdeAllaRilettura()
         {
             var originale = new Rilevazione { Data = new DateOnly(2025, 1, 5), Totale = 100 };
             originale.Depositi["Conto: BNL"] = 100;
@@ -202,7 +204,7 @@ namespace Depositum.Tests
         }
 
         [Fact]
-        public void Anomalia2_NomeConVirgola_VieneLettoConUnAltroNome()
+        public void Formato_NomeConVirgola_VieneLettoConUnAltroNome()
         {
             var originale = new Rilevazione { Data = new DateOnly(2025, 1, 5), Totale = 5 };
             originale.Depositi["Casa, mare"] = 5;
@@ -212,6 +214,8 @@ namespace Depositum.Tests
             Assert.Equal(new[] { "mare" }, riletta!.Depositi.Keys.ToArray());
             Assert.Equal(5, riletta.Depositi["mare"]);
         }
+
+        // ---------- Anomalie note (comportamento attuale, da correggere) ----------
 
         [Theory]
         [InlineData("Conto:5,Totale:5")]              // data assente

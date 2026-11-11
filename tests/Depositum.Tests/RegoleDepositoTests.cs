@@ -88,15 +88,52 @@ namespace Depositum.Tests
             Assert.Equal("Il nome del deposito non può essere vuoto.", RegoleDeposito.Valida("", 0));
         }
 
-        // Anomalia 2 (docs/piano-refactoring.md, sezione 4): virgola e due punti nel nome
-        // sono accettati, ma rovinano la riga del CSV.
+        // Anomalia 2 corretta (docs/piano-refactoring.md, sezione 4): i nomi che il file
+        // non saprebbe rileggere vengono rifiutati.
         [Theory]
         [InlineData("Conto: BNL")]
         [InlineData("Casa, mare")]
-        public void Anomalia2_NomiCheRovinanoIlCsvSonoAccettati(string nome)
+        [InlineData(":")]
+        public void NomeConVirgolaODuePunti_Rifiutato(string nome)
+        {
+            Assert.False(RegoleDeposito.NomeValido(nome));
+            Assert.Equal("Il nome del deposito non può contenere virgole o due punti.", RegoleDeposito.Valida(nome, 100));
+        }
+
+        [Theory]
+        [InlineData("Data")]
+        [InlineData("totale")]
+        [InlineData("  TOTALE  ")]
+        public void NomeRiservato_Rifiutato(string nome)
+        {
+            Assert.False(RegoleDeposito.NomeValido(nome));
+            Assert.Equal("\"Data\" e \"Totale\" non si possono usare come nome di un deposito.", RegoleDeposito.ErroreNome(nome));
+        }
+
+        [Theory]
+        [InlineData("Data di nascita")]
+        [InlineData("Totale risparmi")]
+        [InlineData("Conto; BNL")]
+        [InlineData("Conto (BNL) - 2")]
+        public void NomeCheContieneUnaParolaRiservataOAltriSimboli_Accettato(string nome)
         {
             Assert.True(RegoleDeposito.NomeValido(nome));
-            Assert.Null(RegoleDeposito.Valida(nome, 100));
+        }
+
+        [Fact]
+        public void OgniNomeAccettato_SopravviveAllaScritturaEAllaRilettura()
+        {
+            foreach (string nome in new[] { "Conto", "Conto; BNL", "Totale risparmi", "Fondo pensione 2", "c/c" })
+            {
+                Assert.True(RegoleDeposito.NomeValido(nome));
+
+                var originale = new Rilevazione { Data = new System.DateOnly(2025, 1, 5), Totale = 7 };
+                originale.Depositi[nome] = 7;
+                var riletta = RilevazioneCsv.DaRiga(RilevazioneCsv.InRiga(originale));
+
+                Assert.Equal(7, riletta!.Depositi[nome]);
+                Assert.Equal(7, riletta.Totale);
+            }
         }
     }
 }

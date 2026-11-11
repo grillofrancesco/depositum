@@ -181,10 +181,10 @@ namespace Depositum.Pages
             // Validazione su tutti gli elementi della lista prima del salvataggio definitivo
             foreach (var d in _depositi)
             {
-                if (!RegoleDeposito.NomeValido(d.Nome))
+                string? erroreNome = RegoleDeposito.ErroreNome(d.Nome);
+                if (erroreNome != null)
                 {
-                    MostraMessaggio(InfoBarSeverity.Error, "Nome deposito non valido",
-                        $"Il deposito \"{d.Nome}\" deve avere un nome compreso tra 1 e {RegoleDeposito.LunghezzaMassimaNome} caratteri.");
+                    MostraMessaggio(InfoBarSeverity.Error, "Nome deposito non valido", $"Deposito \"{d.Nome}\": {erroreNome}");
                     return;
                 }
 
