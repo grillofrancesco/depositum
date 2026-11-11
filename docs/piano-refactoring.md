@@ -347,3 +347,23 @@ vanno trattati dopo (decisione del 10/11/2026). Alcuni toccano i dati.
   un namespace `Depositum.App` entrerebbe in conflitto con la classe `App`.
   `App.xaml` è ora in `App/` accanto ad `App.xaml.cs`; il csproj lo dichiara
   come `ApplicationDefinition` perché in automatico viene cercato solo nella radice.
+
+## 8. Stato delle anomalie (11/11/2026)
+
+Refactoring concluso (fasi 0-7). Anomalie corrette, una per commit:
+
+| N. | Stato | Scelta fatta |
+|---|---|---|
+| 1 | Corretta | "Ultima rilevazione" è ovunque quella con la data più recente; a parità di data, l'ultima inserita. |
+| 2 | Corretta | I nomi con `,` o `:` e i nomi `Data` e `Totale` vengono rifiutati con un messaggio. Il formato del file non cambia. |
+| 3 | Corretta | Il colore dipende dalla posizione del nome in tutto lo storico ordinato per data, in ogni schermata. Nella dashboard i colori di alcuni depositi possono essere cambiati una volta rispetto a prima. |
+| 4 | Corretta | Le righe senza data valida vengono ignorate in lettura; all'avvio un avviso dice quante sono. Il file non viene modificato. |
+| 5 | Corretta | Il totale è un numero a 64 bit: tre depositi al massimo danno 2.999.999.999 e vengono salvati e mostrati. |
+| 6 | **Da fare** | Formato dell'importo non uniforme (`1.000€` nella dashboard, `1.000 €` nei grafici). Va scelto quale dei due tenere. |
+| 7 | **Da fare** | Data scritta nel file con il separatore della lingua di Windows. |
+
+Osservazione nuova, emersa provando l'anomalia 5: nelle card della dashboard un
+importo di nove cifre (`999.999.999€`) non entra nella card e viene tagliato a
+sinistra. Non dipende dalle modifiche: la card ha la stessa misura di prima.
+
+Dopo le anomalie 6 e 7 resta, in attesa di conferma, la funzionalità dei temi.
