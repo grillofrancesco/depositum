@@ -68,7 +68,9 @@ namespace Depositum.Tests
         }
 
         [Theory]
-        [InlineData("05/01/2025")]
+        [InlineData("05-01-2025")]     // formato con cui l'app scrive oggi
+        [InlineData("5-1-2025")]
+        [InlineData("05/01/2025")]     // formato delle righe salvate prima dell'anomalia 7
         [InlineData("5/1/2025")]
         [InlineData("2025-01-05")]
         [InlineData("5 gennaio 2025")] // formato libero, interpretato secondo la cultura corrente
@@ -158,7 +160,7 @@ namespace Depositum.Tests
             r.Depositi["Conto"] = 1200;
             r.Depositi["Risparmi"] = 5000;
 
-            Assert.Equal("Data:05/01/2025,Conto:1200,Risparmi:5000,Totale:6200", RilevazioneCsv.InRiga(r));
+            Assert.Equal("Data:05-01-2025,Conto:1200,Risparmi:5000,Totale:6200", RilevazioneCsv.InRiga(r));
         }
 
         [Fact]
@@ -166,10 +168,32 @@ namespace Depositum.Tests
         {
             var r = new Rilevazione { Data = new DateOnly(2025, 12, 31), Totale = 0 };
 
-            Assert.Equal("Data:31/12/2025,Totale:0", RilevazioneCsv.InRiga(r));
+            Assert.Equal("Data:31-12-2025,Totale:0", RilevazioneCsv.InRiga(r));
         }
 
         // ---------- Andata e ritorno ----------
+
+        [Fact]
+        public void FileConRigheVecchieENuove_LetteTutte()
+        {
+            // Un file scritto in parte prima e in parte dopo il passaggio al trattino.
+            var vecchia = RilevazioneCsv.DaRiga("Data:05/01/2025,Conto:100,Totale:100");
+            var nuova = RilevazioneCsv.DaRiga("Data:02-11-2026,Conto:200,Totale:200");
+
+            Assert.Equal(new DateOnly(2025, 1, 5), vecchia!.Data);
+            Assert.Equal(new DateOnly(2026, 11, 2), nuova!.Data);
+        }
+
+        [Fact]
+        public void Scrittura_NonDipendeDallaLinguaDiWindows()
+        {
+            var r = new Rilevazione { Data = new DateOnly(2025, 1, 5), Totale = 1 };
+            r.Depositi["Conto"] = 1;
+
+            CultureInfo.CurrentCulture = new CultureInfo("de-DE");
+
+            Assert.Equal("Data:05-01-2025,Conto:1,Totale:1", RilevazioneCsv.InRiga(r));
+        }
 
         [Fact]
         public void AndataERitorno_StessiDati()
@@ -203,7 +227,7 @@ namespace Depositum.Tests
             string riga = RilevazioneCsv.InRiga(originale);
             var riletta = RilevazioneCsv.DaRiga(riga);
 
-            Assert.Equal("Data:05/01/2025,A:999999999,B:999999999,C:999999999,Totale:2999999997", riga);
+            Assert.Equal("Data:05-01-2025,A:999999999,B:999999999,C:999999999,Totale:2999999997", riga);
             Assert.Equal(2_999_999_997L, riletta!.Totale);
             Assert.Equal(2_999_999_997L, riletta.SommaDepositi());
         }
@@ -221,7 +245,7 @@ namespace Depositum.Tests
             string riga = RilevazioneCsv.InRiga(originale);
             var riletta = RilevazioneCsv.DaRiga(riga);
 
-            Assert.Equal("Data:05/01/2025,Conto: BNL:100,Totale:100", riga);
+            Assert.Equal("Data:05-01-2025,Conto: BNL:100,Totale:100", riga);
             Assert.Empty(riletta!.Depositi);
         }
 

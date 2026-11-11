@@ -360,13 +360,14 @@ Refactoring concluso (fasi 0-7). Anomalie corrette, una per commit:
 | 4 | Corretta | Le righe senza data valida vengono ignorate in lettura; all'avvio un avviso dice quante sono. Il file non viene modificato. |
 | 5 | Corretta | Il totale è un numero a 64 bit: tre depositi al massimo danno 2.999.999.999 e vengono salvati e mostrati. |
 | 6 | Corretta | Un solo formato in tutta l'app, senza spazio: `1.000€` (scelta dell'utente). Cambiano le etichette degli assi, i suggerimenti dei grafici e il messaggio d'errore sull'importo massimo. |
-| 7 | **Da fare** | Data scritta nel file con il separatore della lingua di Windows. |
+| 7 | Corretta | Nel file la data si salva sempre come `gg-mm-aaaa`, a schermo si mostra sempre come `gg/mm/aaaa`, qualunque sia la lingua di Windows (scelta dell'utente). Le righe già salvate con `/` restano come sono e si continuano a leggere. |
 
-Osservazione nuova, emersa provando l'anomalia 5: nelle card della dashboard un
+Osservazione emersa provando l'anomalia 5: nelle card della dashboard un
 importo di nove cifre (`999.999.999€`) non entra nella card e viene tagliato a
-sinistra. Non dipende dalle modifiche: la card ha la stessa misura di prima.
+sinistra. Non dipende dalle modifiche. L'utente ha deciso di non gestirlo per ora:
+è un caso limite che non si presenterà.
 
 Dal 11/11/2026, su richiesta dell'utente, prima di correggere ogni anomalia si chiede
 come la vuole risolvere.
 
-Dopo l'anomalia 7 resta, in attesa di conferma, la funzionalità dei temi.
+Tutte le anomalie sono corrette. Resta, in attesa di conferma, la funzionalità dei temi.

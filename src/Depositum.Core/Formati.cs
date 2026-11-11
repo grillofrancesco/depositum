@@ -8,16 +8,29 @@ namespace Depositum.Core
     /// </summary>
     public static class Formati
     {
-        private const string FormatoData = "dd/MM/yyyy";
+        // Le date usano sempre la cultura invariante: il separatore resta quello scritto qui,
+        // qualunque sia la lingua di Windows.
+        private const string FormatoDataSchermo = "dd/MM/yyyy";
+        private const string FormatoDataFile = "dd-MM-yyyy";
 
-        private static readonly string[] FormatiDataAccettati = { FormatoData, "d/M/yyyy", "yyyy-MM-dd" };
+        private static readonly string[] FormatiDataAccettati =
+        {
+            FormatoDataSchermo, "d/M/yyyy",
+            FormatoDataFile, "d-M-yyyy",
+            "yyyy-MM-dd"
+        };
 
-        /// <summary>Data come viene mostrata e salvata: gg/mm/aaaa.</summary>
-        public static string Data(DateOnly data) => data.ToString(FormatoData);
+        /// <summary>Data come viene mostrata nell'app: gg/mm/aaaa.</summary>
+        public static string Data(DateOnly data) => data.ToString(FormatoDataSchermo, CultureInfo.InvariantCulture);
+
+        /// <summary>Data come viene salvata in history.csv: gg-mm-aaaa.</summary>
+        public static string DataPerFile(DateOnly data) => data.ToString(FormatoDataFile, CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Interpreta una data scritta dall'utente o letta dal file: prima i formati
-        /// gg/mm/aaaa, g/m/aaaa e aaaa-mm-gg, poi qualunque data valida per la lingua corrente.
+        /// gg/mm/aaaa, g/m/aaaa, gg-mm-aaaa, g-m-aaaa e aaaa-mm-gg, poi qualunque data
+        /// valida per la lingua corrente. Le righe salvate prima del passaggio a gg-mm-aaaa
+        /// (con la barra) continuano a essere lette.
         /// </summary>
         public static bool ProvaALeggereData(string testo, out DateOnly data)
         {

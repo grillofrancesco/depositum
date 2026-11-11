@@ -19,9 +19,18 @@ namespace Depositum.Tests
             Assert.Equal("31/12/2026", Formati.Data(new DateOnly(2026, 12, 31)));
         }
 
+        [Fact]
+        public void DataPerFile_GiornoMeseAnnoConTrattino()
+        {
+            Assert.Equal("05-01-2025", Formati.DataPerFile(new DateOnly(2025, 1, 5)));
+            Assert.Equal("31-12-2026", Formati.DataPerFile(new DateOnly(2026, 12, 31)));
+        }
+
         [Theory]
         [InlineData("05/01/2025")]
         [InlineData("5/1/2025")]
+        [InlineData("05-01-2025")]
+        [InlineData("5-1-2025")]
         [InlineData("2025-01-05")]
         [InlineData("5 gennaio 2025")]
         public void ProvaALeggereData_FormatiAccettati(string testo)
@@ -35,6 +44,8 @@ namespace Depositum.Tests
         [InlineData("domani")]
         [InlineData("32/01/2025")]
         [InlineData("29/02/2025")]
+        [InlineData("32-01-2025")]
+        [InlineData("29-02-2025")]
         public void ProvaALeggereData_TestoNonValido(string testo)
         {
             Assert.False(Formati.ProvaALeggereData(testo, out _));
@@ -45,8 +56,10 @@ namespace Depositum.Tests
         {
             var data = new DateOnly(2026, 11, 2);
 
-            Assert.True(Formati.ProvaALeggereData(Formati.Data(data), out var riletta));
-            Assert.Equal(data, riletta);
+            Assert.True(Formati.ProvaALeggereData(Formati.Data(data), out var dalloSchermo));
+            Assert.True(Formati.ProvaALeggereData(Formati.DataPerFile(data), out var dalFile));
+            Assert.Equal(data, dalloSchermo);
+            Assert.Equal(data, dalFile);
         }
 
         [Theory]
@@ -82,13 +95,21 @@ namespace Depositum.Tests
             Assert.Equal("1.000€", Formati.Importo(daGrafico));
         }
 
-        // Anomalia 7: il separatore della data segue la lingua di Windows.
-        [Fact]
-        public void Anomalia7_IlSeparatoreDellaDataDipendeDallaLingua()
+        // Anomalia 7 corretta (docs/piano-refactoring.md, sezione 4): prima il separatore
+        // seguiva la lingua di Windows (con il tedesco 05.01.2025). Ora a schermo è sempre "/",
+        // nel file sempre "-".
+        [Theory]
+        [InlineData("it-IT")]
+        [InlineData("de-DE")]
+        [InlineData("en-US")]
+        [InlineData("nl-NL")]
+        public void SeparatoreDellaData_NonDipendeDallaLingua(string lingua)
         {
-            CultureInfo.CurrentCulture = new CultureInfo("de-DE");
+            CultureInfo.CurrentCulture = new CultureInfo(lingua);
+            var data = new DateOnly(2025, 1, 5);
 
-            Assert.Equal("05.01.2025", Formati.Data(new DateOnly(2025, 1, 5)));
+            Assert.Equal("05/01/2025", Formati.Data(data));
+            Assert.Equal("05-01-2025", Formati.DataPerFile(data));
         }
     }
 }

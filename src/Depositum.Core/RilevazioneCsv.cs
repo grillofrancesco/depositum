@@ -69,7 +69,7 @@ namespace Depositum.Core
         public static string InRiga(Rilevazione rilevazione)
         {
             var sb = new StringBuilder();
-            sb.Append($"Data:{Formati.Data(rilevazione.Data)}");
+            sb.Append($"Data:{Formati.DataPerFile(rilevazione.Data)}");
             foreach (var dep in rilevazione.Depositi)
             {
                 sb.Append($",{dep.Key}:{dep.Value}");
