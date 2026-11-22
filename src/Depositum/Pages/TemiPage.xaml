@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Depositum.Pages.TemiPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:Depositum.Models">
+
+    <Grid Background="{ThemeResource CanvasBrush}"
+          Padding="{StaticResource PageEdgePaddingVertical}"
+          RowSpacing="{StaticResource StandardElementSpacing}">
+        <Grid.RowDefinitions>
+            <!-- Riga 0: Header (titolo e ritorno alla dashboard) -->
+            <RowDefinition Height="Auto" />
+            <!-- Riga 1: Elenco dei temi (scrollabile) -->
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Grid Grid.Row="0" Margin="{StaticResource PageEdgeMarginHorizontal}">
+            <TextBlock Text="Tema" Style="{StaticResource SubtitleSerifStyle}" HorizontalAlignment="Left" />
+            <Button Width="34" Height="34" MinWidth="0" MinHeight="0" Padding="0"
+                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Style="{StaticResource BaseDarkButtonStyle}"
+                    Click="BtnIndietro_Click" AutomationProperties.Name="Torna alla dashboard">
+                <FontIcon Glyph="&#xF15C;" Style="{StaticResource ButtonIconStyle}" />
+            </Button>
+        </Grid>
+
+        <!-- ELENCO DEI TEMI: il tema si applica subito al tocco e viene ricordato -->
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      Padding="{StaticResource ScrollViewerContentPadding}">
+            <StackPanel Spacing="{StaticResource StandardElementSpacing}">
+                <!-- Avviso se la scelta non si è potuta salvare -->
+                <InfoBar x:Name="StatusInfoBar" IsOpen="False" Severity="Warning" />
+
+                <ItemsRepeater x:Name="TemiRepeater">
+                    <ItemsRepeater.Layout>
+                        <StackLayout Spacing="{StaticResource StandardElementSpacing}" />
+                    </ItemsRepeater.Layout>
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate x:DataType="models:TemaCard">
+                            <Button Style="{StaticResource ThemeChoiceButtonStyle}"
+                                    Click="Tema_Click"
+                                    Tag="{x:Bind}"
+                                    AutomationProperties.AutomationId="{x:Bind IdAutomazione}"
+                                    AutomationProperties.Name="{x:Bind Nome}">
+                                <Grid ColumnSpacing="12" RowSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Nome e descrizione -->
+                                    <StackPanel Spacing="2">
+                                        <TextBlock Text="{x:Bind Nome}" Style="{StaticResource ButtonLabelStyle}" FontSize="16" />
+                                        <TextBlock Text="{x:Bind Descrizione}" Style="{StaticResource ThemeDescriptionStyle}" />
+                                    </StackPanel>
+
+                                    <!-- Spunta sul tema in uso -->
+                                    <FontIcon Grid.Column="1" Glyph="&#xF299;"
+                                              FontFamily="{StaticResource FluentIconsFilled}" FontSize="22"
+                                              Foreground="{ThemeResource AccentTextBrush}"
+                                              VerticalAlignment="Top"
+                                              Visibility="{x:Bind VisibilitaSpunta}" />
+
+                                    <!-- Anteprima: pulsante principale e colori dei depositi, sullo sfondo del tema -->
+                                    <Border Grid.Row="1" Grid.ColumnSpan="2"
+                                            Background="{x:Bind SfondoAnteprima}"
+                                            BorderBrush="{x:Bind BordoAnteprima}" BorderThickness="1"
+                                            CornerRadius="6" Padding="8">
+                                        <StackPanel Orientation="Horizontal" Spacing="6">
+                                            <Border Width="56" Height="22" CornerRadius="4" Background="{x:Bind Accento}" />
+                                            <ItemsRepeater ItemsSource="{x:Bind CampioniDepositi}">
+                                                <ItemsRepeater.Layout>
+                                                    <StackLayout Orientation="Horizontal" Spacing="6" />
+                                                </ItemsRepeater.Layout>
+                                                <ItemsRepeater.ItemTemplate>
+                                                    <DataTemplate x:DataType="Brush">
+                                                        <Border Width="22" Height="22" CornerRadius="4" Background="{x:Bind}" />
+                                                    </DataTemplate>
+                                                </ItemsRepeater.ItemTemplate>
+                                            </ItemsRepeater>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

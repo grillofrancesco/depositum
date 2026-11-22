@@ -66,5 +66,10 @@ namespace Depositum.Pages
         {
             Frame.Navigate(typeof(AnalysisPage));
         }
+
+        private void BtnTemi_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(TemiPage));
+        }
     }
 }

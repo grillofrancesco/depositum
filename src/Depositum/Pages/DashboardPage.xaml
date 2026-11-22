@@ -19,16 +19,24 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- HEADER: DEPOSITUM a sinistra, Data a destra -->
+        <!-- HEADER: DEPOSITUM a sinistra; a destra la data e il collegamento alla scelta del tema -->
         <Grid Grid.Row="0" Margin="{StaticResource PageEdgeMarginHorizontal}">
             <TextBlock Text="DEPOSITUM" 
                        Style="{StaticResource TitleSerifStyle}" 
                        HorizontalAlignment="Left" />
 
-            <TextBlock x:Name="TxtDataHeader" 
-                       Text="00/00/0000" 
-                       Style="{StaticResource HeaderDateStyle}" 
-                       HorizontalAlignment="Right" />
+            <StackPanel Orientation="Horizontal" Spacing="12"
+                        HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock x:Name="TxtDataHeader" 
+                           Text="00/00/0000" 
+                           Style="{StaticResource HeaderDateStyle}" />
+                <Button x:Name="BtnTemi"
+                        Width="34" Height="34" MinWidth="0" MinHeight="0" Padding="0"
+                        Style="{StaticResource BaseDarkButtonStyle}"
+                        Click="BtnTemi_Click" AutomationProperties.Name="Scegli il tema">
+                    <FontIcon Glyph="&#xF2F6;" Style="{StaticResource ButtonIconStyle}" />
+                </Button>
+            </StackPanel>
         </Grid>
 
         <!-- AREA DEPOSITI: ScrollViewer a tutta larghezza per barra di scorrimento sul bordo finestra -->

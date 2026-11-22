@@ -52,8 +52,9 @@ namespace Depositum.Charts
             var (minimo, massimo) = DatiGrafici.LimitiIstogramma(dati.Select(d => d.Valore).ToArray());
 
             grafico.Series = new ISeries[] { series };
-            grafico.XAxes = new[] { new Axis { Labels = dati.Select(d => d.Nome).ToArray(), LabelsRotation = 0 } };
-            grafico.YAxes = new[] { new Axis { Labeler = Formati.Importo, MinLimit = minimo, MaxLimit = massimo } };
+            grafico.XAxes = new[] { new Axis { Labels = dati.Select(d => d.Nome).ToArray(), LabelsRotation = 0, LabelsPaint = EtichetteAssi() } };
+            grafico.YAxes = new[] { new Axis { Labeler = Formati.Importo, MinLimit = minimo, MaxLimit = massimo, LabelsPaint = EtichetteAssi() } };
+            ColoraSuggerimenti(grafico);
         }
 
         /// <summary>Una linea per ogni deposito, con le date sull'asse orizzontale.</summary>
@@ -98,6 +99,7 @@ namespace Depositum.Charts
                 new Axis
                 {
                     Labeler = Formati.Importo,
+                    LabelsPaint = EtichetteAssi(),
                     SeparatorsPaint = new SolidColorPaint(Tema.GrigliaGrafico),
                     ZeroPaint = new SolidColorPaint(Tema.GrigliaGrafico),
                     MinLimit = dati.MinimoAsse,
@@ -111,6 +113,7 @@ namespace Depositum.Charts
                 LiveChartsCore.Measure.Margin.Auto,
                 12,
                 24);
+            ColoraSuggerimenti(grafico);
         }
 
         /// <summary>Una fetta per ogni deposito della rilevazione (la cui somma deve essere positiva).</summary>
@@ -138,6 +141,23 @@ namespace Depositum.Charts
                 DataLabelsSize = 22,
                 ToolTipLabelFormatter = point => $"{Formati.Importo(point.Coordinate.PrimaryValue)} ({(point.Coordinate.PrimaryValue / sumTotale):P1})"
             }).ToArray();
+            ColoraSuggerimenti(grafico);
+        }
+
+        /// <summary>Colore delle etichette degli assi, dal tema.</summary>
+        private static SolidColorPaint EtichetteAssi() => new(Tema.EtichetteAssi);
+
+        /// <summary>Colori del riquadro che compare passando sopra un punto, dal tema.</summary>
+        private static void ColoraSuggerimenti(CartesianChart grafico)
+        {
+            grafico.TooltipBackgroundPaint = new SolidColorPaint(Tema.SfondoSuggerimento);
+            grafico.TooltipTextPaint = new SolidColorPaint(Tema.TestoSuggerimento);
+        }
+
+        private static void ColoraSuggerimenti(PieChart grafico)
+        {
+            grafico.TooltipBackgroundPaint = new SolidColorPaint(Tema.SfondoSuggerimento);
+            grafico.TooltipTextPaint = new SolidColorPaint(Tema.TestoSuggerimento);
         }
 
         /// <summary>Posizione di una data sull'asse orizzontale.</summary>

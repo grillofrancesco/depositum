@@ -7,9 +7,10 @@
         Tutti i ruoli di colore dell'app. Ogni chiave dice a cosa serve il colore, non che tinta ha.
         Nelle pagine e negli stili non vanno scritti colori: si usa una di queste chiavi.
 
-        Qui i pennelli sono volutamente senza colore: i valori stanno nella palette
-        (Theme/Palette.cs) e li scrive Tema.Applica all'avvio. Un pennello nuovo va aggiunto
-        qui, in Palette e nella corrispondenza di Services/Tema.cs.
+        Qui i pennelli sono volutamente senza colore: i valori stanno nelle palette
+        (Depositum.Core/Temi/Palette.Temi.cs) e li scrive Tema.Applica, all'avvio e a ogni
+        cambio di tema. Un pennello nuovo va aggiunto qui, in Palette e nella corrispondenza
+        di Services/Tema.cs.
     -->
 
     <!-- ===== Chiavi di sistema: sovrascrivono risorse di WinUI =====

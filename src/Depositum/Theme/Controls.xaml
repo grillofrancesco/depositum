@@ -107,6 +107,16 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <!-- Voce della scelta del tema: tutta la larghezza, contenuto su più righe -->
+    <Style x:Key="ThemeChoiceButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseDarkButtonStyle}">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="Background" Value="{ThemeResource RaisedSurfaceBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource BorderBrushSubtle}" />
+    </Style>
     <Style x:Key="RemoveItemButtonStyle" TargetType="Button">
         <Setter Property="Width" Value="36" />
         <Setter Property="Height" Value="36" />

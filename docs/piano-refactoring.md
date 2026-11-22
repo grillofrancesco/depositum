@@ -371,3 +371,27 @@ Dal 11/11/2026, su richiesta dell'utente, prima di correggere ogni anomalia si c
 come la vuole risolvere.
 
 Tutte le anomalie sono corrette. Resta, in attesa di conferma, la funzionalità dei temi.
+
+## 9. Funzionalità dei temi (22/11/2026)
+
+Avviata su richiesta dell'utente. Scelte dell'utente: "Verde natura" è il verde
+attuale e resta il predefinito; sfondi scuri tinti del colore del tema; il tema si
+applica subito al tocco e viene ricordato.
+
+- **Palette in Core** (`Depositum.Core/Temi`): `ColoreRgb` e `Palette`, con le
+  cinque palette in `Palette.Temi.cs` (Giallo oro e ottone, Acqua, Terra, Verde
+  natura, Rosso). Ogni tema scuro ha sfondi tinti del suo colore e depositi che
+  alternano la tinta del tema e tinte complementari. `PaletteTests` verifica per
+  ogni palette i contrasti minimi (WCAG) di testi, pulsanti e card, e che card
+  vicine non abbiano colori quasi uguali.
+- **Scelta del tema**: icona a destra della data nella dashboard → `TemiPage`.
+  Il tema toccato si applica subito; la scelta è salvata in `tema.txt` accanto a
+  `history.csv` e riapplicata all'avvio (`Services/PreferenzaTema`).
+- **Grafici**: sfondo uguale al riquadro (prima nero), etichette degli assi e
+  riquadro dei suggerimenti con i colori del tema.
+- **Non coperti**: caselle di spunta, menu a tendina e pulsante predefinito dei
+  dialoghi restano con l'accento di Windows. Sovrascrivere le loro chiavi
+  (`AccentFillColor*`, `CheckBoxCheckBackgroundFill*`, `AccentButtonBackground*`,
+  anche duplicate nel dizionario "Dark") non ha avuto effetto; servirebbe
+  ridefinire gli stili di quei controlli, e su indicazione dell'utente ci si è fermati.
+

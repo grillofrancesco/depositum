@@ -36,8 +36,9 @@
                 Background="{ThemeResource SurfaceBrush}" BorderBrush="{ThemeResource BorderBrushSubtle}" BorderThickness="1"
                 CornerRadius="10" Padding="16">
             <Grid>
-                <lvc:CartesianChart x:Name="CartesianChart" Visibility="Collapsed" />
-                <lvc:PieChart x:Name="PieChart" Visibility="Collapsed" />
+                <!-- Lo sfondo dei grafici è quello del riquadro: senza, l'area di disegno resta nera -->
+                <lvc:CartesianChart x:Name="CartesianChart" Visibility="Collapsed" Background="{ThemeResource SurfaceBrush}" />
+                <lvc:PieChart x:Name="PieChart" Visibility="Collapsed" Background="{ThemeResource SurfaceBrush}" />
                 <TextBlock x:Name="TxtCanvasVuoto" Text="Nessun dato da visualizzare"
                            Foreground="{ThemeResource MutedTextBrush}" FontSize="15"
                            HorizontalAlignment="Center" VerticalAlignment="Center"

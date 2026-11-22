@@ -70,6 +70,14 @@
         <Setter Property="VerticalAlignment" Value="Bottom" />
     </Style>
 
+    <!-- Descrizione di un tema nella scelta del tema -->
+    <Style x:Key="ThemeDescriptionStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{ThemeResource SecondaryTextBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
     <!-- Dialoghi -->
     <Style x:Key="DialogLabelStyle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />

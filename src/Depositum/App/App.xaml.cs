@@ -1,5 +1,4 @@
 ﻿using Depositum.Services;
-using Depositum.Theme;
 using Microsoft.UI.Xaml;
 using System;
 using System.IO;
@@ -31,9 +30,9 @@ namespace Depositum
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            // Assegna i colori ai pennelli prima che nasca la finestra.
+            // Assegna i colori del tema scelto ai pennelli prima che nasca la finestra.
             // Non si può fare nel costruttore: lì le risorse dell'app non sono ancora accessibili.
-            Tema.Applica(Palette.Verde);
+            Tema.Applica(PreferenzaTema.Carica());
 
             // Carica le rilevazioni salvate. Se il file non si riesce a leggere l'app parte
             // comunque, senza dati, e lo dice: il file sul disco non viene toccato.

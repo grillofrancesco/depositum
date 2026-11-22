@@ -1,4 +1,4 @@
-using Depositum.Theme;
+using Depositum.Core.Temi;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using SkiaSharp;
@@ -15,8 +15,9 @@ namespace Depositum.Services
     /// <para>
     /// Lo XAML usa i pennelli dichiarati in Theme/Colors.xaml tramite la loro chiave;
     /// <see cref="Applica"/> scrive in quei pennelli i colori della palette scelta, e tutto
-    /// ciò che li usa si aggiorna da solo. Il codice che non può usare un pennello (i grafici)
-    /// legge i colori da qui e si ridisegna quando arriva <see cref="TemaCambiato"/>.
+    /// ciò che li usa si aggiorna da solo, anche con le pagine già aperte. Il codice che non
+    /// può usare un pennello (i grafici) legge i colori da qui e si ridisegna quando arriva
+    /// <see cref="TemaCambiato"/>.
     /// </para>
     /// </summary>
     public static class Tema
@@ -25,7 +26,7 @@ namespace Depositum.Services
         private const string ChiaveAccentoDiSistema = "SystemAccentColor";
 
         /// <summary>La palette attualmente applicata.</summary>
-        public static Palette Corrente { get; private set; } = Palette.Verde;
+        public static Palette Corrente { get; private set; } = Palette.Predefinita;
 
         /// <summary>Sollevato dopo ogni <see cref="Applica"/>.</summary>
         public static event EventHandler? TemaCambiato;
@@ -54,7 +55,7 @@ namespace Depositum.Services
             foreach (var (chiave, colore) in pennelliSistema)
                 ((SolidColorBrush)chiaviSistema[chiave]).Color = colore;
 
-            chiaviSistema[ChiaveAccentoDiSistema] = palette.SystemAccent;
+            chiaviSistema[ChiaveAccentoDiSistema] = InColore(palette.SystemAccent);
 
             VerificaCopertura(colori, pennelliApp.Select(p => p.Chiave));
             VerificaCopertura(chiaviSistema, pennelliSistema.Select(p => p.Chiave));
@@ -69,69 +70,80 @@ namespace Depositum.Services
         public static SolidColorBrush PennelloPerDeposito(int indice) =>
             (SolidColorBrush)TrovaDizionarioColori()[ChiaveDeposito(indice % Palette.NumeroColoriDeposito)];
 
-        /// <summary>Colore del deposito in posizione <paramref name="indice"/>; oltre l'ultimo i colori si ripetono.</summary>
-        public static Color ColorePerDeposito(int indice) =>
-            Corrente.Depositi[indice % Palette.NumeroColoriDeposito];
-
         // ---------- Grafici (SkiaSharp) ----------
 
-        public static SKColor ColoreGraficoPerDeposito(int indice) => InSkColor(ColorePerDeposito(indice));
+        public static SKColor ColoreGraficoPerDeposito(int indice) =>
+            InSkColor(Corrente.Depositi[indice % Palette.NumeroColoriDeposito]);
 
         public static SKColor GrigliaGrafico => InSkColor(Corrente.ChartGrid);
 
+        /// <summary>Etichette sulle fette del grafico radiale.</summary>
         public static SKColor EtichetteGrafico => InSkColor(Corrente.ChartLabel);
 
-        public static SKColor InSkColor(Color colore) => new(colore.R, colore.G, colore.B, colore.A);
+        /// <summary>Etichette degli assi (date e importi).</summary>
+        public static SKColor EtichetteAssi => InSkColor(Corrente.SecondaryText);
+
+        /// <summary>Sfondo e testo del riquadro che compare passando sopra un punto del grafico.</summary>
+        public static SKColor SfondoSuggerimento => InSkColor(Corrente.RaisedSurface);
+
+        public static SKColor TestoSuggerimento => InSkColor(Corrente.TextPrimary);
+
+        // ---------- Conversioni ----------
+
+        public static Color InColore(ColoreRgb colore) => Color.FromArgb(255, colore.R, colore.G, colore.B);
+
+        public static SKColor InSkColor(ColoreRgb colore) => new(colore.R, colore.G, colore.B);
 
         // ---------- Corrispondenza tra ruoli della palette e chiavi di Colors.xaml ----------
 
         private static IEnumerable<(string Chiave, Color Colore)> PennelliApp(Palette p)
         {
-            yield return ("CanvasBrush", p.Canvas);
-            yield return ("SurfaceBrush", p.Surface);
-            yield return ("RaisedSurfaceBrush", p.RaisedSurface);
-            yield return ("BorderBrushSubtle", p.BorderSubtle);
+            yield return ("CanvasBrush", InColore(p.Canvas));
+            yield return ("SurfaceBrush", InColore(p.Surface));
+            yield return ("RaisedSurfaceBrush", InColore(p.RaisedSurface));
+            yield return ("BorderBrushSubtle", InColore(p.BorderSubtle));
 
-            yield return ("TextPrimaryBrush", p.TextPrimary);
-            yield return ("SecondaryTextBrush", p.SecondaryText);
-            yield return ("MutedTextBrush", p.MutedText);
-            yield return ("AccentTextBrush", p.AccentText);
-            yield return ("ErrorTextBrush", p.ErrorText);
-            yield return ("OnAccentBrush", p.OnAccent);
+            yield return ("TextPrimaryBrush", InColore(p.TextPrimary));
+            yield return ("SecondaryTextBrush", InColore(p.SecondaryText));
+            yield return ("MutedTextBrush", InColore(p.MutedText));
+            yield return ("AccentTextBrush", InColore(p.AccentText));
+            yield return ("ErrorTextBrush", InColore(p.ErrorText));
+            yield return ("OnAccentBrush", InColore(p.OnAccent));
 
-            yield return ("AccentActionBackground", p.AccentActionBackground);
-            yield return ("AccentActionPointerOverBrush", p.AccentActionPointerOver);
-            yield return ("AccentActionPressedBrush", p.AccentActionPressed);
-            yield return ("AccentActionDisabledBrush", p.AccentActionDisabled);
-            yield return ("AccentActionDisabledForegroundBrush", p.AccentActionDisabledForeground);
-            yield return ("AccentActionBorder", p.AccentActionBorder);
-            yield return ("AccentActionForeground", p.AccentActionForeground);
+            yield return ("AccentActionBackground", InColore(p.AccentActionBackground));
+            yield return ("AccentActionPointerOverBrush", InColore(p.AccentActionPointerOver));
+            yield return ("AccentActionPressedBrush", InColore(p.AccentActionPressed));
+            yield return ("AccentActionDisabledBrush", InColore(p.AccentActionDisabled));
+            yield return ("AccentActionDisabledForegroundBrush", InColore(p.AccentActionDisabledForeground));
+            yield return ("AccentActionBorder", InColore(p.AccentActionBorder));
+            yield return ("AccentActionForeground", InColore(p.AccentActionForeground));
 
-            yield return ("DestructiveSurfaceBrush", p.DestructiveSurface);
-            yield return ("DestructiveBorderBrush", p.DestructiveBorder);
-            yield return ("DestructiveForegroundBrush", p.DestructiveForeground);
+            yield return ("DestructiveSurfaceBrush", InColore(p.DestructiveSurface));
+            yield return ("DestructiveBorderBrush", InColore(p.DestructiveBorder));
+            yield return ("DestructiveForegroundBrush", InColore(p.DestructiveForeground));
 
-            yield return ("ChartGridBrush", p.ChartGrid);
-            yield return ("ChartLabelBrush", p.ChartLabel);
+            yield return ("ChartGridBrush", InColore(p.ChartGrid));
+            yield return ("ChartLabelBrush", InColore(p.ChartLabel));
 
             for (int i = 0; i < p.Depositi.Count; i++)
-                yield return (ChiaveDeposito(i), p.Depositi[i]);
+                yield return (ChiaveDeposito(i), InColore(p.Depositi[i]));
         }
 
         private static IEnumerable<(string Chiave, Color Colore)> PennelliDiSistema(Palette p)
         {
-            yield return ("TextControlBackground", p.InputBackground);
-            yield return ("TextControlBackgroundPointerOver", p.InputBackgroundPointerOver);
-            yield return ("TextControlBackgroundFocused", p.InputBackgroundFocused);
-            yield return ("TextControlBorderBrush", p.InputBorder);
-            yield return ("TextControlBorderBrushPointerOver", p.InputBorderPointerOver);
-            yield return ("TextControlBorderBrushFocused", p.InputBorderFocused);
-            yield return ("TextControlForeground", p.InputForeground);
-            yield return ("TextControlForegroundPointerOver", p.InputForegroundPointerOver);
-            yield return ("TextControlForegroundFocused", p.InputForegroundFocused);
-            yield return ("TextControlPlaceholderForeground", p.InputPlaceholder);
-            yield return ("TextControlPlaceholderForegroundPointerOver", p.InputPlaceholderPointerOver);
-            yield return ("TextControlPlaceholderForegroundFocused", p.InputPlaceholderFocused);
+            yield return ("TextControlBackground", InColore(p.InputBackground));
+            yield return ("TextControlBackgroundPointerOver", InColore(p.InputBackgroundPointerOver));
+            yield return ("TextControlBackgroundFocused", InColore(p.InputBackgroundFocused));
+            yield return ("TextControlBorderBrush", InColore(p.InputBorder));
+            yield return ("TextControlBorderBrushPointerOver", InColore(p.InputBorderPointerOver));
+            yield return ("TextControlBorderBrushFocused", InColore(p.InputBorderFocused));
+            yield return ("TextControlForeground", InColore(p.InputForeground));
+            yield return ("TextControlForegroundPointerOver", InColore(p.InputForegroundPointerOver));
+            yield return ("TextControlForegroundFocused", InColore(p.InputForegroundFocused));
+            yield return ("TextControlPlaceholderForeground", InColore(p.InputPlaceholder));
+            yield return ("TextControlPlaceholderForegroundPointerOver", InColore(p.InputPlaceholderPointerOver));
+            yield return ("TextControlPlaceholderForegroundFocused", InColore(p.InputPlaceholderFocused));
+
         }
 
         /// <summary>Chiave del pennello del deposito con indice a base zero (0 → "Deposito1Brush").</summary>
