@@ -4,14 +4,14 @@ using System.IO;
 namespace Depositum.Services
 {
     /// <summary>
-    /// Piccole preferenze dell'utente (tema, lingua), una per file di testo accanto a history.csv.
+    /// Piccole preferenze dell'utente (tema, lingua), una per file di testo accanto a history.dpstm.
     /// Sono comodità, non dati da proteggere: se un file manca o non si legge si usa il valore
     /// predefinito e l'app parte comunque.
     /// </summary>
     internal static class Preferenze
     {
         private static string Percorso(string nome) =>
-            Path.Combine(Path.GetDirectoryName(DataService.CsvFilePath)!, nome);
+            Path.Combine(DataService.CartellaDati, nome);
 
         /// <summary>Contenuto del file, senza spazi ai lati; <c>null</c> se manca o non si legge.</summary>
         public static string? Leggi(string nome)

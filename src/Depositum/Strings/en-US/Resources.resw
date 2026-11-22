@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- Testi dell'interfaccia (inglese). Le due lingue devono avere le stesse chiavi:
        lo verifica Depositum.Tests/RisorseTests. Chiavi con il punto (Nome.Proprietà) sono
@@ -302,5 +302,11 @@
   <data name="Avvio_RigheIgnorate_Molte" xml:space="preserve">
     <value>{0} lines of the entries file have no valid date and were ignored. The file has not been changed.</value>
     <comment>{0} = numero di righe</comment>
+  </data>
+  <data name="Avvio_DecifraturaFallita" xml:space="preserve">
+    <value>The file cannot be decrypted: it was created by another Windows user or on another PC, or it is damaged.</value>
+  </data>
+  <data name="Salvataggio_FileNonLetto" xml:space="preserve">
+    <value>The data file could not be read at startup: saving is blocked so that it is not overwritten. Close the app and fix the problem reported at startup.</value>
   </data>
 </root>

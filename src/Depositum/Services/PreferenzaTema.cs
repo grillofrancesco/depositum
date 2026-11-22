@@ -3,7 +3,7 @@ using Depositum.Core.Temi;
 namespace Depositum.Services
 {
     /// <summary>
-    /// Ricorda il tema scelto tra un avvio e l'altro, nel file 'tema.txt' accanto a history.csv.
+    /// Ricorda il tema scelto tra un avvio e l'altro, nel file 'tema.txt' accanto a history.dpstm.
     /// Il file contiene solo l'identificativo della palette (per esempio "acqua").
     /// </summary>
     public static class PreferenzaTema

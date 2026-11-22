@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- Testi dell'interfaccia (italiano). Le due lingue devono avere le stesse chiavi:
        lo verifica Depositum.Tests/RisorseTests. Chiavi con il punto (Nome.Proprietà) sono
@@ -302,5 +302,11 @@
   <data name="Avvio_RigheIgnorate_Molte" xml:space="preserve">
     <value>{0} righe del file delle rilevazioni non hanno una data valida e sono state ignorate. Il file non è stato modificato.</value>
     <comment>{0} = numero di righe</comment>
+  </data>
+  <data name="Avvio_DecifraturaFallita" xml:space="preserve">
+    <value>Il file non si riesce a decifrare: è stato creato da un altro utente Windows o su un altro PC, oppure è danneggiato.</value>
+  </data>
+  <data name="Salvataggio_FileNonLetto" xml:space="preserve">
+    <value>All'avvio il file delle rilevazioni non è stato letto: per non sovrascriverlo, il salvataggio è bloccato. Chiudi l'app e risolvi il problema segnalato all'avvio.</value>
   </data>
 </root>

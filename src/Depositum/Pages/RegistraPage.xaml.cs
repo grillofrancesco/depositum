@@ -207,7 +207,7 @@ namespace Depositum.Pages
             // Il totale è la somma dei depositi appena inseriti
             nuovaRilevazione.Totale = nuovaRilevazione.SommaDepositi();
 
-            // Salvataggio su file CSV in AppData e in memoria
+            // Salvataggio cifrato in AppData e in memoria
             try
             {
                 DataService.AggiungiRilevazione(nuovaRilevazione);

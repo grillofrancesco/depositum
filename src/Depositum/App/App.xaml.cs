@@ -48,7 +48,7 @@ namespace Depositum
             {
                 DataService.CaricaDati();
             }
-            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException)
             {
                 erroreLettura = ex.Message;
             }

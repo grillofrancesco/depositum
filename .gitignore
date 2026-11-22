@@ -364,3 +364,7 @@ FodyWeavers.xsd
 
 # Test file
 records_test.csv
+# Script locale di conversione CSV -> .dpstm e i file di dati che maneggia (dati reali)
+/csv_a_dpstm.py
+/*.csv
+/*.dpstm
