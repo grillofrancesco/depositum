@@ -4,14 +4,16 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <!-- Visual Studio usa come progetto di avvio predefinito il primo progetto elencato:
+       l'app (Depositum) deve restare in cima, prima della libreria Depositum.Core. -->
   <Folder Name="/src/">
-    <Project Path="src/Depositum.Core/Depositum.Core.csproj" />
     <Project Path="src/Depositum/Depositum.csproj">
       <Platform Solution="*|ARM64" Project="ARM64" />
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
       <Deploy />
     </Project>
+    <Project Path="src/Depositum.Core/Depositum.Core.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Depositum.Tests/Depositum.Tests.csproj" />
