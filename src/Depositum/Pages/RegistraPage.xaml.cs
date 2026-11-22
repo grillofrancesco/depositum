@@ -88,10 +88,10 @@ namespace Depositum.Pages
                     var dialog = new ContentDialog
                     {
                         XamlRoot = xamlRoot,
-                        Title = "Rimuovi deposito",
-                        Content = $"Sei sicuro di voler rimuovere il deposito \"{item.Nome}\"?",
-                        PrimaryButtonText = "Annulla",
-                        SecondaryButtonText = "Rimuovi",
+                        Title = Testi.Get("Rimuovi_Titolo"),
+                        Content = Testi.Formato("Rimuovi_Domanda", item.Nome),
+                        PrimaryButtonText = Testi.Get("Comune_Annulla"),
+                        SecondaryButtonText = Testi.Get("Rimuovi_Conferma"),
                         DefaultButton = ContentDialogButton.Secondary
                     };
 
@@ -108,7 +108,7 @@ namespace Depositum.Pages
                 }
                 catch (Exception ex)
                 {
-                    MostraMessaggio(InfoBarSeverity.Error, "Errore durante la rimozione", ex.Message);
+                    MostraMessaggio(InfoBarSeverity.Error, Testi.Get("Errore_Rimozione"), ex.Message);
                 }
             }
         }
@@ -147,7 +147,7 @@ namespace Depositum.Pages
             }
             catch (Exception ex)
             {
-                MostraMessaggio(InfoBarSeverity.Error, "Errore durante l'apertura del dialogo", ex.Message);
+                MostraMessaggio(InfoBarSeverity.Error, Testi.Get("Errore_AperturaDialogo"), ex.Message);
             }
         }
 
@@ -166,32 +166,33 @@ namespace Depositum.Pages
         {
             string dataStr = TxtDataInput.Text.Trim();
 
-            if (!Formati.ProvaALeggereData(dataStr, out var dataParsed))
+            if (!Formati.ProvaALeggereDataInserita(dataStr, out var dataParsed))
             {
-                MostraMessaggio(InfoBarSeverity.Error, "Data non valida", "Inserisci una data valida nel formato gg/mm/aaaa.");
+                MostraMessaggio(InfoBarSeverity.Error, Testi.Get("DataNonValida_Titolo"), Testi.Get("DataNonValida_Testo"));
                 return;
             }
 
             if (_depositi.Count == 0)
             {
-                MostraMessaggio(InfoBarSeverity.Warning, "Nessun deposito", "Aggiungi almeno un deposito prima di confermare.");
+                MostraMessaggio(InfoBarSeverity.Warning, Testi.Get("NessunDeposito_Titolo"), Testi.Get("NessunDeposito_Testo"));
                 return;
             }
 
             // Validazione su tutti gli elementi della lista prima del salvataggio definitivo
             foreach (var d in _depositi)
             {
-                string? erroreNome = RegoleDeposito.ErroreNome(d.Nome);
+                ErroreDeposito? erroreNome = RegoleDeposito.ErroreNome(d.Nome);
                 if (erroreNome != null)
                 {
-                    MostraMessaggio(InfoBarSeverity.Error, "Nome deposito non valido", $"Deposito \"{d.Nome}\": {erroreNome}");
+                    MostraMessaggio(InfoBarSeverity.Error, Testi.Get("NomeNonValido_Titolo"),
+                        Testi.Formato("NomeNonValido_Testo", d.Nome, Testi.Per(erroreNome.Value)));
                     return;
                 }
 
                 if (!RegoleDeposito.ImportoValido(d.Valore))
                 {
-                    MostraMessaggio(InfoBarSeverity.Error, "Importo non valido",
-                        $"L'importo del deposito \"{d.Nome}\" deve essere un intero compreso tra {RegoleDeposito.ImportoMinimo} e {Formati.Importo(RegoleDeposito.ImportoMassimo)}.");
+                    MostraMessaggio(InfoBarSeverity.Error, Testi.Get("ImportoNonValido_Titolo"),
+                        Testi.Formato("ImportoNonValido_Testo", d.Nome, RegoleDeposito.ImportoMinimo, Formati.Importo(RegoleDeposito.ImportoMassimo)));
                     return;
                 }
             }
@@ -213,8 +214,8 @@ namespace Depositum.Pages
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
-                MostraMessaggio(InfoBarSeverity.Error, "Salvataggio non riuscito",
-                    "La rilevazione non è stata salvata. " + ex.Message);
+                MostraMessaggio(InfoBarSeverity.Error, Testi.Get("SalvataggioNonRiuscito_Titolo"),
+                    Testi.Formato("SalvataggioNonRiuscito_Testo", ex.Message));
                 return;
             }
 

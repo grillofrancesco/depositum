@@ -67,25 +67,25 @@ namespace Depositum.Tests
         [Fact]
         public void Valida_NomeVuoto()
         {
-            Assert.Equal("Il nome del deposito non può essere vuoto.", RegoleDeposito.Valida("   ", 100));
+            Assert.Equal(ErroreDeposito.NomeVuoto, RegoleDeposito.Valida("   ", 100));
         }
 
         [Fact]
         public void Valida_NomeTroppoLungo()
         {
-            Assert.Equal("La lunghezza del nome non deve superare 30 caratteri.", RegoleDeposito.Valida(NomeDi31, 100));
+            Assert.Equal(ErroreDeposito.NomeTroppoLungo, RegoleDeposito.Valida(NomeDi31, 100));
         }
 
         [Fact]
         public void Valida_ImportoNonValido()
         {
-            Assert.Equal("L'importo deve essere un numero intero compreso tra 1 e 1mlrd", RegoleDeposito.Valida("Conto", 0));
+            Assert.Equal(ErroreDeposito.ImportoNonValido, RegoleDeposito.Valida("Conto", 0));
         }
 
         [Fact]
         public void Valida_IlNomeVieneControllatoPrimaDellImporto()
         {
-            Assert.Equal("Il nome del deposito non può essere vuoto.", RegoleDeposito.Valida("", 0));
+            Assert.Equal(ErroreDeposito.NomeVuoto, RegoleDeposito.Valida("", 0));
         }
 
         // Anomalia 2 corretta (docs/piano-refactoring.md, sezione 4): i nomi che il file
@@ -97,7 +97,7 @@ namespace Depositum.Tests
         public void NomeConVirgolaODuePunti_Rifiutato(string nome)
         {
             Assert.False(RegoleDeposito.NomeValido(nome));
-            Assert.Equal("Il nome del deposito non può contenere virgole o due punti.", RegoleDeposito.Valida(nome, 100));
+            Assert.Equal(ErroreDeposito.NomeConCaratteriVietati, RegoleDeposito.Valida(nome, 100));
         }
 
         [Theory]
@@ -107,7 +107,7 @@ namespace Depositum.Tests
         public void NomeRiservato_Rifiutato(string nome)
         {
             Assert.False(RegoleDeposito.NomeValido(nome));
-            Assert.Equal("\"Data\" e \"Totale\" non si possono usare come nome di un deposito.", RegoleDeposito.ErroreNome(nome));
+            Assert.Equal(ErroreDeposito.NomeRiservato, RegoleDeposito.ErroreNome(nome));
         }
 
         [Theory]

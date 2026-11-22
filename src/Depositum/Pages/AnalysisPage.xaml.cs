@@ -100,7 +100,7 @@ namespace Depositum.Pages
             var rilevazioni = Storico.OrdinatePerData(DataService.Rilevazioni);
             if (rilevazioni.Count == 0)
             {
-                TxtCanvasVuoto.Text = "Nessuna rilevazione disponibile. Registra i depositi per visualizzare i grafici.";
+                TxtCanvasVuoto.Text = Testi.Get("Analisi_NessunaRilevazione");
                 return;
             }
 
@@ -134,7 +134,7 @@ namespace Depositum.Pages
             DatiLinee? dati = DatiGrafici.PreparaLinee(rilevazioni, _finestra, _depositiVisibili);
             if (dati is null)
             {
-                TxtCanvasVuoto.Text = "Nessun deposito selezionato per questo intervallo.";
+                TxtCanvasVuoto.Text = Testi.Get("Analisi_NessunDepositoSelezionato");
                 return;
             }
 

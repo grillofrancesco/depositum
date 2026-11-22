@@ -1,4 +1,5 @@
 using Depositum.Core;
+using Depositum.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -25,10 +26,10 @@ namespace Depositum.Dialogs
 
         private void Aggiungi_Click(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            string? errore = RegoleDeposito.Valida(TxtNome.Text, NumValore.Value);
+            ErroreDeposito? errore = RegoleDeposito.Valida(TxtNome.Text, NumValore.Value);
             if (errore != null)
             {
-                TxtErrore.Text = errore;
+                TxtErrore.Text = Testi.Per(errore.Value);
                 TxtErrore.Visibility = Visibility.Visible;
                 args.Cancel = true;
                 return;

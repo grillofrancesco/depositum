@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="Depositum.Pages.TemiPage"
+    x:Class="Depositum.Pages.ImpostazioniPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:models="using:Depositum.Models">
@@ -11,30 +11,49 @@
         <Grid.RowDefinitions>
             <!-- Riga 0: Header (titolo e ritorno alla dashboard) -->
             <RowDefinition Height="Auto" />
-            <!-- Riga 1: Elenco dei temi (scrollabile) -->
+            <!-- Riga 1: Impostazioni (scrollabile): lingua, poi tema -->
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- HEADER -->
         <Grid Grid.Row="0" Margin="{StaticResource PageEdgeMarginHorizontal}">
-            <TextBlock Text="Tema" Style="{StaticResource SubtitleSerifStyle}" HorizontalAlignment="Left" />
-            <Button Width="34" Height="34" MinWidth="0" MinHeight="0" Padding="0"
+            <TextBlock x:Uid="ImpostazioniTitolo" Style="{StaticResource SubtitleSerifStyle}" HorizontalAlignment="Left" />
+            <Button x:Name="BtnIndietro" x:Uid="ImpostazioniIndietro"
+                    Width="34" Height="34" MinWidth="0" MinHeight="0" Padding="0"
                     HorizontalAlignment="Right" VerticalAlignment="Center"
                     Style="{StaticResource BaseDarkButtonStyle}"
-                    Click="BtnIndietro_Click" AutomationProperties.Name="Torna alla dashboard">
+                    Click="BtnIndietro_Click">
                 <FontIcon Glyph="&#xF15C;" Style="{StaticResource ButtonIconStyle}" />
             </Button>
         </Grid>
 
-        <!-- ELENCO DEI TEMI: il tema si applica subito al tocco e viene ricordato -->
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled"
                       Padding="{StaticResource ScrollViewerContentPadding}">
             <StackPanel Spacing="{StaticResource StandardElementSpacing}">
-                <!-- Avviso se la scelta non si è potuta salvare -->
+                <!-- Avvisi: riavvio per la lingua, scelte non salvate -->
                 <InfoBar x:Name="StatusInfoBar" IsOpen="False" Severity="Warning" />
 
+                <!-- LINGUA: si applica al riavvio dell'app -->
+                <TextBlock x:Uid="ImpostazioniLingua" Style="{StaticResource SettingsSectionStyle}" />
+                <Border Background="{ThemeResource RaisedSurfaceBrush}"
+                        BorderBrush="{ThemeResource BorderBrushSubtle}" BorderThickness="1"
+                        CornerRadius="8" Padding="16,12">
+                    <StackPanel Spacing="8">
+                        <!-- Tag: valore salvato tra le preferenze; senza Tag = lingua di Windows -->
+                        <ComboBox x:Name="CmbLingua" HorizontalAlignment="Stretch"
+                                  SelectionChanged="CmbLingua_SelectionChanged">
+                            <ComboBoxItem x:Uid="LinguaAutomatica" />
+                            <ComboBoxItem x:Uid="LinguaItaliano" Tag="it-IT" />
+                            <ComboBoxItem x:Uid="LinguaInglese" Tag="en-US" />
+                        </ComboBox>
+                        <TextBlock x:Uid="ImpostazioniLinguaNota" Style="{StaticResource ThemeDescriptionStyle}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- TEMA: si applica subito al tocco e viene ricordato -->
+                <TextBlock x:Uid="ImpostazioniTema" Style="{StaticResource SettingsSectionStyle}" Margin="0,6,0,0" />
                 <ItemsRepeater x:Name="TemiRepeater">
                     <ItemsRepeater.Layout>
                         <StackLayout Spacing="{StaticResource StandardElementSpacing}" />

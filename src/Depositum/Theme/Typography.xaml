@@ -70,6 +70,14 @@
         <Setter Property="VerticalAlignment" Value="Bottom" />
     </Style>
 
+    <!-- Titolo di una sezione delle impostazioni (Lingua, Tema) -->
+    <Style x:Key="SettingsSectionStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{ThemeResource SecondaryTextBrush}" />
+    </Style>
+
     <!-- Descrizione di un tema nella scelta del tema -->
     <Style x:Key="ThemeDescriptionStyle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource BodyFontFamily}" />

@@ -23,7 +23,7 @@
 
         <!-- HEADER -->
         <Grid Grid.Row="0" Margin="{StaticResource PageEdgeMarginHorizontal}">
-            <TextBlock Text="Registra Valori" 
+            <TextBlock x:Uid="RegistraTitolo" 
                        Style="{StaticResource SubtitleSerifStyle}" 
                        HorizontalAlignment="Left" />
         </Grid>
@@ -99,14 +99,13 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Data:" 
+            <TextBlock x:Uid="RegistraData" 
                Style="{StaticResource FieldLabelStyle}" 
                HorizontalAlignment="Left" />
 
-            <TextBox x:Name="TxtDataInput" 
+            <TextBox x:Name="TxtDataInput" x:Uid="RegistraDataInput" 
              Grid.Column="1" 
-             PlaceholderText="gg/mm/aaaa" 
-             Width="140"
+                          Width="140"
              HorizontalAlignment="Right"
              HorizontalContentAlignment="Center" />
         </Grid>
@@ -124,7 +123,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <FontIcon Glyph="&#xF10A;" Style="{StaticResource ButtonIconStyle}" FontSize="16" Foreground="{ThemeResource TextPrimaryBrush}" />
-                    <TextBlock Grid.Column="1" Text="Aggiungi Deposito" Style="{StaticResource ButtonLabelStyle}" />
+                    <TextBlock Grid.Column="1" x:Uid="RegistraAggiungi" Style="{StaticResource ButtonLabelStyle}" />
                 </Grid>
             </Button>
         </Grid>
@@ -140,14 +139,14 @@
 
             <Button x:Name="BtnAnnulla" 
                     Grid.Column="0" 
-                    Content="Annulla" 
+                    x:Uid="RegistraAnnulla" 
                     Click="BtnAnnulla_Click" 
                     Style="{StaticResource SecondaryActionButtonStyle}" 
                     HorizontalAlignment="Stretch" />
 
             <Button x:Name="BtnConferma" 
                     Grid.Column="1" 
-                    Content="Conferma" 
+                    x:Uid="RegistraConferma" 
                     Click="BtnConferma_Click" 
                     Style="{StaticResource PrimaryAccentButtonStyle}" 
                     HorizontalAlignment="Stretch" />

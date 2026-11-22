@@ -1,4 +1,5 @@
 using Depositum.Pages;
+using Depositum.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -38,7 +39,7 @@ namespace Depositum
                 XamlRoot = RootFrame.XamlRoot,
                 Title = titolo,
                 Content = new TextBlock { Text = messaggio, TextWrapping = TextWrapping.Wrap },
-                CloseButtonText = "Chiudi"
+                CloseButtonText = Testi.Get("Comune_Chiudi")
             };
             await dialog.ShowAsync();
         }

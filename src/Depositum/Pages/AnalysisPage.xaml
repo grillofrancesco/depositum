@@ -21,12 +21,12 @@
             <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Button Width="34" Height="34" MinWidth="0" MinHeight="0" Padding="0"
                         Style="{StaticResource BaseDarkButtonStyle}"
-                        Click="BtnIndietro_Click" AutomationProperties.Name="Torna alla dashboard">
+                        x:Name="BtnIndietro" x:Uid="AnalisiIndietro" Click="BtnIndietro_Click">
                     <FontIcon Glyph="&#xF15C;" Style="{StaticResource ButtonIconStyle}" />
                 </Button>
                 <Button x:Name="BtnOpzioni" Width="32" Height="32" MinWidth="0" MinHeight="0" Padding="0"
                         Style="{StaticResource BaseDarkButtonStyle}"
-                        Click="BtnOpzioni_Click" AutomationProperties.Name="Opzioni del grafico">
+                        x:Uid="AnalisiOpzioni" Click="BtnOpzioni_Click">
                     <FontIcon Glyph="&#xF557;" Style="{StaticResource ButtonIconStyle}" />
                 </Button>
             </StackPanel>
@@ -39,7 +39,7 @@
                 <!-- Lo sfondo dei grafici è quello del riquadro: senza, l'area di disegno resta nera -->
                 <lvc:CartesianChart x:Name="CartesianChart" Visibility="Collapsed" Background="{ThemeResource SurfaceBrush}" />
                 <lvc:PieChart x:Name="PieChart" Visibility="Collapsed" Background="{ThemeResource SurfaceBrush}" />
-                <TextBlock x:Name="TxtCanvasVuoto" Text="Nessun dato da visualizzare"
+                <TextBlock x:Name="TxtCanvasVuoto" x:Uid="AnalisiVuoto"
                            Foreground="{ThemeResource MutedTextBrush}" FontSize="15"
                            HorizontalAlignment="Center" VerticalAlignment="Center"
                            TextAlignment="Center" TextWrapping="Wrap" />
@@ -57,21 +57,21 @@
                     Tag="{x:Bind charts:TipoGrafico.Istogramma}" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
                     <FontIcon Glyph="&#xF342;" Style="{StaticResource ButtonIconStyle}" />
-                    <TextBlock Text="Istogramma" Style="{StaticResource SmallButtonLabelStyle}" />
+                    <TextBlock x:Uid="AnalisiIstogramma" Style="{StaticResource SmallButtonLabelStyle}" />
                 </StackPanel>
             </Button>
             <Button x:Name="BtnLinee" Grid.Column="1" Click="BtnGrafico_Click"
                     Tag="{x:Bind charts:TipoGrafico.Linee}" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
                     <FontIcon Glyph="&#xF343;" Style="{StaticResource ButtonIconStyle}" />
-                    <TextBlock Text="Linee" Style="{StaticResource SmallButtonLabelStyle}" />
+                    <TextBlock x:Uid="AnalisiLinee" Style="{StaticResource SmallButtonLabelStyle}" />
                 </StackPanel>
             </Button>
             <Button x:Name="BtnRadiale" Grid.Column="2" Click="BtnGrafico_Click"
                     Tag="{x:Bind charts:TipoGrafico.Radiale}" Style="{StaticResource BigActionButtonStyle}" Height="54" Padding="8,0">
                 <StackPanel Orientation="Horizontal" Spacing="7" HorizontalAlignment="Center">
                     <FontIcon Glyph="&#xF345;" Style="{StaticResource ButtonIconStyle}" />
-                    <TextBlock Text="Radiale" Style="{StaticResource SmallButtonLabelStyle}" />
+                    <TextBlock x:Uid="AnalisiRadiale" Style="{StaticResource SmallButtonLabelStyle}" />
                 </StackPanel>
             </Button>
         </Grid>

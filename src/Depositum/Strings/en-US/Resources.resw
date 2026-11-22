@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Testi dell'interfaccia (inglese). Le due lingue devono avere le stesse chiavi:
+       lo verifica Depositum.Tests/RisorseTests. Chiavi con il punto (Nome.Proprietà) sono
+       usate dallo XAML tramite x:Uid; le altre dal codice tramite Services/Testi. -->
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="CodiceLingua" xml:space="preserve">
+    <value>en</value>
+    <comment>Non tradurre: 'it' o 'en'. Usato dal codice per scegliere i formati.</comment>
+  </data>
+  <data name="Comune_Annulla" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Comune_Chiudi" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="DashboardImpostazioni.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="DashboardVuotoTitolo.Text" xml:space="preserve">
+    <value>No deposits</value>
+  </data>
+  <data name="DashboardVuotoTesto.Text" xml:space="preserve">
+    <value>Press 'Record deposits' to create your first entry.</value>
+  </data>
+  <data name="DashboardTotale.Text" xml:space="preserve">
+    <value>Total:</value>
+  </data>
+  <data name="DashboardRegistra.Text" xml:space="preserve">
+    <value>Record deposits</value>
+  </data>
+  <data name="DashboardOsserva.Text" xml:space="preserve">
+    <value>View over time</value>
+  </data>
+  <data name="RegistraTitolo.Text" xml:space="preserve">
+    <value>Record Values</value>
+  </data>
+  <data name="RegistraData.Text" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="RegistraDataInput.PlaceholderText" xml:space="preserve">
+    <value>mm/dd/yyyy</value>
+    <comment>Formato della data mostrato nel campo vuoto</comment>
+  </data>
+  <data name="RegistraAggiungi.Text" xml:space="preserve">
+    <value>Add Deposit</value>
+  </data>
+  <data name="RegistraAnnulla.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="RegistraConferma.Content" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Rimuovi_Titolo" xml:space="preserve">
+    <value>Remove deposit</value>
+  </data>
+  <data name="Rimuovi_Domanda" xml:space="preserve">
+    <value>Are you sure you want to remove the deposit "{0}"?</value>
+    <comment>{0} = nome del deposito</comment>
+  </data>
+  <data name="Rimuovi_Conferma" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Errore_Rimozione" xml:space="preserve">
+    <value>Could not remove the deposit</value>
+  </data>
+  <data name="Errore_AperturaDialogo" xml:space="preserve">
+    <value>Could not open the dialog</value>
+  </data>
+  <data name="DataNonValida_Titolo" xml:space="preserve">
+    <value>Invalid date</value>
+  </data>
+  <data name="DataNonValida_Testo" xml:space="preserve">
+    <value>Enter a valid date in the mm/dd/yyyy format.</value>
+  </data>
+  <data name="NessunDeposito_Titolo" xml:space="preserve">
+    <value>No deposits</value>
+  </data>
+  <data name="NessunDeposito_Testo" xml:space="preserve">
+    <value>Add at least one deposit before confirming.</value>
+  </data>
+  <data name="NomeNonValido_Titolo" xml:space="preserve">
+    <value>Invalid deposit name</value>
+  </data>
+  <data name="NomeNonValido_Testo" xml:space="preserve">
+    <value>Deposit "{0}": {1}</value>
+    <comment>{0} = nome, {1} = motivo</comment>
+  </data>
+  <data name="ImportoNonValido_Titolo" xml:space="preserve">
+    <value>Invalid amount</value>
+  </data>
+  <data name="ImportoNonValido_Testo" xml:space="preserve">
+    <value>The amount of the deposit "{0}" must be a whole number between {1} and {2}.</value>
+    <comment>{0} = nome, {1} e {2} = limiti</comment>
+  </data>
+  <data name="SalvataggioNonRiuscito_Titolo" xml:space="preserve">
+    <value>Could not save</value>
+  </data>
+  <data name="SalvataggioNonRiuscito_Testo" xml:space="preserve">
+    <value>The entry was not saved. {0}</value>
+    <comment>{0} = messaggio di sistema</comment>
+  </data>
+  <data name="ErroreDeposito_NomeVuoto" xml:space="preserve">
+    <value>The deposit name cannot be empty.</value>
+  </data>
+  <data name="ErroreDeposito_NomeTroppoLungo" xml:space="preserve">
+    <value>The name cannot be longer than {0} characters.</value>
+    <comment>{0} = lunghezza massima</comment>
+  </data>
+  <data name="ErroreDeposito_NomeConCaratteriVietati" xml:space="preserve">
+    <value>The deposit name cannot contain commas or colons.</value>
+  </data>
+  <data name="ErroreDeposito_NomeRiservato" xml:space="preserve">
+    <value>"Data" and "Totale" cannot be used as a deposit name.</value>
+  </data>
+  <data name="ErroreDeposito_ImportoNonValido" xml:space="preserve">
+    <value>The amount must be a whole number between 1 and 1 billion.</value>
+  </data>
+  <data name="DialogoAggiungi.Title" xml:space="preserve">
+    <value>Add Deposit</value>
+  </data>
+  <data name="DialogoAggiungi.PrimaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DialogoAggiungi.SecondaryButtonText" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AggiungiNomeEtichetta.Text" xml:space="preserve">
+    <value>Deposit name:</value>
+  </data>
+  <data name="AggiungiNome.PlaceholderText" xml:space="preserve">
+    <value>Deposit name</value>
+  </data>
+  <data name="AggiungiImportoEtichetta.Text" xml:space="preserve">
+    <value>Amount (€, whole number):</value>
+  </data>
+  <data name="AggiungiImporto.PlaceholderText" xml:space="preserve">
+    <value>Starting amount (whole number)</value>
+  </data>
+  <data name="AnalisiIndietro.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Back to dashboard</value>
+  </data>
+  <data name="AnalisiOpzioni.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Chart options</value>
+  </data>
+  <data name="AnalisiVuoto.Text" xml:space="preserve">
+    <value>No data to display</value>
+  </data>
+  <data name="AnalisiIstogramma.Text" xml:space="preserve">
+    <value>Bar chart</value>
+  </data>
+  <data name="AnalisiLinee.Text" xml:space="preserve">
+    <value>Lines</value>
+  </data>
+  <data name="AnalisiRadiale.Text" xml:space="preserve">
+    <value>Pie</value>
+  </data>
+  <data name="Analisi_NessunaRilevazione" xml:space="preserve">
+    <value>No entries yet. Record your deposits to see the charts.</value>
+  </data>
+  <data name="Analisi_NessunDepositoSelezionato" xml:space="preserve">
+    <value>No deposit selected for this time range.</value>
+  </data>
+  <data name="Grafico_SerieDepositi" xml:space="preserve">
+    <value>Deposits</value>
+  </data>
+  <data name="DialogoOpzioniLinee.Title" xml:space="preserve">
+    <value>Line chart options</value>
+  </data>
+  <data name="DialogoOpzioniLinee.CloseButtonText" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="OpzioniIntervallo.Text" xml:space="preserve">
+    <value>Time range</value>
+  </data>
+  <data name="IntervalloTutto.Content" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="IntervalloUnMese.Content" xml:space="preserve">
+    <value>1 month</value>
+  </data>
+  <data name="IntervalloSeiMesi.Content" xml:space="preserve">
+    <value>6 months</value>
+  </data>
+  <data name="IntervalloUnAnno.Content" xml:space="preserve">
+    <value>1 year</value>
+  </data>
+  <data name="IntervalloCinqueAnni.Content" xml:space="preserve">
+    <value>5 years</value>
+  </data>
+  <data name="OpzioniDepositiVisibili.Text" xml:space="preserve">
+    <value>Visible deposits</value>
+  </data>
+  <data name="DialogoOpzioniRadiale.Title" xml:space="preserve">
+    <value>Pie chart options</value>
+  </data>
+  <data name="DialogoOpzioniRadiale.CloseButtonText" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="OpzioniEtichette.Content" xml:space="preserve">
+    <value>Show deposit labels</value>
+  </data>
+  <data name="ImpostazioniTitolo.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="ImpostazioniIndietro.[using:Microsoft.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Back to dashboard</value>
+  </data>
+  <data name="ImpostazioniLingua.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="ImpostazioniLinguaNota.Text" xml:space="preserve">
+    <value>The new language applies after restarting the app.</value>
+  </data>
+  <data name="LinguaAutomatica.Content" xml:space="preserve">
+    <value>Automatic (Windows language)</value>
+  </data>
+  <data name="LinguaItaliano.Content" xml:space="preserve">
+    <value>Italiano</value>
+    <comment>Nome della lingua nella lingua stessa: non tradurre</comment>
+  </data>
+  <data name="LinguaInglese.Content" xml:space="preserve">
+    <value>English</value>
+    <comment>Nome della lingua nella lingua stessa: non tradurre</comment>
+  </data>
+  <data name="ImpostazioniTema.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Lingua_Riavvio_Titolo" xml:space="preserve">
+    <value>Restart required</value>
+  </data>
+  <data name="Lingua_Riavvio_Testo" xml:space="preserve">
+    <value>The chosen language will apply the next time the app starts.</value>
+  </data>
+  <data name="Lingua_Riavvio_Pulsante" xml:space="preserve">
+    <value>Restart now</value>
+  </data>
+  <data name="Lingua_RiavvioFallito" xml:space="preserve">
+    <value>The app could not restart: close it and open it again.</value>
+  </data>
+  <data name="Lingua_NonSalvata_Titolo" xml:space="preserve">
+    <value>Language not saved</value>
+  </data>
+  <data name="Lingua_NonSalvata_Testo" xml:space="preserve">
+    <value>The chosen language could not be saved.</value>
+  </data>
+  <data name="Tema_NonSalvato_Titolo" xml:space="preserve">
+    <value>Theme not saved</value>
+  </data>
+  <data name="Tema_NonSalvato_Testo" xml:space="preserve">
+    <value>The theme is applied, but it could not be saved: the previous one will return at the next start.</value>
+  </data>
+  <data name="Tema_oro_Nome" xml:space="preserve">
+    <value>Gold and brass</value>
+  </data>
+  <data name="Tema_oro_Descrizione" xml:space="preserve">
+    <value>Brass and antique gold; deposits in gold, blue and purple for contrast.</value>
+  </data>
+  <data name="Tema_acqua_Nome" xml:space="preserve">
+    <value>Water</value>
+  </data>
+  <data name="Tema_acqua_Descrizione" xml:space="preserve">
+    <value>Aqua and petrol; deposits in aqua, light blue and terracotta for contrast.</value>
+  </data>
+  <data name="Tema_terra_Nome" xml:space="preserve">
+    <value>Earth</value>
+  </data>
+  <data name="Tema_terra_Descrizione" xml:space="preserve">
+    <value>Terracotta and burnt earth; deposits in earth, teal and sage green.</value>
+  </data>
+  <data name="Tema_verde_Nome" xml:space="preserve">
+    <value>Nature green</value>
+  </data>
+  <data name="Tema_verde_Descrizione" xml:space="preserve">
+    <value>The app's original theme: olive and laurel green.</value>
+  </data>
+  <data name="Tema_rosso_Nome" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="Tema_rosso_Descrizione" xml:space="preserve">
+    <value>Brick red and crimson; deposits in red, aqua and blue for contrast.</value>
+  </data>
+  <data name="Avvio_LetturaFallita_Titolo" xml:space="preserve">
+    <value>Could not read the data</value>
+  </data>
+  <data name="Avvio_LetturaFallita_Testo" xml:space="preserve">
+    <value>The entries file cannot be accessed, so the app started without data. The file has not been changed: close the app, make sure no other program is using it and try again.
+
+{0}</value>
+    <comment>{0} = messaggio di sistema</comment>
+  </data>
+  <data name="Avvio_RigheIgnorate_Titolo" xml:space="preserve">
+    <value>Unreadable lines</value>
+  </data>
+  <data name="Avvio_RigheIgnorate_Una" xml:space="preserve">
+    <value>One line of the entries file has no valid date and was ignored. The file has not been changed.</value>
+  </data>
+  <data name="Avvio_RigheIgnorate_Molte" xml:space="preserve">
+    <value>{0} lines of the entries file have no valid date and were ignored. The file has not been changed.</value>
+    <comment>{0} = numero di righe</comment>
+  </data>
+</root>

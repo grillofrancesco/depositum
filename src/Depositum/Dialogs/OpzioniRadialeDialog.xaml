@@ -4,8 +4,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Style="{StaticResource DefaultContentDialogStyle}"
-    Title="Opzioni del grafico radiale"
-    CloseButtonText="Chiudi">
+    x:Uid="DialogoOpzioniRadiale">
 
-    <CheckBox x:Name="ChkEtichette" Content="Mostra etichette dei depositi" />
+    <CheckBox x:Name="ChkEtichette" x:Uid="OpzioniEtichette" />
 </ContentDialog>

@@ -38,7 +38,7 @@ namespace Depositum.Core
 
                 if (string.Equals(chiave, "Data", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (Formati.ProvaALeggereData(valore, out var data))
+                    if (Formati.ProvaALeggereDataDelFile(valore, out var data))
                     {
                         rilevazione.Data = data;
                         dataTrovata = true;

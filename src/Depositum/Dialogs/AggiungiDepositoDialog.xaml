@@ -4,20 +4,18 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Style="{StaticResource DefaultContentDialogStyle}"
-    Title="Aggiungi Deposito"
-    PrimaryButtonText="Annulla"
-    SecondaryButtonText="Aggiungi"
+    x:Uid="DialogoAggiungi"
     DefaultButton="Secondary"
     SecondaryButtonClick="Aggiungi_Click">
 
     <!-- Ordine dei tasti: Annulla (sinistra) / Aggiungi (destra) -->
     <StackPanel Spacing="10" Width="300">
-        <TextBlock Text="Nome deposito:" Style="{StaticResource DialogLabelStyle}" />
-        <TextBox x:Name="TxtNome" PlaceholderText="Nome deposito" />
+        <TextBlock x:Uid="AggiungiNomeEtichetta" Style="{StaticResource DialogLabelStyle}" />
+        <TextBox x:Name="TxtNome" x:Uid="AggiungiNome" />
 
-        <TextBlock Text="Importo (€, intero):" Style="{StaticResource DialogLabelStyle}" />
+        <TextBlock x:Uid="AggiungiImportoEtichetta" Style="{StaticResource DialogLabelStyle}" />
         <NumberBox x:Name="NumValore"
-                   PlaceholderText="Importo iniziale (intero)"
+                   x:Uid="AggiungiImporto"
                    Value="0"
                    SpinButtonPlacementMode="Hidden"
                    HorizontalContentAlignment="Right"

@@ -32,7 +32,7 @@ namespace Depositum.Charts
             var series = new ColumnSeries<ValoreDeposito>
             {
                 Values = dati,
-                Name = "Depositi",
+                Name = Testi.Get("Grafico_SerieDepositi"),
                 Mapping = (item, index) => new(index, item.Valore),
                 YToolTipLabelFormatter = point => point.Model is null ? string.Empty : Formati.Importo(point.Model.Valore),
                 Fill = new SolidColorPaint(Tema.ColoreGraficoPerDeposito(indiciColore[dati[0].Nome])),
@@ -139,7 +139,7 @@ namespace Depositum.Charts
                 },
                 DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
                 DataLabelsSize = 22,
-                ToolTipLabelFormatter = point => $"{Formati.Importo(point.Coordinate.PrimaryValue)} ({(point.Coordinate.PrimaryValue / sumTotale):P1})"
+                ToolTipLabelFormatter = point => $"{Formati.Importo(point.Coordinate.PrimaryValue)} ({Formati.Percentuale(point.Coordinate.PrimaryValue / sumTotale)})"
             }).ToArray();
             ColoraSuggerimenti(grafico);
         }

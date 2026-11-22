@@ -29,9 +29,10 @@ namespace Depositum.Models
 
         public Palette Palette { get; }
 
-        public string Nome => Palette.Nome;
+        /// <summary>Nome nella lingua dell'interfaccia (dai file dei testi, non dalla palette).</summary>
+        public string Nome => Testi.Get($"Tema_{Palette.Id}_Nome");
 
-        public string Descrizione => Palette.Descrizione;
+        public string Descrizione => Testi.Get($"Tema_{Palette.Id}_Descrizione");
 
         /// <summary>Identificativo per l'automazione dell'interfaccia (per esempio "Tema_acqua").</summary>
         public string IdAutomazione => "Tema_" + Palette.Id;

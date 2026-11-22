@@ -12,6 +12,9 @@
     <WinUISDKReferences>false</WinUISDKReferences>
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
+    <!-- Lingua usata quando Windows non è né in italiano né in inglese.
+         I testi sono in Strings/it-IT e Strings/en-US. -->
+    <DefaultLanguage>en-US</DefaultLanguage>
   </PropertyGroup>
 
   <ItemGroup>

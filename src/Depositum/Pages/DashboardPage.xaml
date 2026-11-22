@@ -30,11 +30,11 @@
                 <TextBlock x:Name="TxtDataHeader" 
                            Text="00/00/0000" 
                            Style="{StaticResource HeaderDateStyle}" />
-                <Button x:Name="BtnTemi"
+                <Button x:Name="BtnImpostazioni" x:Uid="DashboardImpostazioni"
                         Width="34" Height="34" MinWidth="0" MinHeight="0" Padding="0"
                         Style="{StaticResource BaseDarkButtonStyle}"
-                        Click="BtnTemi_Click" AutomationProperties.Name="Scegli il tema">
-                    <FontIcon Glyph="&#xF2F6;" Style="{StaticResource ButtonIconStyle}" />
+                        Click="BtnImpostazioni_Click">
+                    <FontIcon Glyph="&#xF6AA;" Style="{StaticResource ButtonIconStyle}" />
                 </Button>
             </StackPanel>
         </Grid>
@@ -52,12 +52,12 @@
                             VerticalAlignment="Center" 
                             Margin="0, 60, 0, 60"
                             Visibility="Collapsed">
-                    <TextBlock Text="Nessun Deposito" 
+                    <TextBlock x:Uid="DashboardVuotoTitolo" 
                                FontSize="20" 
                                FontWeight="SemiBold" 
                                Foreground="{ThemeResource SecondaryTextBrush}" 
                                HorizontalAlignment="Center" />
-                    <TextBlock Text="Premi 'Registra Depositi' per creare la prima rilevazione." 
+                    <TextBlock x:Uid="DashboardVuotoTesto" 
                                FontSize="13" 
                                Foreground="{ThemeResource MutedTextBrush}" 
                                HorizontalAlignment="Center" />
@@ -92,7 +92,7 @@
 
         <!-- SEZIONE TOTALE: Subito prima dei pulsanti -->
         <Grid Grid.Row="2" Margin="{StaticResource PageEdgeMarginHorizontal}">
-            <TextBlock Text="Totale:" 
+            <TextBlock x:Uid="DashboardTotale" 
                        Style="{StaticResource FieldLabelStyle}"
                        FontSize="20"
                        HorizontalAlignment="Left" />
@@ -120,7 +120,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Registra depositi" Style="{StaticResource BigButtonLabelStyle}" />
+                    <TextBlock x:Uid="DashboardRegistra" Style="{StaticResource BigButtonLabelStyle}" />
                     <FontIcon Grid.Column="1" Glyph="&#xF10A;" Style="{StaticResource BigButtonIconStyle}" />
                 </Grid>
             </Button>
@@ -130,7 +130,7 @@
                     Click="BtnOsservaNelTempo_Click"
                     Style="{StaticResource BigActionButtonStyle}">
                 <Grid HorizontalAlignment="Stretch">
-                    <TextBlock Text="Osserva nel tempo" Style="{StaticResource BigButtonLabelStyle}" />
+                    <TextBlock x:Uid="DashboardOsserva" Style="{StaticResource BigButtonLabelStyle}" />
                     <FontIcon Glyph="&#xE45E;" Style="{StaticResource BigButtonIconStyle}" />
                 </Grid>
             </Button>

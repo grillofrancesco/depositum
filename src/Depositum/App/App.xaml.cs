@@ -1,4 +1,5 @@
-﻿using Depositum.Services;
+﻿using Depositum.Core;
+using Depositum.Services;
 using Microsoft.UI.Xaml;
 using System;
 using System.IO;
@@ -21,6 +22,9 @@ namespace Depositum
         /// </summary>
         public App()
         {
+            // La lingua va comunicata a Windows prima che si carichi qualunque testo.
+            Testi.ApplicaLinguaScelta();
+
             InitializeComponent();
         }
 
@@ -33,6 +37,9 @@ namespace Depositum
             // Assegna i colori del tema scelto ai pennelli prima che nasca la finestra.
             // Non si può fare nel costruttore: lì le risorse dell'app non sono ancora accessibili.
             Tema.Applica(PreferenzaTema.Carica());
+
+            // Date e importi nella stessa lingua dei testi.
+            Formati.LinguaSchermo = Testi.LinguaAttiva;
 
             // Carica le rilevazioni salvate. Se il file non si riesce a leggere l'app parte
             // comunque, senza dati, e lo dice: il file sul disco non viene toccato.
@@ -52,20 +59,15 @@ namespace Depositum
             if (erroreLettura != null)
             {
                 _window.MostraAvviso(
-                    "Impossibile leggere i dati",
-                    "Il file delle rilevazioni non è accessibile, quindi l'app è partita senza dati. " +
-                    "Il file non è stato modificato: chiudi l'app, verifica che nessun altro programma lo stia usando e riprova." +
-                    Environment.NewLine + Environment.NewLine + erroreLettura);
+                    Testi.Get("Avvio_LetturaFallita_Titolo"),
+                    Testi.Formato("Avvio_LetturaFallita_Testo", erroreLettura));
             }
             else if (DataService.RigheIgnorate > 0)
             {
                 int n = DataService.RigheIgnorate;
                 _window.MostraAvviso(
-                    "Righe non leggibili",
-                    (n == 1
-                        ? "Una riga del file delle rilevazioni non ha una data valida ed è stata ignorata."
-                        : $"{n} righe del file delle rilevazioni non hanno una data valida e sono state ignorate.") +
-                    " Il file non è stato modificato.");
+                    Testi.Get("Avvio_RigheIgnorate_Titolo"),
+                    n == 1 ? Testi.Get("Avvio_RigheIgnorate_Una") : Testi.Formato("Avvio_RigheIgnorate_Molte", n));
             }
         }
     }

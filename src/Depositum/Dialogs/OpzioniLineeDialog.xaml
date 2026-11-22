@@ -4,22 +4,21 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Style="{StaticResource DefaultContentDialogStyle}"
-    Title="Opzioni del grafico a linee"
-    CloseButtonText="Chiudi">
+    x:Uid="DialogoOpzioniLinee">
 
     <ScrollViewer MaxHeight="420">
         <StackPanel x:Name="Pannello" Spacing="10" MinWidth="260">
-            <TextBlock Text="Intervallo" Style="{StaticResource DialogLabelStyle}" />
+            <TextBlock x:Uid="OpzioniIntervallo" Style="{StaticResource DialogLabelStyle}" />
             <!-- Le voci sono nello stesso ordine dei valori di FinestraTemporale -->
             <ComboBox x:Name="CmbIntervallo" HorizontalAlignment="Stretch">
-                <ComboBoxItem Content="Tutto" />
-                <ComboBoxItem Content="1 mese" />
-                <ComboBoxItem Content="6 mesi" />
-                <ComboBoxItem Content="1 anno" />
-                <ComboBoxItem Content="5 anni" />
+                <ComboBoxItem x:Uid="IntervalloTutto" />
+                <ComboBoxItem x:Uid="IntervalloUnMese" />
+                <ComboBoxItem x:Uid="IntervalloSeiMesi" />
+                <ComboBoxItem x:Uid="IntervalloUnAnno" />
+                <ComboBoxItem x:Uid="IntervalloCinqueAnni" />
             </ComboBox>
 
-            <TextBlock Text="Depositi visibili" Style="{StaticResource DialogLabelStyle}" Margin="0,4,0,0" />
+            <TextBlock x:Uid="OpzioniDepositiVisibili" Style="{StaticResource DialogLabelStyle}" Margin="0,4,0,0" />
             <!-- Segue una casella di spunta per ogni deposito, aggiunta dal codice -->
         </StackPanel>
     </ScrollViewer>

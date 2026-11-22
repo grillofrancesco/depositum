@@ -3,6 +3,16 @@ using System.Linq;
 
 namespace Depositum.Core
 {
+    /// <summary>Motivi per cui un deposito non è valido. Il messaggio da mostrare lo sceglie l'app, nella lingua dell'interfaccia.</summary>
+    public enum ErroreDeposito
+    {
+        NomeVuoto,
+        NomeTroppoLungo,
+        NomeConCaratteriVietati,
+        NomeRiservato,
+        ImportoNonValido
+    }
+
     /// <summary>
     /// Regole di validità di un deposito: nome e importo.
     /// </summary>
@@ -21,21 +31,21 @@ namespace Depositum.Core
         /// Motivo per cui il nome non è accettabile, oppure <c>null</c> se va bene.
         /// Gli spazi ai lati non contano.
         /// </summary>
-        public static string? ErroreNome(string nome)
+        public static ErroreDeposito? ErroreNome(string nome)
         {
             nome = nome.Trim();
 
             if (nome.Length == 0)
-                return "Il nome del deposito non può essere vuoto.";
+                return ErroreDeposito.NomeVuoto;
 
             if (nome.Length > LunghezzaMassimaNome)
-                return $"La lunghezza del nome non deve superare {LunghezzaMassimaNome} caratteri.";
+                return ErroreDeposito.NomeTroppoLungo;
 
             if (nome.IndexOfAny(CaratteriVietatiNelNome) >= 0)
-                return "Il nome del deposito non può contenere virgole o due punti.";
+                return ErroreDeposito.NomeConCaratteriVietati;
 
             if (NomiRiservati.Any(riservato => string.Equals(riservato, nome, StringComparison.OrdinalIgnoreCase)))
-                return "\"Data\" e \"Totale\" non si possono usare come nome di un deposito.";
+                return ErroreDeposito.NomeRiservato;
 
             return null;
         }
@@ -47,17 +57,17 @@ namespace Depositum.Core
             valore >= ImportoMinimo && valore <= ImportoMassimo && valore % 1 == 0;
 
         /// <summary>
-        /// Controlla nome e importo di un nuovo deposito.
-        /// Restituisce il messaggio d'errore da mostrare, oppure <c>null</c> se è tutto valido.
+        /// Controlla nome e importo di un nuovo deposito, nell'ordine: prima il nome, poi l'importo.
+        /// Restituisce il primo errore trovato, oppure <c>null</c> se è tutto valido.
         /// </summary>
-        public static string? Valida(string nome, double importo)
+        public static ErroreDeposito? Valida(string nome, double importo)
         {
-            string? erroreNome = ErroreNome(nome);
+            ErroreDeposito? erroreNome = ErroreNome(nome);
             if (erroreNome != null)
                 return erroreNome;
 
             if (!ImportoValido(importo))
-                return "L'importo deve essere un numero intero compreso tra 1 e 1mlrd";
+                return ErroreDeposito.ImportoNonValido;
 
             return null;
         }

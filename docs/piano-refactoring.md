@@ -395,3 +395,28 @@ applica subito al tocco e viene ricordato.
   anche duplicate nel dizionario "Dark") non ha avuto effetto; servirebbe
   ridefinire gli stili di quei controlli, e su indicazione dell'utente ci si è fermati.
 
+## 10. Lingua italiano/inglese (22/11/2026)
+
+Scelte dell'utente: sistema standard di Windows (file `.resw`); la pagina dei temi
+diventa **Impostazioni** (prima la lingua, poi i temi); in inglese cambiano anche i
+formati; i nomi dei temi si traducono. Il formato del file CSV non cambia.
+
+- **Testi**: `src/Depositum/Strings/it-IT/Resources.resw` e `en-US/Resources.resw`.
+  Lo XAML li usa tramite `x:Uid`, il codice tramite `Services/Testi`
+  (`Testi.Get`, `Testi.Formato`). Se Windows non è né in italiano né in inglese,
+  l'app è in inglese (`DefaultLanguage` nel csproj).
+- **Scelta della lingua**: Impostazioni → Lingua: Automatica (lingua di Windows),
+  Italiano, English. Salvata in `lingua.txt` accanto a `history.csv`; si applica al
+  riavvio, con il pulsante "Riavvia ora". All'avvio `Testi.ApplicaLinguaScelta`
+  imposta `ApplicationLanguages.PrimaryLanguageOverride` prima di caricare lo XAML.
+- **Formati**: `Formati.LinguaSchermo` segue la lingua dei testi (`CodiceLingua` nei
+  file `.resw`). Italiano `05/01/2025` e `1.800€`; inglese `01/05/2025` (mese prima)
+  e `€1,800`. Il file usa sempre `gg-mm-aaaa`: `ProvaALeggereDataDelFile` e
+  `ProvaALeggereDataInserita` sono ora separati.
+- **Validazione**: `RegoleDeposito` restituisce un `ErroreDeposito` invece del testo;
+  il messaggio lo sceglie l'app nella lingua attiva.
+- **Test**: `RisorseTests` verifica che le due lingue abbiano le stesse chiavi e gli
+  stessi segnaposto, che ogni `x:Uid` e ogni `Testi.Get(...)` abbia il suo testo, e
+  che ogni tema e ogni errore abbiano nome e messaggio. Il parallelismo dei test è
+  disattivato perché `Formati.LinguaSchermo` è condiviso.
+
