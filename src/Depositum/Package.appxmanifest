@@ -9,7 +9,7 @@
   IgnorableNamespaces="uap rescap systemai">
 
   <Identity
-    Name="532f8103-0c8c-47e7-8c35-6c6e592bbc57"
+    Name="grillofrancesco.Depositum"
     Publisher="CN=grillofrancesco"
     Version="1.0.0.0" />
 

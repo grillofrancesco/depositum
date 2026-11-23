@@ -41,8 +41,14 @@ Import-Certificate -FilePath firma\Depositum.cer -CertStoreLocation Cert:\LocalM
 
 ### 1. Versione
 
-Aggiorna `Version` in `src/Depositum/Package.appxmanifest` (per esempio `1.1.0.0`: il quarto numero
-resta 0), fai il commit e invialo.
+La versione pubblica ha due numeri (`1.0`, `1.1`, `2.0`). Il formato MSIX ne vuole quattro: in
+`src/Depositum/Package.appxmanifest` scrivi `Version` come `1.1.0.0`, con gli ultimi due a 0.
+Fai il commit e invialo.
+
+Il nome del pacchetto (`Identity Name`, ora `grillofrancesco.Depositum`) non va più cambiato:
+Windows lo usa per riconoscere gli aggiornamenti e la cartella dei dati dell'app. Il vecchio nome
+`532f8103-…` del modello di Visual Studio era stato abbandonato perché su questo PC Windows ne aveva
+conservato uno stato rovinato e l'app non si avviava più.
 
 ### 2. Pacchetto firmato
 
@@ -54,8 +60,13 @@ dotnet publish src/Depositum/Depositum.csproj -c Release -p:Platform=x64 -p:Runt
     -p:AppxPackageDir="$PWD\rilascio\"
 ```
 
-Il pacchetto è in `rilascio\Depositum_<versione>_x64_Test\Depositum_<versione>_x64.msix`
-(il suffisso `_Test` è solo il nome della cartella).
+Il pacchetto è in `rilascio\Depositum_1.1.0.0_x64_Test\Depositum_1.1.0.0_x64.msix`
+(il suffisso `_Test` è solo il nome della cartella). Copialo con il nome della versione pubblica,
+che è quello da allegare alla release (la firma non dipende dal nome del file):
+
+```powershell
+Copy-Item rilascio\Depositum_1.1.0.0_x64_Test\Depositum_1.1.0.0_x64.msix rilascio\Depositum_1.1_x64.msix
+```
 
 Note sulla build Release:
 - .NET è incluso nel pacchetto e ridotto con il trimming parziale (`TrimMode=partial` nel `.csproj`):
@@ -65,18 +76,20 @@ Note sulla build Release:
 ### 3. Prova
 
 Installa il pacchetto con un doppio clic, aprilo, registra una rilevazione, chiudi e riapri.
+Per reinstallare la stessa versione usa **Reinstalla**: non disinstallare prima, perché
+disinstallando si cancellano i dati dell'app.
 
 ### 4. Tag
 
 ```powershell
-git tag -a v1.0.0 -m "Depositum 1.0.0"
-git push origin v1.0.0
+git tag -a v1.1 -m "Depositum 1.1"
+git push origin v1.1
 ```
 
 ### 5. Release su GitHub
 
 1. Sul repository: **Releases** → **Draft a new release**.
-2. **Choose a tag**: `v1.0.0`. Titolo: `Depositum 1.0.0`.
+2. **Choose a tag**: `v1.1`. Titolo: `Depositum 1.1`.
 3. Incolla le note di rilascio.
-4. Allega `Depositum_<versione>_x64.msix` e `firma\Depositum.cer`.
+4. Allega `rilascio\Depositum_1.1_x64.msix` e `firma\Depositum.cer`.
 5. **Publish release**.

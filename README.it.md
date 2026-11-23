@@ -65,7 +65,7 @@ Italiano e inglese. Di base l'app segue la lingua di Windows (inglese per le lin
 
 Dall'[ultima release](../../releases/latest) scarica entrambi i file:
 
-- `Depositum_x.y.z.0_x64.msix` – l'app
+- `Depositum_x.y_x64.msix` – l'app
 - `Depositum.cer` – il certificato con cui è firmata
 
 ### 2. Rendi attendibile il certificato (solo la prima volta)

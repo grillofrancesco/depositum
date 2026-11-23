@@ -65,7 +65,7 @@ Italian and English. By default the app follows the Windows language (English fo
 
 From the [latest release](../../releases/latest) download both files:
 
-- `Depositum_x.y.z.0_x64.msix` – the app
+- `Depositum_x.y_x64.msix` – the app
 - `Depositum.cer` – the certificate the app is signed with
 
 ### 2. Trust the certificate (only the first time)
