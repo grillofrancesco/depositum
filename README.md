@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="src/Depositum/Assets/Square44x44Logo.targetsize-256.png" alt="" width="96">
+
 # Depositum
 
 **Keep track of your savings, deposit by deposit, over time.**
@@ -121,6 +123,7 @@ dotnet test tests/Depositum.Tests
 | `src/Depositum` | The WinUI 3 app: pages, dialogs, services, themes, strings. |
 | `src/Depositum.Core` | Logic with no user interface (entries, formats, file structure, palettes), covered by tests. |
 | `tests/Depositum.Tests` | xUnit tests for `Depositum.Core`. |
+| `tools` | `genera-icone.ps1`: draws the app icon in every size the package needs. |
 | `docs` | Project notes, screenshots and the [release procedure](docs/rilascio.md) (in Italian). |
 
 To try the app with made-up data without touching your own, set the `DEPOSITUM_CARTELLA_DATI` environment variable to another folder before starting an unpackaged build.

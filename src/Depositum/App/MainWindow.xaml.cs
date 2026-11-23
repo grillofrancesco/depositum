@@ -16,6 +16,9 @@ namespace Depositum
             // Dimensione della finestra all'avvio: 500x700
             AppWindow.Resize(new SizeInt32(500, 700));
 
+            // Icona nella barra del titolo e nella barra delle applicazioni
+            AppWindow.SetIcon(System.IO.Path.Combine(AppContext.BaseDirectory, "Assets", "Depositum.ico"));
+
             // Naviga verso la pagina principale (Dashboard)
             RootFrame.Navigate(typeof(DashboardPage));
         }
