@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
@@ -55,6 +55,11 @@
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WinUI" Version="2.0.4" />
     <PackageReference Include="FluentSystemIcons.WinUI" Version="1.1.343" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+    <!-- Componenti di intelligenza artificiale portati dal pacchetto Windows App SDK
+         (onnxruntime, DirectML): l'app non li usa, escluderli toglie decine di MB dal pacchetto. -->
+    <PackageReference Include="Microsoft.WindowsAppSDK.AI" Version="2.5.5" ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.ML" Version="2.1.94" ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.Windows.AI.MachineLearning" Version="2.1.74" ExcludeAssets="all" />
   </ItemGroup>
 
   <!--
@@ -72,5 +77,8 @@
     <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
     <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
+    <!-- Solo le librerie dichiarate sicure da ridurre (.NET, proiezioni Windows): il trimming
+         completo toglie parti usate da WinUI e LiveCharts e l'app va in crash all'avvio. -->
+    <TrimMode Condition="'$(Configuration)' != 'Debug'">partial</TrimMode>
   </PropertyGroup>
 </Project>

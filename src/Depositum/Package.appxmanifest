@@ -10,14 +10,14 @@
 
   <Identity
     Name="532f8103-0c8c-47e7-8c35-6c6e592bbc57"
-    Publisher="CN=Hinoki"
+    Publisher="CN=grillofrancesco"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="532f8103-0c8c-47e7-8c35-6c6e592bbc57" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Depositum</DisplayName>
-    <PublisherDisplayName>Hinoki</PublisherDisplayName>
+    <PublisherDisplayName>grillofrancesco</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -48,6 +48,5 @@
 
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
-    <systemai:Capability Name="systemAIModels"/>
   </Capabilities>
 </Package>

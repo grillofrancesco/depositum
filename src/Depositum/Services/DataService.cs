@@ -15,10 +15,15 @@ namespace Depositum.Services
     /// </summary>
     public static class DataService
     {
-        public static string CartellaDati { get; } = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "Depositum"
-        );
+        /// <summary>
+        /// Cartella dei dati e delle preferenze. La variabile d'ambiente DEPOSITUM_CARTELLA_DATI,
+        /// se impostata, la sostituisce: serve per provare l'app (o farne screenshot) con dati
+        /// fittizi senza toccare quelli veri. L'app installata dal pacchetto non la riceve.
+        /// </summary>
+        public static string CartellaDati { get; } =
+            Environment.GetEnvironmentVariable("DEPOSITUM_CARTELLA_DATI") is { Length: > 0 } alternativa
+                ? alternativa
+                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Depositum");
 
         public static string DataFilePath { get; } = Path.Combine(CartellaDati, FileDpstm.NomeFile);
 

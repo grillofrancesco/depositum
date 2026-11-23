@@ -368,3 +368,7 @@ records_test.csv
 /csv_a_dpstm.py
 /*.csv
 /*.dpstm
+
+# Firma e pacchetti della release (il .pfx contiene la chiave privata)
+/firma/
+/rilascio/
